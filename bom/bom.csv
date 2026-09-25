@@ -1,0 +1,6 @@
+item,qty,spec,supplier,unit_cost_usd,make_buy,notes
+Open training dataset (curated from public waste image sets plus field photos),,,,,,
+Lightweight model for phones and Raspberry Pi (e.g. MobileNet or EfficientNet class),,,,,,
+Label taxonomy aligned to resin codes and local buyer grades,,,,,,
+Evaluation set from real field conditions,,,,,,
+Export to TensorFlow Lite or ONNX,,,,,,

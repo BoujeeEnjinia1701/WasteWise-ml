@@ -1,0 +1,15 @@
+# Label taxonomy: material class, then grade aligned to resin codes and local buyer grades
+classes:
+  plastic:
+    - PET (1)
+    - HDPE (2)
+    - PVC (3)
+    - LDPE (4)
+    - PP (5)
+    - PS (6)
+    - other or unknown (7)
+  paper: [cardboard, mixed paper, newsprint]
+  metal: [aluminum, steel]
+  glass: [clear, colored]
+  organic: [food, garden]
+  hazardous: [battery, sharps, chemical, electronic]

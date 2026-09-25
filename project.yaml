@@ -1,0 +1,21 @@
+# Card metadata consumed by https://amishchadha.com
+name: WasteWise-ml
+slug: WasteWise-ml
+area: Circular Materials
+trl: 2                   # Technology Readiness Level, see .kit/STANDARDS.md section 9
+trl_target: 3
+trl_evidence:
+  - docs/01-problem.md
+  - docs/02-concept.md
+  - docs/03-requirements.md
+shortlisted: false
+pitch: >-
+  Open image-classification model that identifies waste items by material class and grade from a phone or low-cost camera. It is the software brain of the WasteWise family: WasteWise Scan adds near-infrared sensing for plastic resin type, and ReflowEconomy uses the sorted output.
+problem: >-
+  Recycling streams are contaminated because people and small sorting operations cannot reliably tell materials apart, and value is lost when mixed plastics, paper, metals and organics end up together. Informal waste pickers, who handle most recycling in many low-income countries, earn more only when material is sorted by type and grade.
+budget_usd: null   # software or playbook repo
+difficulty: 2  # 1 easiest, 5 hardest
+hero_image: media/hero.png
+licenses:
+  software: MIT
+tags: [circular-materials, open-hardware, mit]
