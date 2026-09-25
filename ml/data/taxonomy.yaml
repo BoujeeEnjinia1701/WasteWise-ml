@@ -1,7 +1,7 @@
 # Label taxonomy: material class, then grade aligned to resin codes and local buyer grades
 # Version 0.2 (2026-09-25). The model predicts a class and a grade; a per-site file maps grades
 # to the local buyer's grade names, bin numbers and colors (see docs/02-concept.md).
-# Changes from 0.1 are marked "added"; they are proposed, awaiting Amish.
+# Changes from 0.1 are marked "added"; decided by Amish on 2026-09-25 (WML-DDR-001 D3): keep them.
 # Film and bags are LDPE (4) under plastic. Photo-only grading cannot reliably separate opaque
 # HDPE from PP or identify black plastics; those items are expected to come out as "unsure".
 classes:

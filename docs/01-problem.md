@@ -3,7 +3,7 @@ doc_id: WML-PRB-001
 title: WasteWise-ml problem statement
 project: WasteWise-ml
 doc_type: Problem statement
-version: "0.2"
+version: "0.3"
 status: Draft
 date: '2026-09-25'
 author: Amish Chadha
@@ -17,6 +17,10 @@ revisions:
   date: '2026-09-25'
   author: Amish Chadha
   change: Populate to TRL 2 (users, context, constraints, prior work, open questions)
+- version: "0.3"
+  date: '2026-09-25'
+  author: Amish Chadha
+  change: Apply WML-DDR-001 decisions (consent and ownership, task form, pilot phones); sources checked and linked
 ---
 
 # WasteWise-ml problem statement
@@ -27,7 +31,7 @@ Recycling streams are contaminated because people and small sorting operations c
 
 Sorting quality sets the price of recovered material. A buyer pays a grade price for clean, single-material lots (for example clear PET bottles, natural HDPE, aluminum cans or baled cardboard) and much less, or nothing, for mixed or contaminated material. The person who can tell PET from PP, a multilayer pouch from a film bag, or a coated carton from plain board captures that difference. The person who cannot either sells mixed material at the lowest price or spends time and trust arguing grades with the buyer.
 
-The scale is large. The World Bank's *What a Waste 2.0* estimates that the world generated about 2.01 billion tonnes of municipal solid waste in 2016, about 12 % of it plastic, and projects about 3.40 billion tonnes by 2050 (Kaza et al. 2018). In many low- and middle-income cities most of the material that is recycled at all is collected and sorted by informal waste pickers. A global model of plastic flows estimated that the informal sector collected about 58 % of the plastic waste collected for recycling in 2016 (Lau et al. 2020, *Science* 369: 1455 to 1461). WIEGO, the global research and policy network for informal workers, describes waste pickers as a workforce of millions, often organized in cooperatives and associations that negotiate with buyers and municipalities (WIEGO, "Waste Pickers" occupational group pages).
+The scale is large. The World Bank's *What a Waste 2.0* estimates that the world generated about 2.01 billion tonnes of municipal solid waste in 2016, 242 million tonnes (12 %) of it plastic, and projects about 3.40 billion tonnes by 2050 (Kaza et al. 2018). In many low- and middle-income cities most of the material that is recycled at all is collected and sorted by informal waste pickers. A global model of plastic flows estimated that the informal sector collected about 58 % of the plastic waste collected for recycling in 2016 (Lau et al. 2020, *Science* 369: 1455 to 1461). WIEGO, the global research and policy network for informal workers, estimates that 15 to 20 million people work as informal waste pickers; in some regions, such as Latin America, they work collectively in cooperatives, and the International Alliance of Waste Pickers represents about 460,000 organized waste pickers in 34 countries (WIEGO, "Waste Pickers" occupational group page).
 
 Three gaps keep sorting quality low:
 
@@ -61,7 +65,7 @@ WasteWise-ml is an open image-classification model that runs offline on a low-co
 - Works offline; no paid cloud service is needed at the point of use.
 - Open: code and model weights under MIT; every dataset's license recorded in `ml/data/SOURCES.md`; only data whose license allows training and publishing weights.
 - Grades follow the local buyer's price list, which differs by city, so grade names are configurable per site without retraining the model where possible.
-- Photos taken in the field are collected only with informed consent, contain no faces, and are owned or co-owned by the pickers' organization (proposed, awaiting Amish).
+- Photos taken in the field are collected only with informed consent, contain no faces, are uploaded only on opt-in and are co-owned by the pickers' organization (decided by Amish, 2026-09-25, WML-DDR-001 D6). Labelers are paid at or above the local living wage, with the rate set with the partner (D7).
 - The model advises; it never certifies material and never auto-sorts hazardous items.
 - This repository is software and a playbook for data; it has no hardware budget (`budget_usd` is null). A pilot kit is costed in `bom/bom.csv` for reference only.
 
@@ -80,15 +84,15 @@ WasteWise-ml is an open image-classification model that runs offline on a low-co
 - **Industrial sorting.** NIR optical sorters in materials recovery facilities identify resin type at belt speed. They show what spectroscopy can do, but their cost and scale do not fit a street or depot. WasteWise Scan takes the same principle to a handheld device.
 - **Waste picker organizations.** Cooperatives and associations supported by networks such as WIEGO already run training, collective sales and weighing records. They are the natural partners for co-design, data collection and ownership.
 
-Named sources are listed in WML-PRC-001, section "References". Links will be checked at TRL 3.
+Named sources are listed in WML-PRC-001, section "References". The World Bank, Lau et al., WIEGO, TrashNet, TACO, ZeroWaste, MobileNetV3 and EfficientNet citations were checked on the web on 2026-09-25.
 
 ## Open questions
 
-- Which partner organization, city and buyers first? Proposed, awaiting Amish.
+- Which partner organization, city and buyers first? Proposed, awaiting Amish (WML-DDR-001 O1).
 - Which grades change the price most at the first site, and are they visible in a photo at all?
 - How do pickers want the answer shown: icon and color, voice, local language text, or a mix?
 - Who owns field photos and the resulting model, and how are contributors credited or paid?
-- Does a phone on a stand fit the work (bench sorting), or do pickers need a handheld mode for floor and street sorting?
+- The design classifies one item at a time on a mat under a phone on a stand, with handheld use supported (decided, D1). Does that fit the partner's floor and street sorting, or will pile detection be needed later?
 
 ## User research and co-design
 

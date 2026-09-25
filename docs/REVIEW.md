@@ -71,3 +71,73 @@ Requirements not met or at risk:
 ### Recommended next step
 
 Review this note and the media, then decide items 1 to 3 and 9. If approved, run `/advance-trl3`: write a calculation note on latency, battery, dataset size and threshold selection; confirm dataset licenses; and draft the data consent protocol with the partner. Training and field trials belong to TRL 4 and stay out of scope until the phase cap changes.
+
+## Session 2026-09-25: TRL 3
+
+Authority: on 2026-09-25 Amish wrote "proceed with all of your recommendations across all batches. Make sure we don't proceed to TRL 4 on any of them." This session advanced WasteWise-ml from TRL 2 to TRL 3 and stopped there. It wrote no training code, no notebooks and no app code.
+
+### What was done
+
+- `docs/decisions/0001-trl2-review-decisions.md` (WML-DDR-001 v0.1): decisions D1 to D8, open items O1 to O3 and new proposals N1 to N3.
+- `docs/04-calcs/01-sizing.md` (WML-CAL-001 v0.1) and `docs/04-calcs/sizing.py`: model size, latency, time to result, energy per scan and battery, camera geometry (read from the model), dataset size with a sensitivity table, coverage and hazard false alarms, evaluation plan with hazard recall bounds, and cost (read from the BOM). The script is arithmetic only; it trains and loads nothing.
+- `cad/src/model.py`: parametric build123d model of the sorting station (bench, mat, phone, stand, power bank, hazard box, seven bins, platform scale). Exports `cad/step/wastewise-{station-assembly,phone-stand,sorting-mat,hazard-box,bin}.step` and matching `cad/stl/*.stl`.
+- `cad/src/sheets.py` and `cad/drawings/WML-DWG-001.{svg,pdf,png}`: station general arrangement at Rev P1, 1:50, license label MIT, marked "CONCEPT, NOT FOR FABRICATION" and "PRELIMINARY, NOT FOR FABRICATION". The concept sheet keeps its number WML-DWG-010, so DWG-001 was the next free number.
+- `cad/src/concept_media.py` now takes the station geometry from `model.py`; all media regenerated and inspected (hero, blueprint WML-DWG-010, exploded view with items 1 to 7, flow with the calculated split, `model.glb` and `viewer.html`). No `_views` folders are left.
+- `bom/bom.csv` (10 lines, every line priced, supplier or supplier type on each) and `bom/bom-notes.md`: notes updated for the decisions; totals unchanged.
+- WML-PRB-001, WML-PRC-001 and WML-REQ-001 moved to v0.3. `ml/data/SOURCES.md`, `ml/data/taxonomy.yaml` (comment only) and `ml/models/README.md` updated for the checked licenses, the decisions and the 4.4 MB size; all existing `ml/` content kept.
+- `project.yaml`: `trl: 3`, `trl_target: 3`, evidence listed; `budget_usd` stays null and the license stays MIT only. `README.md`: TRL 3 badge and status line; pitch and problem unchanged.
+
+### Requirement status (WML-CAL-001)
+
+Counts: 4 met, 1 met on a condition, 2 not met, 4 at risk, 3 not verifiable at TRL 3.
+
+| ID | Status | Value |
+| --- | --- | --- |
+| R2 | Not met by design | Opaque HDPE versus PP and black plastics (about 9 % of items) cannot be graded from a photo; they go to "Unsure" and WasteWise Scan. PET at risk |
+| R11 | Not met | Field evaluation set does not exist; sized at 2,000 (400 hazards, 900 non-hazard minimum, 700 natural mix), about 43 h |
+| R1 | At risk | Expected class error 9.1 % on an assumed learning curve |
+| R3 | At risk | Hazards rare (300 of 10,000 natural photos against 2,400 needed); a 200-item test proves 98 % only with zero misses |
+| R4 | At risk | About 68 % answered against 70 % (65 % graded, 32 % "Unsure", 3 % hazard) |
+| R13 | At risk | ZeroWaste is CC BY-NC 4.0; TACO images need per-image checks |
+| R10 | Met, conditional | 8 % if the screen sleeps between scans; 51 % with the screen on all shift; 130 % with live preview |
+| R5, R6, R9, R12 | Met | 64 to 201 ms; 4.4 MB int8; per-site file; $130 phone |
+| R7, R8, R14 | Not verifiable at TRL 3 | Time budget 0.9 to 2.0 s; co-design; consent protocol not written |
+
+Key numbers: 4.16 million parameters; 0.09 to 0.35 J per inference and 7.5 J per scan; about 230 images per label for 90 % at 70 % coverage (128 to 591 across the sensitivity cases), design figure 300 per grade and 10,000 field photos, 72.2 h of labeling; camera frame 586 x 439 mm at 440 mm lens height; one station $285, two-station pilot $1,300.
+
+Corrections to TRL 2 numbers: model 4.4 MB, not 5 to 6 MB (the ImageNet classifier is replaced); latency 64 to 201 ms including preprocessing; tap-to-scan 8 %, not 7 %, of the battery; flow split 65 / 32 / 3 %, not 75 / 22 / 3 %; camera height 440 mm, not 470 mm, so the frame fits the mat; bins modeled at 62 L inside.
+
+Findings: tap-to-scan alone does not meet R10; the screen must also sleep between scans (or the power bank must be used). R3's verification size of 200 hazard items is too small unless the model misses none.
+
+### Decisions recorded (WML-DDR-001)
+
+Decided by Amish, 2026-09-25, going with the recommendation: D1 single item on a mat; D2 MobileNetV3-Large, TensorFlow Lite plus ONNX; D3 keep the `composite` class and the `unsure` and `hazard` outputs; D4 per-site grade file; D5 tap-to-scan; D6 consent, opt-in, no faces, co-ownership, protocol before collection; D7 pay rate set with the partner at or above the local living wage; D8 one reference phone per station for the evaluation. No pitch or budget change was recommended: pitch unchanged, `budget_usd` null, MIT only.
+
+### Still awaiting Amish
+
+1. O1: first partner organization, city and buyers. No recommendation.
+2. O2: the CERN-OHL-S line in `CONTRIBUTING.md` in an MIT-only repository. No recommendation was made; left unchanged.
+3. O3: a kit option so software repositories get an MIT sheet label by default. `.kit/` unchanged; this repository overrides the label in its own scripts.
+4. New, N1: hazard evaluation size 400 items (recommended), 200 or about 1,000.
+5. New, N2: exclude ZeroWaste (CC BY-NC 4.0) from training (recommended).
+6. New, N3: camera height 440 mm (recommended, used in the model) or 470 mm with a wider mat.
+
+### Safety concerns
+
+- A missed hazard is the worst failure. The design sends about 4.9 % of items to the hazard box, 40 % of them false alarms, by choice. Hazard results can never be overridden into a grade.
+- The dataset needs about 2,400 hazard photos, far more than a natural stream gives. Collecting them on purpose must not add handling: photograph where items lie, sharps only in a rigid container or with tongs, by trained people; pickers are never asked to collect hazards.
+- Lithium cells in the phone and power bank; privacy of field photos; over-trust in grades. These are unchanged from TRL 2 and remain in WML-PRC-001.
+
+### Citations
+
+The TRL 2 note listed unchecked citations. This session checked on the web: World Bank *What a Waste 2.0* (2.01 billion tonnes in 2016, 242 million tonnes or 12 % plastic, 3.40 billion tonnes by 2050); Lau et al. 2020 (*Science* 369 (6510): 1455 to 1461; the 58 % informal-sector share, in the accepted manuscript); WIEGO (15 to 20 million waste pickers); ZeroWaste (CVPR 2022, dataset CC BY-NC 4.0); MobileNetV3 (ICCV 2019, arXiv:1905.02244); EfficientNet (ICML 2019, PMLR 97: 6105 to 6114); TrashNet and TACO licenses. All are cited with links in WML-PRC-001 or WML-CAL-001. Values marked "assumed" in WML-CAL-001 have no source.
+
+### TRL 4 material
+
+None found. `build-log/` holds only its README; `ml/notebooks/` holds only `.gitkeep`.
+
+### Recommended next step
+
+TRL 4 is on hold by Amish's instruction; do not start it. Paper work that remains within TRL 3: decide O1 to O3 and N1 to N3, and with the partner (once chosen) draft the consent and data protocol and collect the first buyer price list and stream composition, which would replace the assumed stream in WML-CAL-001.
+
+For reference only, TRL 4 would need: the consent protocol signed with a partner, the field dataset and field evaluation set collected, a trained and exported model, a measured learning curve, coverage and hazard recall on the evaluation set, timing and battery measured on the reference phone, a lab test report (TST with `environment: lab`) and build log entries.

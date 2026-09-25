@@ -1,8 +1,8 @@
 # WasteWise-ml
 
-![TRL 2](https://img.shields.io/badge/TRL-2%20of%209-0F766E) ![License: MIT](https://img.shields.io/badge/license-MIT-111827)
+![TRL 3](https://img.shields.io/badge/TRL-3%20of%209-0F766E) ![License: MIT](https://img.shields.io/badge/license-MIT-111827)
 
-**Area:** Circular Materials · **TRL:** 2 of 9 (concept formulated)
+**Area:** Circular Materials · **TRL:** 3 of 9 (proof of concept on paper)
 
 Open image-classification model that identifies waste items by material class and grade from a phone or low-cost camera. It is the software brain of the WasteWise family: WasteWise Scan adds near-infrared sensing for plastic resin type, and ReflowEconomy uses the sorted output.
 
@@ -16,11 +16,13 @@ Recycling streams are contaminated because people and small sorting operations c
 
 ## Concept
 
-The user photographs one item on a light mat with a low-cost Android phone. An on-device model (MobileNetV3 class, about 5 to 6 MB, estimate) answers offline in well under a second with the material class, the local buyer grade and a confidence value, or says "Unsure" or "Hazard". Sorted lots go to bins that match the buyer's price list; unsure plastics go to WasteWise Scan for a near-infrared resin check; clean PET, HDPE and PP can be sold to a ReflowEconomy micro-factory. Consented field photos feed a retraining loop with a fixed field evaluation set.
+The user photographs one item on a light mat with a low-cost Android phone. An on-device model (MobileNetV3-Large, about 4.4 MB in 8-bit form) answers offline in 64 to 201 ms on a low-cost phone (calculated, WML-CAL-001) with the material class, the local buyer grade and a confidence value, or says "Unsure" or "Hazard". Sorted lots go to bins that match the buyer's price list; unsure plastics go to WasteWise Scan for a near-infrared resin check; clean PET, HDPE and PP can be sold to a ReflowEconomy micro-factory. Consented field photos feed a retraining loop with a fixed field evaluation set.
 
 ![Data and material flow](media/flow.png)
 
-Full design precis: [docs/02-concept.md](docs/02-concept.md)
+Full design precis: [docs/02-concept.md](docs/02-concept.md). Sizing of the dataset, model, energy and evaluation: [docs/04-calcs/01-sizing.md](docs/04-calcs/01-sizing.md). General arrangement: [cad/drawings/WML-DWG-001.pdf](cad/drawings/WML-DWG-001.pdf).
+
+**Status at TRL 3 (on paper):** model size, speed, local grades and the reference phone are met; battery life is met if the screen sleeps between scans; class accuracy, hazard recall, coverage (about 68 % against 70 %) and dataset licenses are at risk; grading opaque HDPE versus PP from a photo and the field evaluation set are not met. Nothing has been trained; TRL 4 is on hold.
 
 ## Key components
 
@@ -46,7 +48,8 @@ The pilot list with indicative costs is in [bom/bom.csv](bom/bom.csv). This repo
 | `ml/notebooks/` | Training and evaluation notebooks (none yet) |
 | `ml/models/` | Exported TensorFlow Lite or ONNX models (via GitHub Releases) |
 | `bom/` | Reference pilot station, dataset effort and compute, with indicative costs |
-| `cad/src/` | Massing scene that generates the concept media |
+| `cad/src/` | Parametric station model (`model.py`), drawing sheet (`sheets.py`) and concept media script |
+| `cad/step/`, `cad/stl/`, `cad/drawings/` | STEP and STL exports and the general arrangement drawing WML-DWG-001 |
 | `media/` | Concept media (hero, blueprint, 3D viewer, exploded view, flow diagram); later screenshots and sample predictions |
 | `build-log/` | Dated experiment log |
 
