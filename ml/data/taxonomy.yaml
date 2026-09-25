@@ -1,4 +1,9 @@
 # Label taxonomy: material class, then grade aligned to resin codes and local buyer grades
+# Version 0.2 (2026-09-25). The model predicts a class and a grade; a per-site file maps grades
+# to the local buyer's grade names, bin numbers and colors (see docs/02-concept.md).
+# Changes from 0.1 are marked "added"; they are proposed, awaiting Amish.
+# Film and bags are LDPE (4) under plastic. Photo-only grading cannot reliably separate opaque
+# HDPE from PP or identify black plastics; those items are expected to come out as "unsure".
 classes:
   plastic:
     - PET (1)
@@ -13,3 +18,8 @@ classes:
   glass: [clear, colored]
   organic: [food, garden]
   hazardous: [battery, sharps, chemical, electronic]
+  composite: [beverage carton, multilayer pouch]   # added: coated cartons and laminates sell differently from paper and film
+# Outputs that are not classes (added):
+outputs:
+  unsure: shown when confidence is below the class threshold; goes to the Unsure bin
+  hazard: any hazardous grade above a low threshold; never offered as a sortable grade
