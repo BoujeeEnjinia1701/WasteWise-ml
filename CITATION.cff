@@ -1,0 +1,16 @@
+cff-version: 1.2.0
+message: "If you use or build on this design, please cite it as below."
+type: software
+title: "WasteWise-ml"
+abstract: "Open image-classification model that identifies waste items by material class and grade from a phone or low-cost camera. It is the software brain of the WasteWise family: WasteWise Scan adds near-infrared sensing for plastic resin type, and ReflowEconomy uses the sorted output."
+authors:
+  - given-names: Amish
+    family-names: Chadha
+    affiliation: Design Molecule
+repository-code: "https://github.com/BoujeeEnjinia1701/WasteWise-ml"
+url: "https://designmolecule.com"
+license:
+  - MIT
+keywords:
+  - open-hardware
+  - circular-materials
