@@ -179,3 +179,11 @@ README: added "Concept rationale", "Burning platform" (World Bank *What a Waste 
 ### TRL 4
 
 TRL 4 remains on hold by Amish's instruction. No training, data collection, app code, purchasing or field work was started. `trl: 3`, `trl_target: 3`.
+
+## Session 2026-09-26: photoreal renders
+
+Amish asked on 2026-09-26 for photoreal renders across the portfolio, starting with the software and playbook repos (Group C). This repo has no new product model: the existing concept scene from `cad/src/concept_media.py` was rendered with Blender Cycles (`.kit/scene_export.py`, `.kit/photoreal.py`) on Amish's Mac and captioned with the project, repository and viewing direction.
+
+- New: `media/render-hero.png`, `media/render-station.png`. The README now leads with `media/render-hero.png`.
+- Geometry, BOM, calculations and drawings are unchanged. `trl` stays 3; TRL 4 remains on hold.
+- `cad/src/render_detail.py` (new): cosmetic detail for renders only (lit phone screen, mat grid print, bin rims and label text, hazard sticker and handle, scale display). The hero is a close-up of the scanning rig (phone, clamp stand and lit mat), which is the hardware this model runs on; the station view shows the whole sorting station.
