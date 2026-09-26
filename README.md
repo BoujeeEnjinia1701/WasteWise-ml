@@ -10,6 +10,46 @@ Open image-classification model that identifies waste items by material class an
 
 [Interactive 3D model](media/viewer.html) · [Concept blueprint (PDF)](media/concept-blueprint.pdf) · [Review note](docs/REVIEW.md)
 
+## Concept rationale
+
+The person who can tell PET from PP, a coated carton from plain board, or a clean can from a contaminated one captures the price difference between a buyer's grade and mixed material. Industrial plants make that call with near-infrared sorters that cost far more than a street depot can pay, but almost every waste picker already carries a phone. WasteWise-ml puts a small image classifier (MobileNetV3-Large, about 4.4 MB) on that phone, answers offline in a fraction of a second, and says "Unsure" or "Hazard" rather than guess. Items a camera cannot grade go to WasteWise Scan for a resin reading.
+
+It is open because the value it creates belongs to the people who sort. Code and weights are MIT, every dataset license is recorded, grade names are set per site in a plain file that a cooperative can edit, and field photos are co-owned by the pickers' organization. The reference station is garage-buildable: a low-cost Android phone on a clamp stand over a light mat, with bins, a hazard box and a scale, about $285 in indicative prices.
+
+## Burning platform
+
+The world produced about 2.56 billion tonnes of municipal waste in 2022, and the World Bank expects 3.86 billion tonnes by 2050, with collection rates as low as 31 % in Sub-Saharan Africa ([World Bank, *What a Waste 3.0*](https://www.worldbank.org/en/publication/what-a-waste)). Much of what is recovered at all is recovered by hand: a global model of plastic flows estimated that the informal sector collected about 58 % of the plastic waste gathered for recycling in 2016 ([Lau et al. 2020, *Science*](https://doi.org/10.1126/science.aba9475)), and WIEGO, citing ILO data, puts the number of informal waste pickers at 15 to 20 million ([WIEGO](https://www.wiego.org/informal-economy/occupational-groups/waste-pickers/)).
+
+Those workers are paid by weight and grade, so every item sorted to the wrong grade, or sold as mixed, is income lost. Even where money is not the constraint, sorting remains hard: the United States recycled only about 9 % of the plastics it generated in 2018 ([US EPA](https://www.epa.gov/facts-and-figures-about-materials-waste-and-recycling/national-overview-facts-and-figures-materials)).
+
+## Where it could be used
+
+### By industry
+
+| Industry | Use |
+| --- | --- |
+| Waste picker cooperatives and associations | Consistent grades across members, training for new members, fewer disputes with buyers |
+| Scrap buyers and aggregators | Check incoming lots against the price list; teach sellers new grade names |
+| Municipal materials recovery and drop-off points | Quality check on hand-sorted lines and flags for batteries before baling |
+| Recycling micro-factories (ReflowEconomy) | Confirm that feedstock is one clean resin before washing and shredding |
+| Schools, campuses and events | Teach which bin an item belongs in, with the "Unsure" route shown openly |
+| Researchers and NGOs | An open model, taxonomy and evaluation set to extend to new regions and packaging |
+
+### By country or region
+
+| Country or region | Why it matters there |
+| --- | --- |
+| Brazil | More than 281,000 people work as catadores, many in cooperatives, and Brazil recycles 97 % of its cans ([WIEGO](https://www.wiego.org/informal-economy/occupational-groups/waste-pickers/)); cooperatives give a ready partner for co-design and a shared grade list. |
+| Bogotá, Colombia | More than 25,000 waste pickers, tracked in the city's RURO register ([WIEGO](https://www.wiego.org/informal-economy/occupational-groups/waste-pickers/)); a registered workforce suits a co-design pilot. |
+| India | WIEGO puts the number of waste pickers at about 2.2 million ([WIEGO](https://www.wiego.org/informal-economy/occupational-groups/waste-pickers/)); multilingual users and low-cost phones match the design's constraints. |
+| Sub-Saharan Africa | Collection rates are as low as 31 % and most waste is openly dumped ([World Bank](https://www.worldbank.org/en/publication/what-a-waste)); where formal sorting plants are scarce, a tool that runs on a phone fits the means at hand. |
+| European Union | The EU generated 177.8 kg of packaging waste per person in 2023, and only Belgium and Latvia met the 2030 target of 55 % plastic packaging recycling ([Eurostat](https://ec.europa.eu/eurostat/statistics-explained/index.php?title=Packaging_waste_statistics)); better hand sorting at drop-off points helps. |
+| United States | 292.4 million tons of municipal waste in 2018 and about 9 % of plastics recycled ([US EPA](https://www.epa.gov/facts-and-figures-about-materials-waste-and-recycling/national-overview-facts-and-figures-materials)); campus and community recycling programs need cheap quality checks. |
+
+## What sparked the idea
+
+The idea traces back to TrashNet, a 2016 Stanford CS 229 project by Gary Thung and Mindy Yang that photographed 2,527 items in six classes (glass, paper, cardboard, plastic, metal and trash) with ordinary iPhones, each item placed on a white posterboard, and trained a network that reached about 75 % test accuracy ([TrashNet repository](https://github.com/garythung/trashnet)). It showed that a phone camera can tell broad material classes apart, and it became a common benchmark. It also showed the gap: a clean white background, six classes and no link to what a buyer pays. A waste picker needs the grade on a dirty, crushed item in a depot or on the street, with an honest "unsure" and a hazard flag. WasteWise-ml keeps TrashNet's premise, one item on a plain surface in front of a phone, and rebuilds the labels, the data and the evaluation around local buyer grades and the people who sort.
+
 ## Problem
 
 Recycling streams are contaminated because people and small sorting operations cannot reliably tell materials apart, and value is lost when mixed plastics, paper, metals and organics end up together. Informal waste pickers, who handle most recycling in many low-income countries, earn more only when material is sorted by type and grade.
@@ -66,4 +106,4 @@ MIT, see [LICENSE](LICENSE). Datasets keep their own licenses, recorded in `ml/d
 - [wastewise-scan](https://github.com/BoujeeEnjinia1701/wastewise-scan): handheld NIR scanner for plastic resin type
 - [refloweconomy](https://github.com/BoujeeEnjinia1701/refloweconomy): open playbook for local material recovery micro-factories
 
-Part of the open hardware portfolio at [amishchadha.com](https://amishchadha.com).
+A project of the [Design Molecule](https://designmolecule.com) lab.

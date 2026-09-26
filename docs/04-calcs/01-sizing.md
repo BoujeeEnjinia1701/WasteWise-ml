@@ -3,7 +3,7 @@ doc_id: WML-CAL-001
 title: WasteWise-ml sizing calculations
 project: WasteWise-ml
 doc_type: Calculation note
-version: "0.1"
+version: "0.2"
 status: Draft
 date: '2026-09-25'
 author: Amish Chadha
@@ -13,6 +13,10 @@ revisions:
   date: '2026-09-25'
   author: Amish Chadha
   change: First-principles sizing of dataset, model, energy and evaluation for TRL 3 against WML-REQ-001 v0.3
+- version: "0.2"
+  date: '2026-09-25'
+  author: Amish Chadha
+  change: Recommendations accepted by Amish (DDR-002)
 ---
 
 # WasteWise-ml sizing calculations
@@ -34,9 +38,9 @@ Table 1. Requirement status at TRL 3.
 | R2 | Plastic grade accuracy 90 % for PET, 80 % for other rigid HDPE and PP, on answered items | A photo cannot separate opaque HDPE from PP or identify black plastics (about 9 % of items, assumed stream); these go to "Unsure". PET needs about 230 images per grade for 90 % at 70 % coverage | Not met by design for opaque HDPE and PP and black plastics; at risk for PET |
 | R11 | Field evaluation set of 2,000 or more images, two or more sites, 50 or more per grade | Sized at 2,000: 400 hazards, 900 non-hazard minimum (18 grades x 50), 700 natural mix; about 43 h of labeling. The set does not exist | Not met |
 | R1 | Class accuracy 90 % or more on answered items | Expected full-coverage class error 9.1 % with about 1,290 photos per class (assumed learning curve); 90 % reached at 100 % class coverage | At risk (assumed learning curve; field data may be harder) |
-| R3 | Hazard recall 98 % or more, never a sortable grade | Hazard is a separate output with a low threshold; 2,400 hazard training photos needed, 300 would arise naturally. A 200-item test proves 98 % only with zero misses | At risk (rare class; verification set too small, see N1) |
+| R3 | Hazard recall 98 % or more, never a sortable grade | Hazard is a separate output with a low threshold; 2,400 hazard training photos needed, 300 would arise naturally. Verification set raised from 200 to 400 hazard items (N1, decided), which proves 98 % with up to 3 misses | At risk (rare class; hazard photos must be collected on purpose) |
 | R4 | Coverage 70 % or more while meeting R1 | 68 % answered (65 % with a grade plus 3 % hazard flags), 32 % "Unsure" | At risk (2 points short on assumed numbers) |
-| R13 | MIT code and weights; every dataset license allows training and publishing weights | TrashNet repository MIT; TACO annotations CC BY 4.0, images under per-image licenses; ZeroWaste CC BY-NC 4.0, which does not fit MIT weights | At risk (ZeroWaste must be excluded from training; TACO images filtered one by one) |
+| R13 | MIT code and weights; every dataset license allows training and publishing weights | TrashNet repository MIT; TACO annotations CC BY 4.0, images under per-image licenses; ZeroWaste CC BY-NC 4.0, which does not fit MIT weights, is excluded from training (N2, decided) | At risk (TACO images filtered one by one) |
 | R10 | 8 h shift of 500 scans uses 30 % or less of a 4,000 mAh battery | 8 % if the screen sleeps between scans; 51 % if the screen stays on all shift; 130 % with a live preview | Met, if the screen sleeps between scans (or with the power bank) |
 | R5 | Result within 0.3 s of the photo, offline | 64 to 201 ms, 99 ms margin at the slow end | Met |
 | R6 | Model 10 MB or less; app 30 MB or less | 4.4 MB (int8); float16 8.7 MB; float32 17.5 MB fails; app 12 to 19 MB | Met (int8 or float16 only) |
@@ -104,7 +108,7 @@ Assumptions: the reference phone's main camera has a 26 mm 35 mm-equivalent foca
 
 - With the lens 440 mm above the mat, the field of view is 67.3 x 53.1 degrees and the camera sees 586 x 439 mm, inside the 700 x 450 mm mat. The image's long side runs along the bench, so the phone sits landscape on the stand.
 - The stand base starts at Y = 575 mm; the frame edge is at Y = 555 mm, so the base is 20 mm outside the picture.
-- At the TRL 2 height of 470 mm the frame would be 626 x 469 mm, wider than the mat, so the bench would show at two edges. The model uses 440 mm (proposed as N3 in WML-DDR-001).
+- At the TRL 2 height of 470 mm the frame would be 626 x 469 mm, wider than the mat, so the bench would show at two edges. The model uses 440 mm (N3 in WML-DDR-001, decided by Amish on 2026-09-25).
 - Resolution: 0.15 mm per pixel at full 12 MP, enough to read a molded resin code; 2.6 mm per pixel if the whole frame were shrunk to 224 px. The app therefore crops to the item before resizing: a 300 mm item at 224 px is 1.3 mm per pixel.
 - Each bin holds about 62 L inside.
 
@@ -159,8 +163,8 @@ Table 5. One-sided 95 % lower bound on hazard recall.
 | 400 | 0.9925 | 0.9882 | 0.9843 | 3 |
 | 600 | 0.9950 | 0.9921 | 0.9895 | 6 |
 
-- R3's current verification (at least 200 hazard items) proves 98 % only if the model misses none. With 400 items it passes with up to 3 misses, which gives an 80 % chance of passing if true recall is 99.5 %. If true recall is 99.0 %, about 970 items are needed for the same chance. Recommendation N1 in WML-DDR-001: 400 hazard items, proposed, awaiting Amish.
-- Proposed composition of the 2,000-image set: 400 hazards, at least 900 non-hazard items (18 grades x 50), and 700 in the natural mix. Finding 400 hazards at 3 % means sorting about 13,300 items, so hazards are sampled on purpose.
+- A verification set of 200 hazard items (the TRL 2 figure) proves 98 % only if the model misses none. With 400 items it passes with up to 3 misses, which gives an 80 % chance of passing if true recall is 99.5 %. If true recall is 99.0 %, about 970 items are needed for the same chance. N1 in WML-DDR-001: 400 hazard items, decided by Amish on 2026-09-25; R3 in WML-REQ-001 v0.4 now calls for at least 400.
+- Composition of the 2,000-image set: 400 hazards, at least 900 non-hazard items (18 grades x 50), and 700 in the natural mix. Finding 400 hazards at 3 % means sorting about 13,300 items, so hazards are sampled on purpose.
 - Precision: about 1,065 answered non-hazard items give a 95 % interval of +/- 1.8 points on a 90 % accuracy, good enough to test R1. One grade at 50 items gives +/- 11 points on 80 %, so per-grade results are indicative only.
 - Effort: 60 s per photo plus 30 % review for verified ground truth (buyer check, legible resin code or NIR): 43.3 h, $260.
 - Photos from one site are correlated; the model card reports each site separately as well as pooled.

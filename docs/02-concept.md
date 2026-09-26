@@ -3,7 +3,7 @@ doc_id: WML-PRC-001
 title: WasteWise-ml design precis
 project: WasteWise-ml
 doc_type: Design precis
-version: "0.3"
+version: "0.4"
 status: Draft
 date: '2026-09-25'
 author: Amish Chadha
@@ -21,6 +21,10 @@ revisions:
   date: '2026-09-25'
   author: Amish Chadha
   change: TRL 3 numbers from WML-CAL-001; WML-DDR-001 decisions applied; station geometry from cad/src/model.py; references checked
+- version: "0.4"
+  date: '2026-09-25'
+  author: Amish Chadha
+  change: Recommendations accepted by Amish (DDR-002)
 ---
 
 # WasteWise-ml design precis
@@ -109,7 +113,7 @@ On an assumed dry mixed stream, about 9 % of items are opaque HDPE or PP or blac
 
 ### Evaluation
 
-Hazard recall is proved with a one-sided 95 % lower bound. With 200 hazard items the model must miss none to show 98 %; with 400 it may miss up to 3. The proposed 2,000-image field set therefore holds 400 hazards, at least 50 of each non-hazard grade (900) and 700 in the natural mix (proposed, WML-DDR-001 N1). Its accuracy estimate for R1 is good to about +/- 1.8 points.
+Hazard recall is proved with a one-sided 95 % lower bound. With 200 hazard items the model must miss none to show 98 %; with 400 it may miss up to 3. The 2,000-image field set therefore holds 400 hazards, at least 50 of each non-hazard grade (900) and 700 in the natural mix (decided, WML-DDR-001 N1). Its accuracy estimate for R1 is good to about +/- 1.8 points.
 
 ### Value to the picker
 
@@ -158,8 +162,8 @@ Paper answers from WML-CAL-001 are given where it has one; the rest need field d
 - Which grades matter most to the first buyer, and which are visible in a photo at all? Needs the first co-design sessions.
 - What confidence thresholds give 70 % or more coverage while meeting R1 and R3? On paper about 68 %; set from the field evaluation set.
 - How should the app handle crushed, wet or dirty items, and labels that lie about the contents?
-- Dataset licenses: TrashNet and TACO are usable with checks; ZeroWaste (CC BY-NC 4.0) should stay out of training (N2, awaiting Amish).
-- Is 400 hazard items the right evaluation size (N1), and is 440 mm the right camera height (N3)? Proposed, awaiting Amish.
+- Dataset licenses: TrashNet and TACO are usable with checks; ZeroWaste (CC BY-NC 4.0) is excluded from training (decided, N2). Per-image checks on TACO remain.
+- The hazard evaluation size of 400 items (N1) and the 440 mm camera height (N3) were decided by Amish on 2026-09-25 (WML-DDR-002).
 
 ## References
 

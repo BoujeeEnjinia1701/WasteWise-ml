@@ -3,7 +3,7 @@ doc_id: WML-DDR-001
 title: WasteWise-ml TRL 2 review decisions
 project: WasteWise-ml
 doc_type: Design decision record
-version: "0.1"
+version: "0.2"
 status: Draft
 date: '2026-09-25'
 author: Amish Chadha
@@ -13,12 +13,16 @@ revisions:
   date: '2026-09-25'
   author: Amish Chadha
   change: Record Amish's 2026-09-25 decisions on the TRL 2 review points
+- version: "0.2"
+  date: '2026-09-25'
+  author: Amish Chadha
+  change: Recommendations accepted by Amish (DDR-002)
 ---
 
 # 0001: TRL 2 review decisions
 
 - **Date:** 2026-09-25
-- **Status:** accepted (items D1 to D8); items O1 to O3 remain proposed; items N1 to N3 are new proposals raised at TRL 3
+- **Status:** accepted (items D1 to D8; items O3 and N1 to N3 decided by Amish on 2026-09-25 through WML-DDR-002); items O1 and O2 remain proposed
 
 ## Context
 
@@ -52,21 +56,21 @@ Table 1. Items with a recommendation.
 
 Budget and pitch: this is a software repository, licensed MIT only, and `budget_usd` stays null. The TRL 2 review recommended no pitch or problem change ("Pitch. Unchanged."), so the pitch and problem lines in `project.yaml` and `README.md` are unchanged. The kit's blueprint sheet label stays overridden to MIT for this repository.
 
-Items that remain open (no recommendation was made, so they stay "Proposed, awaiting Amish"):
+Items listed as open at TRL 3 (O1 and O2 carry no recommendation and stay "Proposed, awaiting Amish"; O3 carried a suggestion and is now decided, see WML-DDR-002):
 
 - **O1.** First partner organization, city and buyers for co-design and the field set. No recommendation; portfolio guidance is that community designs pick co-design partners per area later. Proposed, awaiting Amish.
 - **O2.** `CONTRIBUTING.md` still says hardware contributions are under CERN-OHL-S v2, although this repository is MIT only. The review noted that Amish may want to remove the line but made no recommendation. Proposed, awaiting Amish.
-- **O3.** A kit option for software repositories so that drawing sheets default to MIT (the review suggested it; it changes `.kit/`, which this repository does not own). Proposed, awaiting Amish.
+- **O3.** A kit option for software repositories so that drawing sheets default to MIT (the review suggested it; it changes `.kit/`, which this repository does not own). Decided by Amish, 2026-09-25: go with recommendation. Recorded as a cross-repo action for the kit owner; `.kit/` is not edited here.
 
-New items raised at TRL 3 (not part of the 2026-09-25 decision):
+New items raised at TRL 3 (decided through WML-DDR-002):
 
-- **N1.** Hazard evaluation size (R3). WML-CAL-001 shows that 200 hazard items prove 98 % recall only if the model misses none. Options: keep 200; raise to 400 (proves 98 % at 95 % confidence with up to 3 misses, an 80 % chance of passing if true recall is 99.5 %); raise to about 1,000 (80 % chance of passing if true recall is 99.0 %). Recommendation: 400, collected by targeted sampling. Proposed, awaiting Amish.
-- **N2.** ZeroWaste is licensed CC BY-NC 4.0, which does not fit MIT model weights. Options: exclude it from training and use it only for non-commercial research comparisons; exclude it entirely; ask the authors for other terms. Recommendation: exclude it from training. Proposed, awaiting Amish.
-- **N3.** Camera height. The TRL 2 concept put the phone about 470 mm above the mat; at that height a typical 26 mm-equivalent phone camera sees about 626 x 469 mm, wider than the 450 mm mat. Options: lower the lens to 440 mm (frame 586 x 439 mm, used in the model); keep 470 mm and widen the mat to 500 mm. Recommendation: 440 mm. Proposed, awaiting Amish.
+- **N1.** Hazard evaluation size (R3). WML-CAL-001 shows that 200 hazard items prove 98 % recall only if the model misses none. Options: keep 200; raise to 400 (proves 98 % at 95 % confidence with up to 3 misses, an 80 % chance of passing if true recall is 99.5 %); raise to about 1,000 (80 % chance of passing if true recall is 99.0 %). Recommendation: 400, collected by targeted sampling. Decided by Amish, 2026-09-25: go with recommendation.
+- **N2.** ZeroWaste is licensed CC BY-NC 4.0, which does not fit MIT model weights. Options: exclude it from training and use it only for non-commercial research comparisons; exclude it entirely; ask the authors for other terms. Recommendation: exclude it from training. Decided by Amish, 2026-09-25: go with recommendation.
+- **N3.** Camera height. The TRL 2 concept put the phone about 470 mm above the mat; at that height a typical 26 mm-equivalent phone camera sees about 626 x 469 mm, wider than the 450 mm mat. Options: lower the lens to 440 mm (frame 586 x 439 mm, used in the model); keep 470 mm and widen the mat to 500 mm. Recommendation: 440 mm. Decided by Amish, 2026-09-25: go with recommendation.
 
 ## Consequences
 
 - WML-PRB-001, WML-PRC-001 and WML-REQ-001 move to version 0.3 and state D1 to D8 as decisions rather than proposals.
 - WML-CAL-001 sizes the dataset, model, energy and evaluation on these decisions.
-- The build123d station model (`cad/src/model.py`) and drawing WML-DWG-001 use the 440 mm lens height of N3 pending Amish's decision; changing it is one parameter.
+- The build123d station model (`cad/src/model.py`) and drawing WML-DWG-001 use the 440 mm lens height of N3, now decided (WML-DDR-002).
 - Nothing here starts TRL 4 work: no training, data collection, app code or field trial.

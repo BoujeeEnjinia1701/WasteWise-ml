@@ -3,7 +3,7 @@ doc_id: WML-REQ-001
 title: WasteWise-ml requirements
 project: WasteWise-ml
 doc_type: Requirements
-version: "0.3"
+version: "0.4"
 status: Draft
 date: '2026-09-25'
 author: Amish Chadha
@@ -21,6 +21,10 @@ revisions:
   date: '2026-09-25'
   author: Amish Chadha
   change: TRL 3 status from WML-CAL-001; decisions of WML-DDR-001 applied (R9, R10, R12, R14); R3 verification size flagged
+- version: "0.4"
+  date: '2026-09-25'
+  author: Amish Chadha
+  change: Recommendations accepted by Amish (DDR-002)
 ---
 
 # WasteWise-ml requirements
@@ -35,7 +39,7 @@ The **reference use case** is one person at a sorting bench with a low-cost Andr
 | --- | --- | --- | --- | --- |
 | R1 | Material class accuracy | Top-1 accuracy of 90 % or more on the seven classes in `ml/data/taxonomy.yaml`, on items the model does not abstain on, on the field evaluation set (R11) | Evaluation on the held-out field set | At risk: expected full-coverage class error 9.1 % with about 1,290 photos per class, on an assumed learning curve |
 | R2 | Plastic grade accuracy from a photo | 90 % or more for PET bottles and trays, 80 % or more for other rigid HDPE and PP, on non-abstained items | Field set, ground truth from NIR (WasteWise Scan) or legible resin codes | **Not met by design** for opaque HDPE versus PP and for black plastics (about 9 % of items); these go to "Unsure" and to WasteWise Scan. At risk for PET |
-| R3 | Hazard flag | Recall of 98 % or more for batteries, sharps and chemical containers; a hazard result is never offered as a sortable grade | Field set with at least 200 hazard items (WML-CAL-001 shows 200 proves 98 % only with zero misses; 400 proposed, N1, awaiting Amish) | At risk: hazards are rare (about 300 in 10,000 natural photos against 2,400 needed) |
+| R3 | Hazard flag | Recall of 98 % or more for batteries, sharps and chemical containers; a hazard result is never offered as a sortable grade | Field set with at least 400 hazard items (decided, N1; 400 items prove 98 % with up to 3 misses, where 200 would allow none, WML-CAL-001) | At risk: hazards are rare (about 300 in 10,000 natural photos against 2,400 needed) |
 | R4 | Abstain when unsure | Model says "Unsure" below a set confidence; coverage (share of items answered) 70 % or more while meeting R1 | Coverage and accuracy curve on the field set | At risk: about 68 % answered (65 % with a grade, 3 % hazard flags), 32 % "Unsure" |
 | R5 | Offline, on-device speed | Result within 0.3 s of the photo on the reference phone (R12), with no network | Timing on the reference phone | Met on paper: 64 to 201 ms for MobileNetV3-Large in 8-bit form (decided, D2) |
 | R6 | Small download | Model file 10 MB or less; app with model 30 MB or less | File sizes of the exported models | Met on paper: 4.4 MB in 8-bit form; app 12 to 19 MB. Float32 (17.5 MB) would not meet it |
@@ -45,7 +49,7 @@ The **reference use case** is one person at a sorting bench with a low-cost Andr
 | R10 | Battery life | A full 8 h shift with up to 500 scans uses 30 % or less of a 4,000 mAh phone battery | Energy estimate; later measurement | Met on condition: 8 % with tap-to-scan and the screen sleeping between scans; 51 % with the screen on all shift (met only with the power bank); 130 % with a live preview |
 | R11 | Field evaluation set | 2,000 or more verified images from at least two sites, 50 or more per grade, never used for training | Dataset manifest | **Not met**: the set does not exist. Sized at 2,000 (400 hazards, 900 non-hazard minimum, 700 natural mix), about 43 h of labeling |
 | R12 | Reference phone | Runs on an Android phone costing about $150 or less, 3 GB RAM, 2019 or later chipset | Device test | Met on paper: $130 indicative reference phone, one per pilot station (decided, D8) |
-| R13 | Open and licensed | Code and weights MIT; every dataset license in `ml/data/SOURCES.md` allows training and publishing weights; a model card with per-class results and known failure modes | License review | At risk: TrashNet (MIT) and TACO (annotations CC BY 4.0, images per image) usable with checks; ZeroWaste is CC BY-NC 4.0 and must stay out of training (N2, awaiting Amish) |
+| R13 | Open and licensed | Code and weights MIT; every dataset license in `ml/data/SOURCES.md` allows training and publishing weights; a model card with per-class results and known failure modes | License review | At risk: TrashNet (MIT) and TACO (annotations CC BY 4.0, images per image) usable with checks; ZeroWaste (CC BY-NC 4.0) is excluded from training (decided, N2); TACO images still need per-image license checks |
 | R14 | Consent and privacy | Field photos only with informed consent; no faces or identifiable people kept; upload opt-in; pickers' organization co-owns field data (decided, D6) | Data protocol review with the partner | Not verifiable at TRL 3: protocol to be written with the partner, who is not yet chosen |
 
 ## Requirements not met or at risk
