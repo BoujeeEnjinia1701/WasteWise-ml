@@ -110,6 +110,6 @@ MIT, see [LICENSE](LICENSE). Datasets keep their own licenses, recorded in `ml/d
 ## Related repos
 
 - [wastewise-scan](https://github.com/BoujeeEnjinia1701/wastewise-scan): handheld NIR scanner for plastic resin type
-- [refloweconomy](https://github.com/BoujeeEnjinia1701/refloweconomy): open playbook for local material recovery micro-factories
+- refloweconomy (coming soon): open playbook for local material recovery micro-factories
 
 A project of the [Design Molecule](https://designmolecule.com) lab.
