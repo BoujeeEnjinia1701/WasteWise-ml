@@ -1,6 +1,6 @@
 # WasteWise-ml
 
-![TRL 3](https://img.shields.io/badge/TRL-3%20of%209-0F766E) ![License: MIT](https://img.shields.io/badge/license-MIT-111827)
+![TRL 3](https://img.shields.io/badge/TRL-3%20of%209-0F766E) ![License: MIT](https://img.shields.io/badge/license-MIT-111827) [![DOI](https://zenodo.org/badge/937378934.svg)](https://zenodo.org/badge/latestdoi/937378934) [![REUSE compliant](https://github.com/BoujeeEnjinia1701/WasteWise-ml/actions/workflows/reuse.yml/badge.svg)](https://github.com/BoujeeEnjinia1701/WasteWise-ml/actions/workflows/reuse.yml) [![Archived in Software Heritage](https://archive.softwareheritage.org/badge/origin/https://github.com/BoujeeEnjinia1701/WasteWise-ml/)](https://archive.softwareheritage.org/browse/origin/?origin_url=https://github.com/BoujeeEnjinia1701/WasteWise-ml)
 
 **Area:** Circular Materials · **TRL:** 3 of 9 (proof of concept on paper)
 
