@@ -93,8 +93,8 @@ def flow_png(out):
     def node(x, y, w, h, head, sub, fc="#F0FDFA", ec=ACCENT, dashed=False):
         ax.add_patch(FancyBboxPatch((x, y), w, h, boxstyle="round,pad=0.02,rounding_size=0.18", fc=fc, ec=ec,
                                     lw=1.4, ls="--" if dashed else "-"))
-        ax.text(x + w / 2, y + h * 0.66, head, ha="center", va="center", fontsize=8.8, fontweight="bold", color=INK)
-        ax.text(x + w / 2, y + h * 0.3, sub, ha="center", va="center", fontsize=7.6, color="#374151", linespacing=1.25)
+        ax.text(x + w / 2, y + h * 0.66, head, ha="center", va="center", fontsize=8.0, fontweight="bold", color=INK)
+        ax.text(x + w / 2, y + h * 0.3, sub, ha="center", va="center", fontsize=7.0, color="#374151", linespacing=1.25)
         return (x, y, w, h)
 
     def arrow(p, q, label=None, color=ACCENT, lw=1.8, dashed=False, lx=0, ly=0.25, rad=0.0):
