@@ -3,9 +3,9 @@ doc_id: WML-PRC-001
 title: WasteWise-ml design precis
 project: WasteWise-ml
 doc_type: Design precis
-version: "0.4"
+version: "0.5"
 status: Draft
-date: '2026-09-25'
+date: '2026-09-30'
 author: Amish Chadha
 license: MIT
 revisions:
@@ -25,6 +25,10 @@ revisions:
   date: '2026-09-25'
   author: Amish Chadha
   change: Recommendations accepted by Amish (DDR-002)
+- version: "0.5"
+  date: '2026-09-30'
+  author: Amish Chadha
+  change: Constructable scanning rig (WML-DDR-003) and its build plan WML-BLD-001; station cost updated
 ---
 
 # WasteWise-ml design precis
@@ -37,7 +41,7 @@ WasteWise-ml is an open image classifier that runs offline on a low-cost Android
 
 ![Hero render](../media/hero.png)
 
-*Figure 2. The concept in its setting, generated from the parametric model `cad/src/model.py`: a sorting bench with a phone on a clamp stand over a light mat, sample items (PET bottle, can, carton and film), seven color-labeled bins by material class, a hazard box and a platform scale. The grey figure is a 1.75 m person for scale.*
+*Figure 2. The concept in its setting, generated from the parametric model `cad/src/model.py`: a sorting bench with a phone on its stand over a light mat, sample items (PET bottle, can, carton and film), seven color-labeled bins by material class, a hazard box and a platform scale. The grey figure is a 1.75 m person for scale.*
 
 ## How it works
 
@@ -54,12 +58,12 @@ WasteWise-ml is an open image classifier that runs offline on a low-cost Android
 
 ## Main components
 
-Numbers 1 to 7 match the exploded view (Figure 3) and `bom/bom.csv`. Items 8 to 10 are effort and compute, with no geometry.
+Numbers 1 to 7 match the exploded view (Figure 3) and `bom/bom.csv`. Items 8 to 10 are effort and compute, with no geometry; item 11 (BOM only) is the stand's G-clamps and fixings.
 
 | No. | Component | Role |
 | --- | --- | --- |
 | 1 | Smartphone running the model | Camera, compute and display; the user's own phone or a reference phone (about 3 GB RAM, 2019 or later chipset) |
-| 2 | Phone stand with clamp arm | Holds the phone landscape, screen up, with the rear camera 440 mm above the mat so both hands stay free and the view is repeatable; the base sits behind the mat, outside the picture |
+| 2 | Phone stand, made | Holds the phone landscape, screen up, in a folded tray with the rear camera 440 mm above the mat, so both hands stay free and the view is repeatable. A square aluminium post and arm on a plywood board clamped to the bench's back edge; the board places the mat and stays outside the picture (WML-DDR-003; build plan WML-BLD-001) |
 | 3 | Light sorting mat | Plain, matte 700 x 450 mm background with a 50 mm grid for scale; the camera frame (586 x 439 mm) fits inside it; assumed to help accuracy |
 | 4 | Bins by material class (7) | About 60 L each: PET; HDPE and PP; film; metal; paper and carton; glass; Unsure |
 | 5 | Hazard box | Lidded steel box with a sand layer and a sharps container inside |
@@ -99,7 +103,7 @@ All values below are from WML-CAL-001 and its script `docs/04-calcs/sizing.py`. 
 
 ### Camera at the station
 
-With a 26 mm-equivalent main camera 440 mm above the mat, the phone sees 586 x 439 mm, inside the 700 x 450 mm mat, and the stand base stays 20 mm outside the picture. At full 12 MP resolution a pixel is 0.15 mm on the mat, fine enough for a molded resin code; the app crops to the item before resizing to 224 px (1.3 mm per pixel for a 300 mm item). At the TRL 2 height of 470 mm the frame would overhang the mat, so the model uses 440 mm (proposed, WML-DDR-001 N3).
+With a 26 mm-equivalent main camera 440 mm above the mat, the phone sees 586 x 439 mm, inside the 700 x 450 mm mat, and the stand's base board, which the mat's back edge butts against, stays 5.3 mm outside the picture, the same margin the mat has. At full 12 MP resolution a pixel is 0.15 mm on the mat, fine enough for a molded resin code; the app crops to the item before resizing to 224 px (1.3 mm per pixel for a 300 mm item). At the TRL 2 height of 470 mm the frame would overhang the mat, so the model uses 440 mm (proposed, WML-DDR-001 N3).
 
 ### Data needed
 
@@ -121,11 +125,11 @@ The benefit is the price difference between a sorted grade and mixed material, t
 
 ### Pilot cost (reference only)
 
-One station (items 1 to 7) is $285 in indicative prices; a two-station pilot with dataset, evaluation set and compute is $1,300. This repository has no hardware budget; these figures are for planning only.
+One station (items 1 to 7 and 11, the stand's clamps and fixings) is $309 in indicative prices; a two-station pilot with dataset, evaluation set and compute is $1,348. This repository has no hardware budget; these figures are for planning only.
 
 ![General arrangement](../cad/drawings/WML-DWG-001.png)
 
-*Figure 4. General arrangement of the sorting station, drawing WML-DWG-001 Rev P1, generated from `cad/src/model.py`. Preliminary, not for fabrication.*
+*Figure 4. General arrangement of the sorting station, drawing WML-DWG-001 Rev P2, generated from `cad/src/model.py`. Preliminary, not for fabrication.*
 
 ## Key design choices
 

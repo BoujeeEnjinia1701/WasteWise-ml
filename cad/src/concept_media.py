@@ -80,7 +80,7 @@ render_all(
                  "MobileNetV3-Large, 4.4 MB int8; 64 to 201 ms per scan (WML-CAL-001)",
                  "8 % of battery per 500-scan shift if the screen sleeps between scans",
                  "About 65 % graded, 32 % 'Unsure', 3 % hazard (estimate); hazards never sorted",
-                 "Pilot station $285, indicative; no hardware budget"],
+                 "Pilot station $309, indicative; no hardware budget"],
     cut=False, scale_figure=False, context=[person],
 )
 

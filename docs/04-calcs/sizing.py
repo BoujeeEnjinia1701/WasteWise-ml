@@ -145,7 +145,10 @@ line("Camera frame on the mat", f"{g['frame_x']:.0f} x {g['frame_y']:.0f} mm (ma
 fits = g["frame_x"] <= g["mat_l"] and g["frame_y"] <= g["mat_d"]
 line("Frame inside the mat", "yes" if fits else "NO")
 stand_clear = g["base_y"] > g["mat_cy"] + g["frame_y"] / 2
-line("Stand base outside the frame", f"{'yes' if stand_clear else 'NO'} (base at Y {g['base_y']:.0f}, frame edge {g['mat_cy'] + g['frame_y'] / 2:.0f})")
+line("Stand base outside the frame", f"{'yes' if stand_clear else 'NO'} (board front edge at Y {g['base_y']:.0f}, "
+     f"frame edge {g['mat_cy'] + g['frame_y'] / 2:.1f}, margin {g['base_y'] - g['mat_cy'] - g['frame_y'] / 2:.1f} mm, "
+     f"the same as the mat's own margin)")
+line("Stand post / arm (WML-DDR-003)", f"{g['post_len']:.0f} / {g['arm_len']:.1f} mm of 25 x 25 x 2 mm tube; lens flush with the tray underside")
 px_full = g["frame_x"] / 4000
 line("Resolution, 12 MP full frame", f"{px_full:.2f} mm per pixel")
 line("Resolution, full frame resized to 224 px", f"{g['frame_x'] / 224:.1f} mm per pixel")
@@ -279,9 +282,11 @@ line("Items to sort to find 400 hazards at 3 %", f"{n_haz_eval / haz:,.0f}")
 # ================================================================ 9. cost (BOM)
 head("9. Cost (bom/bom.csv)")
 rows = list(csv.DictReader((ROOT / "bom" / "bom.csv").open()))
-station = sum(float(r["unit_cost_usd"]) * float(r["qty"]) for r in rows[:7])
-oneoff = sum(float(r["unit_cost_usd"]) * float(r["qty"]) for r in rows[7:])
+ONEOFF = {8, 9, 10}          # dataset, evaluation set and compute; every other line is station hardware
+num = lambda r: int(r["item"].split()[0])  # noqa: E731
+station = sum(float(r["unit_cost_usd"]) * float(r["qty"]) for r in rows if num(r) not in ONEOFF)
+oneoff = sum(float(r["unit_cost_usd"]) * float(r["qty"]) for r in rows if num(r) in ONEOFF)
 line("BOM lines, all priced", f"{len(rows)}, {all(r['unit_cost_usd'].strip() for r in rows)}")
-line("One station (lines 1 to 7)", f"${station:,.2f}")
+line("One station (lines 1 to 7 and 11)", f"${station:,.2f}")
 line("Dataset, evaluation set and compute (lines 8 to 10)", f"${oneoff:,.2f}")
 line("Two-station pilot", f"${2 * station + oneoff:,.2f} (budget_usd null: no hardware budget)")

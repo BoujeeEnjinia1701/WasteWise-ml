@@ -3,9 +3,9 @@ doc_id: WML-CAL-001
 title: WasteWise-ml sizing calculations
 project: WasteWise-ml
 doc_type: Calculation note
-version: "0.2"
+version: "0.3"
 status: Draft
-date: '2026-09-25'
+date: '2026-09-30'
 author: Amish Chadha
 license: MIT
 revisions:
@@ -17,6 +17,10 @@ revisions:
   date: '2026-09-25'
   author: Amish Chadha
   change: Recommendations accepted by Amish (DDR-002)
+- version: "0.3"
+  date: '2026-09-30'
+  author: Amish Chadha
+  change: Stand clearance and cost updated for the constructable scanning rig (WML-DDR-003)
 ---
 
 # WasteWise-ml sizing calculations
@@ -107,7 +111,7 @@ Table 3. Energy for an 8 h shift of 500 scans.
 Assumptions: the reference phone's main camera has a 26 mm 35 mm-equivalent focal length and a 4:3, 12 MP sensor (typical of the class, assumed). The 35 mm equivalent keeps the 43.27 mm frame diagonal, so the 4:3 equivalent frame is 34.62 x 25.96 mm.
 
 - With the lens 440 mm above the mat, the field of view is 67.3 x 53.1 degrees and the camera sees 586 x 439 mm, inside the 700 x 450 mm mat. The image's long side runs along the bench, so the phone sits landscape on the stand.
-- The stand base starts at Y = 575 mm; the frame edge is at Y = 555 mm, so the base is 20 mm outside the picture.
+- The stand's base board now meets the mat's back edge and places the mat (WML-DDR-003). Its front edge is at Y = 560 mm and the picture's edge at Y = 554.7 mm, so the board is 5.3 mm outside the picture at mat level and 12.3 mm at its top edge, the same margin the mat itself has; the post is 38 mm outside. The post (453 mm) and arm (213.5 mm) of 25 x 25 x 2 mm tube hold the lens flush with the phone tray's underside, 440 mm above the mat.
 - At the TRL 2 height of 470 mm the frame would be 626 x 469 mm, wider than the mat, so the bench would show at two edges. The model uses 440 mm (N3 in WML-DDR-001, decided by Amish on 2026-09-25).
 - Resolution: 0.15 mm per pixel at full 12 MP, enough to read a molded resin code; 2.6 mm per pixel if the whole frame were shrunk to 224 px. The app therefore crops to the item before resizing: a 300 mm item at 224 px is 1.3 mm per pixel.
 - Each bin holds about 62 L inside.
@@ -171,7 +175,7 @@ Table 5. One-sided 95 % lower bound on hazard recall.
 
 ## 10. Cost (from the BOM)
 
-All ten BOM lines are priced. One station (lines 1 to 7) is $285.00; the dataset, evaluation set and compute (lines 8 to 10) are $730.00; a two-station pilot is $1,300.00. `budget_usd` is null because this is a software repository, so the BOM is for planning only.
+All eleven BOM lines are priced. One station (lines 1 to 7 and 11) is $309.00, up from $285.00 because the stand is now made and clamped to the bench (WML-DDR-003); the dataset, evaluation set and compute (lines 8 to 10) are $730.00; a two-station pilot is $1,348.00. `budget_usd` is null because this is a software repository, so the BOM is for planning only.
 
 ## 11. Sources
 

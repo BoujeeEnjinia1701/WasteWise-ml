@@ -193,3 +193,51 @@ Amish asked on 2026-09-26 for photoreal renders across the portfolio, starting w
 - Kit 1.5.0 synced: STANDARDS v1.5 (sections 12 to 15: product renders, storefront images and image quality, public release, authorship and signing), `.kit/cards.py`, `.kit/image_qc.py`, `.kit/release_gate.py`, issue templates, and the `/render-product` and `/release` commands. `CLAUDE.md` now matches `.kit/CLAUDE.md`.
 - Every `media/render-*.png` recaptioned from its original render with the new layout: the title, concept label and repository sit in a band above the render and the view note in a band below it, each line wrapped to the image width, so no text overlaps other text or the render or runs off the image. `media/card.png` and `media/social-preview.png` regenerated with the same rules.
 - `python .kit/image_qc.py` and `python .kit/release_gate.py` pass. trl stays 3.
+
+## Session 2026-09-30: kit 1.7.0, constructable scanning rig and build plan
+
+Authority: Amish's 2026-09-30 instructions to write an illustrated prototype build plan in the approved format for every repository, to "fix the design assumptions to match and be physically feasible" where the concept cannot be built, and to keep outstanding decisions out of the build plan in a separate design decisions register. WasteWise-ml is mainly software; its prototype hardware is the scanning rig (phone, stand and mat), so the build plan covers that rig. The bins, hazard box and scale stay bought and unchanged.
+
+### What was done
+
+- Kit 1.7.0 installed (`.kit/`, `.claude/commands/`, including `/build-plan`); `CLAUDE.md` replaced with `.kit/CLAUDE.md`.
+- `cad/src/model.py`: the stand rebuilt as made parts (`build_components()`), with 99 constructability checks (`python cad/src/model.py --check`, all pass). STEP and STL regenerated, including single parts of the stand.
+- `docs/decisions/0003-design-for-construction.md` (WML-DDR-003 v0.1, Draft): every change, made under Amish's 2026-09-30 instruction to make the design physically buildable; open for his review.
+- `docs/05-build-plan.md` (WML-BLD-001 v0.1) and `docs/06-design-decisions.md` (WML-DEC-001 v0.1).
+- `cad/src/build_plan_media.py`: overview, 7 making sketches (`cad/drawings/WML-DWG-101` to `107`), 2 layout pictures (tray blank, camera picture on the mat), 6 joint close-ups and 8 assembly step pictures in `docs/05-build-plan/`.
+- `cad/drawings/WML-DWG-001` Rev P2; concept media regenerated (`hero.png`, `concept-blueprint`, `exploded.png`, `flow.png`, `model.glb`).
+- `bom/bom.csv`: line 2 now a made stand, line 3 and line 6 specs, new line 11 (G-clamps and fixings); `bom/bom-notes.md`; `docs/04-calcs/sizing.py` counts lines 1 to 7 and 11 as the station. WML-CAL-001 v0.3, WML-PRC-001 v0.5.
+- `project.yaml`: `design_state: constructable`, the three new documents in `trl_evidence`. `README.md`: links line and a "Building the prototype" section.
+
+### Design changes made for construction (WML-DDR-003)
+
+| # | Concept | Constructable design |
+| --- | --- | --- |
+| P1 | Free-standing 180 x 65 mm base; would tip under the phone | Plywood board 240 x 90 x 18 mm clamped to the bench's back edge with two G-clamps |
+| P2 | Clamp whose jaws were cut away by the phone, bar across the screen | Folded 2 mm aluminium tray; the camera bump sits in a 34 x 34 mm window; screen clear |
+| P3 | Round arm meeting a round post with no fixing; arm over the screen | 25 x 25 x 2 mm square tube post (453 mm) and arm (213.5 mm), two bolted 3 mm corner plates; arm ends beside the phone and holds the tray by a tab |
+| P4 | Post not fixed to its base | Two 50 x 50 x 3 mm foot angles, bolted through the post and screwed to the board |
+| P5 | Power bank cable ran through the stand | Cable up the post's back and along the arm top; 1.5 m cable (run about 0.93 m) |
+| P6 | Base 15 mm behind the mat, nothing placed the mat | The mat's back edge meets the board's front edge, centre mark to centre mark; board 5.3 mm outside the picture (was 20 mm), the mat's own margin |
+
+Knock-on: one station $309.00 (was $285.00), two-station pilot $1,348.00 (was $1,300.00); `budget_usd` stays null. No requirement changed status; no change to the pitch, software or safety case.
+
+### Proposed, awaiting Amish (in WML-DEC-001)
+
+1. Accept the design for construction (WML-DDR-003). Recommendation: accept.
+2. A1, lens offset on real phones (mat has 5.3 mm to spare front and back). Recommendation: cut the arm shorter by the offset.
+3. A2, lighting over the mat. Recommendation: no lamp for the prototype; decide with field data.
+4. A3, sites without a suitable bench. Recommendation: as designed, handheld elsewhere.
+5. O1 (partner, city, buyers) and O2 (CERN-OHL-S line in `CONTRIBUTING.md`) remain open, no recommendation.
+
+### Safety
+
+The rig adds sharp cut aluminium edges (deburr, gloves) and keeps the phone and power bank's lithium cells on the bench (shade, away from hot metal and the hazard box). The build plan's safety stops S1 to S5 cover these, and repeat that hazards are never held under the phone.
+
+### Stale media (made on Amish's Mac, not regenerated here)
+
+`media/render-hero.png`, `media/render-station.png`, `media/card.png` and `media/social-preview.png` show the concept stand (round post and arm, clamp over the phone) and are stale. `cad/src/render_detail.py` still adds the lit screen and mat grid and needs no change; regenerate the renders on the Mac with `/render-product`.
+
+### Recommended next step
+
+Amish reviews WML-DDR-003 and the register. TRL 4 (building the rig to this plan and running the first checks) stays on hold.

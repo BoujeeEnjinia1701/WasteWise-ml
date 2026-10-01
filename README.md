@@ -8,13 +8,13 @@ Open image-classification model that identifies waste items by material class an
 
 ![WasteWise-ml: phone scan rig for sorting waste by material, photoreal render](media/render-hero.png)
 
-[Station render](media/render-station.png) · [Interactive 3D model](media/viewer.html) · [Concept blueprint (PDF)](media/concept-blueprint.pdf) · [Review note](docs/REVIEW.md)
+[Station render](media/render-station.png) · [Interactive 3D model](media/viewer.html) · [Concept blueprint (PDF)](media/concept-blueprint.pdf) · [Prototype build plan](docs/05-build-plan.md) · [Design decisions](docs/06-design-decisions.md) · [Review note](docs/REVIEW.md)
 
 ## Concept rationale
 
 The person who can tell PET from PP, a coated carton from plain board, or a clean can from a contaminated one captures the price difference between a buyer's grade and mixed material. Industrial plants make that call with near-infrared sorters that cost far more than a street depot can pay, but almost every waste picker already carries a phone. WasteWise-ml puts a small image classifier (MobileNetV3-Large, about 4.4 MB) on that phone, answers offline in a fraction of a second, and says "Unsure" or "Hazard" rather than guess. Items a camera cannot grade go to WasteWise Scan for a resin reading.
 
-It is open because the value it creates belongs to the people who sort. Code and weights are MIT, every dataset license is recorded, grade names are set per site in a plain file that a cooperative can edit, and field photos are co-owned by the pickers' organization. The reference station is garage-buildable: a low-cost Android phone on a clamp stand over a light mat, with bins, a hazard box and a scale, about $285 in indicative prices.
+It is open because the value it creates belongs to the people who sort. Code and weights are MIT, every dataset license is recorded, grade names are set per site in a plain file that a cooperative can edit, and field photos are co-owned by the pickers' organization. The reference station is garage-buildable: a low-cost Android phone on a simple aluminium stand over a light mat, with bins, a hazard box and a scale, about $309 in indicative prices.
 
 ## Burning platform
 
@@ -71,9 +71,15 @@ Full design precis: [docs/02-concept.md](docs/02-concept.md). Sizing of the data
 - Label taxonomy aligned to resin codes and local buyer grades, mapped per site by a configuration file
 - Field evaluation set from real sorting sites, never used for training
 - Export to TensorFlow Lite or ONNX, with a model card
-- Reference sorting station for a pilot: phone on a clamp stand, light mat, bins by material class, hazard box, power bank and scale
+- Reference sorting station for a pilot: phone on a made stand, light mat, bins by material class, hazard box, power bank and scale
 
 The pilot list with indicative costs is in [bom/bom.csv](bom/bom.csv). This repository has no hardware budget.
+
+## Building the prototype
+
+WasteWise-ml runs on a phone; its prototype hardware is the scanning rig that holds the phone over the sorting mat. The [prototype build plan](docs/05-build-plan.md) shows how to make it in a home workshop: a plywood base board clamped to the back edge of a bench, a square aluminium post and arm joined by two corner plates, a folded aluminium tray the phone lies in with its camera looking down through a window 440 mm above the mat, and a painted 700 x 450 mm mat that the board places so the camera's picture falls on it. Every component and assembly step has a picture generated from the model. It is a plan, not yet built; decisions still open are in the [design decisions register](docs/06-design-decisions.md).
+
+![The scanning rig, every component pulled apart and numbered in build order](docs/05-build-plan/overview.png)
 
 ## Safety
 
@@ -88,8 +94,8 @@ The pilot list with indicative costs is in [bom/bom.csv](bom/bom.csv). This repo
 | `ml/notebooks/` | Training and evaluation notebooks (none yet) |
 | `ml/models/` | Exported TensorFlow Lite or ONNX models (via GitHub Releases) |
 | `bom/` | Reference pilot station, dataset effort and compute, with indicative costs |
-| `cad/src/` | Parametric station model (`model.py`), drawing sheet (`sheets.py`) and concept media script |
-| `cad/step/`, `cad/stl/`, `cad/drawings/` | STEP and STL exports and the general arrangement drawing WML-DWG-001 |
+| `cad/src/` | Parametric station model (`model.py`, with constructability checks), drawing sheet (`sheets.py`), concept media and build plan pictures (`build_plan_media.py`) |
+| `cad/step/`, `cad/stl/`, `cad/drawings/` | STEP and STL exports, the general arrangement drawing WML-DWG-001 and the making sketches WML-DWG-101 to 107 |
 | `media/` | Concept media (hero, blueprint, 3D viewer, exploded view, flow diagram); later screenshots and sample predictions |
 | `build-log/` | Dated experiment log |
 

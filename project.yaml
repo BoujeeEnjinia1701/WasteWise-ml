@@ -5,6 +5,7 @@ repo: BoujeeEnjinia1701/WasteWise-ml         # GitHub repository, shown on every
 area: Circular Materials
 trl: 3                   # Technology Readiness Level, see .kit/STANDARDS.md section 9
 trl_target: 3
+design_state: constructable   # STANDARDS section 18; scanning rig made buildable (WML-DDR-003)
 trl_evidence:
   - docs/01-problem.md
   - docs/02-concept.md
@@ -17,6 +18,9 @@ trl_evidence:
   - cad/step/wastewise-station-assembly.step
   - cad/drawings/WML-DWG-001.pdf
   - bom/bom.csv
+  - docs/decisions/0003-design-for-construction.md
+  - docs/05-build-plan.md
+  - docs/06-design-decisions.md
 shortlisted: false
 pitch: >-
   Open image-classification model that identifies waste items by material class and grade from a phone or low-cost camera. It is the software brain of the WasteWise family: WasteWise Scan adds near-infrared sensing for plastic resin type, and ReflowEconomy uses the sorted output.
