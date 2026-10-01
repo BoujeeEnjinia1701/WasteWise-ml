@@ -3,9 +3,9 @@ doc_id: WML-DEC-001
 title: WasteWise-ml design decisions register
 project: WasteWise-ml
 doc_type: Design decisions register
-version: "0.1"
+version: "0.2"
 status: Draft
-date: '2026-09-30'
+date: '2026-10-01'
 author: Amish Chadha
 license: MIT
 revisions:
@@ -13,6 +13,10 @@ revisions:
     date: '2026-09-30'
     author: Amish Chadha
     change: Register opened with the build plan; open items from WML-DDR-001 to WML-DDR-003 and the review note
+  - version: "0.2"
+    date: '2026-10-01'
+    author: Amish Chadha
+    change: Budget treated as a value-engineering target
 ---
 
 # WasteWise-ml design decisions register
@@ -38,6 +42,14 @@ Every design decision still to be made, and every decision made, in one place. E
 | 2 | The phone's main camera is a 26 mm-equivalent lens, or the picture size at 440 mm is measured | The picture's fit on the mat (586 x 439 mm on 700 x 450 mm) depends on it | WML-CAL-001, section 6 |
 | 3 | The bench at the pilot site has a square back edge, a top 20 to 50 mm thick and room under it for a G-clamp's lower jaw | The board is clamped to that edge | WML-DDR-003, P1 |
 | 4 | The USB cable reaches about 0.93 m with a loop to spare and fits the phone's port | The cable runs up the stand | WML-DDR-003, P5 |
+
+## Value engineering
+
+Value-engineering target: none set (a hypothetical control target is not defined here, because `budget_usd` is null in this software repository). Estimated cost of the constructable design: USD 309 for one station, up from USD 285 because the stand is now made and clamped to the bench (WML-DDR-003), and USD 1,348 for a two-station pilot with the dataset, evaluation set and compute. Main cost drivers and savings worth trying:
+
+- The reference phone is the largest line (USD 130), then the seven bins (USD 70), the hazard box and platform scale (USD 25 each), the power bank and cable (USD 15) and the stand clamps and fixings (USD 14).
+- The dataset and evaluation set labeling effort (USD 430 and USD 260) dominates the two-station pilot; its rate is set with the partner.
+- Savings worth trying: a cheaper phone that still meets R12 (about USD 150 or less, 3 GB RAM, 2019 or later chipset), and no lamp over the mat (open decision 3, option a).
 
 ## Decisions made
 
