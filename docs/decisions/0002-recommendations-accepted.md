@@ -3,9 +3,9 @@ doc_id: WML-DDR-002
 title: WasteWise-ml recommendations accepted
 project: WasteWise-ml
 doc_type: Design decision record
-version: "0.1"
+version: "0.2"
 status: Draft
-date: '2026-09-25'
+date: '2026-10-02'
 author: Amish Chadha
 license: MIT
 revisions:
@@ -13,12 +13,16 @@ revisions:
   date: '2026-09-25'
   author: Amish Chadha
   change: Recommendations accepted by Amish (DDR-002)
+- version: "0.2"
+  date: '2026-10-02'
+  author: Amish Chadha
+  change: O1 and O2 decided by Amish on 2026-10-02 as recommended
 ---
 
 # 0002: Recommendations accepted
 
 - **Date:** 2026-09-25
-- **Status:** accepted (items O3, N1, N2 and N3); items O1 and O2 remain proposed
+- **Status:** accepted (items O3, N1, N2 and N3); items O1 and O2 decided on 2026-10-02 as recommended (Amish, 2026-10-02: "i approve your recommendations for all 555 open decisions.")
 
 ## Context
 
@@ -46,10 +50,10 @@ Table 1. Items open before this decision.
 
 No budget or pitch change was recommended: `budget_usd` stays null (software repository) and the pitch and problem lines are unchanged.
 
-Items still open ("Proposed, awaiting Amish"):
+Items that stayed open ("Proposed, awaiting Amish") until Amish decided them on 2026-10-02:
 
-- **O1.** First partner organization, city and buyers for co-design and the field set. No recommendation.
-- **O2.** The CERN-OHL-S line for hardware contributions in `CONTRIBUTING.md`, although the repository is MIT only. No recommendation was made; the line is unchanged.
+- **O1.** First partner organization, city and buyers for co-design and the field set. No recommendation. Decided by Amish on 2026-10-02 (WML-DEC-001): SWaCH in Pune, India, is the first candidate to approach.
+- **O2.** The CERN-OHL-S line for hardware contributions in `CONTRIBUTING.md`, although the repository is MIT only. Decided by Amish on 2026-10-02 (WML-DEC-001): the line is removed and all contributions are licensed under MIT.
 
 ## Consequences
 

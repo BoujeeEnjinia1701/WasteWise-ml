@@ -3,9 +3,9 @@ doc_id: WML-PRB-001
 title: WasteWise-ml problem statement
 project: WasteWise-ml
 doc_type: Problem statement
-version: "0.3"
+version: "0.4"
 status: Draft
-date: '2026-09-25'
+date: '2026-10-02'
 author: Amish Chadha
 license: MIT
 revisions:
@@ -21,6 +21,10 @@ revisions:
   date: '2026-09-25'
   author: Amish Chadha
   change: Apply WML-DDR-001 decisions (consent and ownership, task form, pilot phones); sources checked and linked
+- version: "0.4"
+  date: '2026-10-02'
+  author: Amish Chadha
+  change: First candidate partner, city and buyers (SWaCH in Pune), as decided by Amish on 2026-10-02
 ---
 
 # WasteWise-ml problem statement
@@ -88,7 +92,7 @@ Named sources are listed in WML-PRC-001, section "References". The World Bank, L
 
 ## Open questions
 
-- Which partner organization, city and buyers first? Proposed, awaiting Amish (WML-DDR-001 O1).
+- Which partner organization, city and buyers first? Decided by Amish on 2026-10-02: a member-owned waste picker cooperative that already sorts dry waste for scrap buyers; SWaCH in Pune, India, is the first candidate to approach, with its scrap dealers as the buyers (WML-DEC-001).
 - Which grades change the price most at the first site, and are they visible in a photo at all?
 - How do pickers want the answer shown: icon and color, voice, local language text, or a mix?
 - Who owns field photos and the resulting model, and how are contributors credited or paid?

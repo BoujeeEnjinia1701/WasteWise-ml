@@ -3,9 +3,9 @@ doc_id: WML-PRC-001
 title: WasteWise-ml design precis
 project: WasteWise-ml
 doc_type: Design precis
-version: "0.5"
+version: "0.6"
 status: Draft
-date: '2026-09-30'
+date: '2026-10-02'
 author: Amish Chadha
 license: MIT
 revisions:
@@ -29,6 +29,10 @@ revisions:
   date: '2026-09-30'
   author: Amish Chadha
   change: Constructable scanning rig (WML-DDR-003) and its build plan WML-BLD-001; station cost updated
+- version: "0.6"
+  date: '2026-10-02'
+  author: Amish Chadha
+  change: 'Decisions of 2026-10-02 (WML-DEC-001): no lamp with the site light recorded with every photo, handheld use at sites without a suitable bench, SWaCH in Pune as first candidate partner'
 ---
 
 # WasteWise-ml design precis
@@ -45,7 +49,7 @@ WasteWise-ml is an open image classifier that runs offline on a low-cost Android
 
 ## How it works
 
-1. **Present.** The picker takes one item from the input sack and holds or places it on a light mat under the phone. On the floor or in the street the phone is handheld instead.
+1. **Present.** The picker takes one item from the input sack and holds or places it on a light mat under the phone. On the floor or in the street, or at a site without a square-edged bench about 600 mm deep, the phone is handheld instead. The prototype has no lamp: the site light is recorded with every photo, by a light reading or a gray card in a corner of the frame (decided by Amish, 2026-10-02).
 2. **Photograph.** A tap, or a foot switch in a later version, takes one photo. The app crops and resizes it to 224 x 224 pixels. The camera does not run between scans and the screen sleeps until the next tap, which is what keeps the battery within R10 (see "Battery").
 3. **Classify.** A mobile convolutional network with one shared backbone and two small output heads runs on the phone with no network. The first head predicts one of seven material classes; the second predicts the grade within that class (about 22 grades, listed in `ml/data/taxonomy.yaml`).
 4. **Decide.** The app compares the confidence with per-class thresholds.
@@ -161,7 +165,7 @@ Choices 1 to 4 and 6 to 8 were decided by Amish on 2026-09-25, going with the re
 
 Paper answers from WML-CAL-001 are given where it has one; the rest need field data, which is TRL 4 work and on hold.
 
-- Which partner organization, city and buyers first? Proposed, awaiting Amish (WML-DDR-001 O1).
+- Which partner organization, city and buyers first? Decided by Amish on 2026-10-02: a member-owned waste picker cooperative that already sorts dry waste for scrap buyers; SWaCH in Pune, India, is the first candidate to approach, with its scrap dealers as the buyers (WML-DEC-001).
 - How much does the light mat help versus a handheld photo on a mixed background? Needs field data.
 - Which grades matter most to the first buyer, and which are visible in a photo at all? Needs the first co-design sessions.
 - What confidence thresholds give 70 % or more coverage while meeting R1 and R3? On paper about 68 %; set from the field evaluation set.

@@ -241,3 +241,40 @@ The rig adds sharp cut aluminium edges (deburr, gloves) and keeps the phone and 
 ### Recommended next step
 
 Amish reviews WML-DDR-003 and the register. TRL 4 (building the rig to this plan and running the first checks) stays on hold.
+
+## Session 2026-10-02: open decisions decided
+
+Amish, 2026-10-02: "i approve your recommendations for all 555 open decisions." This approves the recommendation written for each open decision in the design decisions register (WML-DEC-001 v0.2). trl stays 3; no build or test work was done, and the model, BOM quantities and prices, and pictures are unchanged.
+
+### Decisions recorded
+
+Six decisions, all moved to Decisions made in WML-DEC-001, dated 2026-10-02:
+
+1. WML-DDR-003 accepted: the design for construction of the scanning rig, P1 to P6, as made.
+2. Lens off the centre line: option (a), cut the arm shorter by the measured lens offset, only after the reference phone is bought and measured.
+3. Lighting: option (a) for the prototype, no lamp; the site light is recorded with every photo (a light reading or a gray card in a corner of the frame); a lamp is decided after the first site visit.
+4. Benches: option (a), the bench-clamped rig, with handheld use at sites without a suitable bench.
+5. First partner: a member-owned waste picker cooperative that sorts dry waste for scrap buyers; SWaCH in Pune, India, is the first candidate to approach, with its scrap dealers as buyers.
+6. `CONTRIBUTING.md`: the CERN-OHL-S sentence is removed; all contributions are licensed under MIT.
+
+### Documents changed
+
+- `docs/06-design-decisions.md` (WML-DEC-001 v0.3): open decisions moved to Decisions made; the "no lamp" saving and confirm item 3 updated.
+- `docs/decisions/0003-design-for-construction.md` (WML-DDR-003 v0.2, status Draft): accepted, with A1 to A3 accepted as recommended.
+- `docs/decisions/0001-trl2-review-decisions.md` (WML-DDR-001 v0.3) and `docs/decisions/0002-recommendations-accepted.md` (WML-DDR-002 v0.2): O1 and O2 recorded as decided.
+- `docs/02-concept.md` (WML-PRC-001 v0.6): handheld use at sites without a bench, no lamp with the site light recorded, partner question answered.
+- `docs/01-problem.md` (WML-PRB-001 v0.4): partner question answered.
+- `CONTRIBUTING.md`: MIT only.
+
+### Follow-up actions to carry approved decisions into the design
+
+1. Decision 1 (pictures): regenerate `media/render-hero.png`, `media/render-station.png`, `media/card.png` and `media/social-preview.png` on Amish's Mac from the constructable rig (clamped board, square post and arm, folded tray, no lamp).
+2. Decision 2 (model and drawings): once the reference phone is bought and measured, set the arm length and tray window in `cad/src/model.py` and drawing WML-DWG-001 to its lens offset and size, and update the build plan pictures.
+3. Decision 3 (docs): add the site light record (light reading or gray card) to the data protocol and the app's capture step.
+4. Decision 6 (docs): tidy the `REUSE.toml` comments, which still name CERN-OHL-S-2.0 above MIT identifiers, and run `reuse lint`.
+
+### Points found in the review
+
+- The `REUSE.toml` comments still say CERN-OHL-S-2.0 for hardware, documentation and CAD, although every license identifier beneath them is MIT (follow-up 4).
+- Value engineering listed "a cheaper phone that still meets R12 (about USD 150 or less)" as a saving, but the reference phone is already priced at USD 130, so it is not a saving against the current estimate.
+- The renders, card and social preview still show the concept stand (round post, clamp over the screen), and the 2026-09-26 note calls the rig a "lit mat" although it has no lamp (follow-up 1).

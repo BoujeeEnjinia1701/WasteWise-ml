@@ -3,9 +3,9 @@ doc_id: WML-DDR-001
 title: WasteWise-ml TRL 2 review decisions
 project: WasteWise-ml
 doc_type: Design decision record
-version: "0.2"
+version: "0.3"
 status: Draft
-date: '2026-09-25'
+date: '2026-10-02'
 author: Amish Chadha
 license: MIT
 revisions:
@@ -17,12 +17,16 @@ revisions:
   date: '2026-09-25'
   author: Amish Chadha
   change: Recommendations accepted by Amish (DDR-002)
+- version: "0.3"
+  date: '2026-10-02'
+  author: Amish Chadha
+  change: O1 and O2 decided by Amish on 2026-10-02 as recommended (SWaCH in Pune as first candidate partner; MIT-only contributing guide)
 ---
 
 # 0001: TRL 2 review decisions
 
 - **Date:** 2026-09-25
-- **Status:** accepted (items D1 to D8; items O3 and N1 to N3 decided by Amish on 2026-09-25 through WML-DDR-002); items O1 and O2 remain proposed
+- **Status:** accepted (items D1 to D8; items O3 and N1 to N3 decided by Amish on 2026-09-25 through WML-DDR-002); items O1 and O2 decided on 2026-10-02 as recommended (Amish, 2026-10-02: "i approve your recommendations for all 555 open decisions.")
 
 ## Context
 
@@ -58,8 +62,8 @@ Budget and pitch: this is a software repository, licensed MIT only, and `budget_
 
 Items listed as open at TRL 3 (O1 and O2 carry no recommendation and stay "Proposed, awaiting Amish"; O3 carried a suggestion and is now decided, see WML-DDR-002):
 
-- **O1.** First partner organization, city and buyers for co-design and the field set. No recommendation; portfolio guidance is that community designs pick co-design partners per area later. Proposed, awaiting Amish.
-- **O2.** `CONTRIBUTING.md` still says hardware contributions are under CERN-OHL-S v2, although this repository is MIT only. The review noted that Amish may want to remove the line but made no recommendation. Proposed, awaiting Amish.
+- **O1.** First partner organization, city and buyers for co-design and the field set. No recommendation; portfolio guidance is that community designs pick co-design partners per area later. Decided by Amish on 2026-10-02 as recommended in WML-DEC-001: a member-owned waste picker cooperative that already sorts dry waste for scrap buyers, with SWaCH in Pune, India, as the first candidate to approach, its scrap dealers as the buyers and Pune as the city.
+- **O2.** `CONTRIBUTING.md` still says hardware contributions are under CERN-OHL-S v2, although this repository is MIT only. The review noted that Amish may want to remove the line but made no recommendation. Decided by Amish on 2026-10-02 as recommended in WML-DEC-001: the line is removed and all contributions are licensed under MIT.
 - **O3.** A kit option for software repositories so that drawing sheets default to MIT (the review suggested it; it changes `.kit/`, which this repository does not own). Decided by Amish, 2026-09-25: go with recommendation. Recorded as a cross-repo action for the kit owner; `.kit/` is not edited here.
 
 New items raised at TRL 3 (decided through WML-DDR-002):
