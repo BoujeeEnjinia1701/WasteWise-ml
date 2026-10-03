@@ -77,7 +77,7 @@ The pilot list with indicative costs is in [bom/bom.csv](bom/bom.csv). This repo
 
 ## Building the prototype
 
-WasteWise-ml runs on a phone; its prototype hardware is the scanning rig that holds the phone over the sorting mat. The [prototype build plan](docs/05-build-plan.md) shows how to make it in a home workshop: a plywood base board clamped to the back edge of a bench, a square aluminium post and arm joined by two corner plates, a folded aluminium tray the phone lies in with its camera looking down through a window 440 mm above the mat, and a painted 700 x 450 mm mat that the board places so the camera's picture falls on it. Every component and assembly step has a picture generated from the model. It is a plan, not yet built; decisions still open are in the [design decisions register](docs/06-design-decisions.md).
+WasteWise-ml runs on a phone; its prototype hardware is the scanning rig that holds the phone over the sorting mat. The [prototype build plan](docs/05-build-plan.md) shows how to make it in a home workshop: a plywood base board clamped to the back edge of a bench, a square aluminium post and arm joined by two corner plates, a folded aluminium tray the phone lies in with its camera looking down through a window 440 mm above the mat, and a painted 700 x 450 mm mat that the board places so the camera's picture falls on it. Every component and assembly step has a picture generated from the model. It is a plan, not yet built; every design decision, and what to confirm when parts are bought, is in the [design decisions register](docs/06-design-decisions.md).
 
 ![The scanning rig, every component pulled apart and numbered in build order](docs/05-build-plan/overview.png)
 

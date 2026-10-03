@@ -3,7 +3,7 @@ doc_id: WML-PRC-001
 title: WasteWise-ml design precis
 project: WasteWise-ml
 doc_type: Design precis
-version: "0.6"
+version: "0.7"
 status: Draft
 date: '2026-10-02'
 author: Amish Chadha
@@ -33,6 +33,10 @@ revisions:
   date: '2026-10-02'
   author: Amish Chadha
   change: 'Decisions of 2026-10-02 (WML-DEC-001): no lamp with the site light recorded with every photo, handheld use at sites without a suitable bench, SWaCH in Pune as first candidate partner'
+- version: "0.7"
+  date: '2026-10-02'
+  author: Amish Chadha
+  change: Site light record added to the app's photograph step and to the field data record (follow-up to the 2026-10-02 lighting decision)
 ---
 
 # WasteWise-ml design precis
@@ -50,7 +54,7 @@ WasteWise-ml is an open image classifier that runs offline on a low-cost Android
 ## How it works
 
 1. **Present.** The picker takes one item from the input sack and holds or places it on a light mat under the phone. On the floor or in the street, or at a site without a square-edged bench about 600 mm deep, the phone is handheld instead. The prototype has no lamp: the site light is recorded with every photo, by a light reading or a gray card in a corner of the frame (decided by Amish, 2026-10-02).
-2. **Photograph.** A tap, or a foot switch in a later version, takes one photo. The app crops and resizes it to 224 x 224 pixels. The camera does not run between scans and the screen sleeps until the next tap, which is what keeps the battery within R10 (see "Battery").
+2. **Photograph.** A tap, or a foot switch in a later version, takes one photo. The app saves the site light record with the photo: a light reading from the phone's light sensor, which faces up toward the site light when the phone lies screen up in its tray (or is held over the item), or a gray card the picker lays in a corner of the frame, away from the item. The app then crops and resizes the photo to 224 x 224 pixels; the light record is kept with the photo for training and evaluation, and does not change the result. The camera does not run between scans and the screen sleeps until the next tap, which is what keeps the battery within R10 (see "Battery").
 3. **Classify.** A mobile convolutional network with one shared backbone and two small output heads runs on the phone with no network. The first head predicts one of seven material classes; the second predicts the grade within that class (about 22 grades, listed in `ml/data/taxonomy.yaml`).
 4. **Decide.** The app compares the confidence with per-class thresholds.
    - Confident: it shows an icon, a color and a bin number, and optionally speaks the grade in the local language.
@@ -114,6 +118,7 @@ With a 26 mm-equivalent main camera 440 mm above the mat, the phone sees 586 x 4
 - **Training.** On an assumed learning curve for fine-tuning, 90 % accuracy on answered items at 70 % coverage needs about 230 images per label (128 to 591 across the sensitivity cases). The design figure is 300 per grade, doubled for eight hard grades, with 10 % rejected: **about 10,000 field photos**. The four hazardous grades need about 2,400 photos, far more than the 300 a natural stream would give, so hazards are photographed on purpose.
 - **Labeling effort.** At about 20 s per photo plus 30 % for review, 10,000 photos take about 72 h. The field evaluation set of 2,000 photos, with ground truth verified by a buyer, a legible resin code or an NIR reading at about 60 s each plus review, takes about 43 h.
 - **Cost.** At the $6 per hour planning rate (the real rate is set with the partner at or above the local living wage, D7), the dataset and evaluation set cost about $690 ($433 and $260, entered in the BOM as $430 and $260), plus $40 of cloud compute. See `bom/bom.csv`.
+- **Field photo record.** Each field photo carries its consent record (D6), its class and grade labels, who checked them, and the site light record (a light reading, or a gray card in a corner of the frame). The light record shows which photos were taken in poor light and is the evidence for deciding a lamp after the first site visit (WML-DEC-001).
 
 ### Share of items answered
 
@@ -158,7 +163,7 @@ Choices 1 to 4 and 6 to 8 were decided by Amish on 2026-09-25, going with the re
 - **Misclassification.** The model will be wrong on some items. Grades are advice, the "Unsure" route is normal, and the buyer's check remains the final grade. The model card will publish per-class error rates.
 - **Power bank and phone.** Both contain lithium cells: keep them shaded, off hot metal and away from the hazard box; do not charge a swollen or damaged pack.
 - **Collecting hazard photos.** Hazard photos for training and evaluation are taken where the item lies, or with sharps inside a rigid container or held with tongs, by people trained for it. Pickers are never asked to collect or handle hazards for the dataset.
-- **Privacy.** Photos must not include faces or identify people; upload is opt-in; the data protocol is agreed with the partner before any collection.
+- **Privacy.** Photos must not include faces or identify people; upload is opt-in; the data protocol is agreed with the partner before any collection, and includes the site light record with every photo.
 - **Heat and ergonomics.** A phone in direct sun overheats and throttles; the stand should sit in shade. Bench height and bin placement should be set with the users to avoid repeated bending.
 
 ## Open questions

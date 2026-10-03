@@ -3,9 +3,9 @@ doc_id: WML-BLD-001
 title: WasteWise-ml scanning rig build plan
 project: WasteWise-ml
 doc_type: Build plan
-version: "0.1"
+version: "0.2"
 status: Draft
-date: '2026-09-30'
+date: '2026-10-02'
 author: Amish Chadha
 license: MIT
 revisions:
@@ -13,6 +13,10 @@ revisions:
     date: '2026-09-30'
     author: Amish Chadha
     change: First build plan; scanning rig made constructable (WML-DDR-003)
+  - version: "0.2"
+    date: '2026-10-02'
+    author: Amish Chadha
+    change: Design for construction accepted on 2026-10-02; no lamp on the rig, so the site light is recorded with each photo and checked at the end; pictures unchanged
 ---
 
 # WasteWise-ml scanning rig build plan
@@ -33,7 +37,7 @@ The rig is a small stand clamped to the back edge of a sorting bench. A plywood 
 
 ## 2. What changed to make it buildable
 
-The concept showed what the rig does; its stand could not be built as drawn. Each change below keeps what the rig does (the phone landscape and screen up, its camera 440 mm straight above the centre of the 700 x 450 mm mat, the stand out of the picture), and all of them are recorded in decision record WML-DDR-003, open for Amish's review.
+The concept showed what the rig does; its stand could not be built as drawn. Each change below keeps what the rig does (the phone landscape and screen up, its camera 440 mm straight above the centre of the 700 x 450 mm mat, the stand out of the picture), and all of them are recorded in decision record WML-DDR-003, which Amish accepted on 2026-10-02.
 
 *Table 1. Changes from the concept.*
 
@@ -219,7 +223,7 @@ The phone lies screen up between the lips, its charging end level with the tray'
 
 *Figure 15. The mat's back edge touches the board's front edge and the two centre marks line up. Nothing fixes the mat.*
 
-**Check before moving on.** The mat lies flat on the bench; under a lamp, seen from where the phone will be, it shows no shine.
+**Check before moving on.** The mat lies flat on the bench; in daylight or under a workshop light, seen from where the phone will be, it shows no shine.
 
 ### 3.8 Bought components
 
@@ -302,6 +306,7 @@ These are the checks a TRL 4 test report would record; this plan only lists them
 | Screen clear | R8 | Stand at the user's side of the bench | The whole screen can be seen and tapped; nothing of the rig covers it |
 | Power through a shift | R10 | Phone on the power bank's cable, screen sleeping between taps | The phone charges; the cable does not pull when the phone is lifted |
 | No glare | R1 | Site light on; look at the camera picture | No bright patch on the mat |
+| Site light recorded | R1 | The rig has no lamp. Take one photo with the app, with a gray card in a corner of the mat if one is used | The light reading, or the gray card in the corner of the picture, is saved with the photo and the card stays clear of the item |
 
 ## 6. Safety stops
 

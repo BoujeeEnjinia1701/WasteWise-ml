@@ -59,7 +59,7 @@ parts = [
     Part("Sorting bench (site's own)", M["bench"], "#8B7355", None),
     Part("Input sack, mixed material", sack, "#A8A29E", None),
     Part("Smartphone running the model", M["phone"], "#111827", 1, (0, -700, 900)),
-    Part("Phone stand, clamp arm", M["stand"], ACCENT, 2, (0, -250, 350)),
+    Part("Phone stand, clamped post and arm", M["stand"], ACCENT, 2, (0, -250, 350)),
     Part("Light sorting mat", M["mat"], "#E5E7EB", 3, (0, -150, 80)),
     Part("Bins by material class (7)", bins, "#64748B", 4, (0, -700, 0)),
     Part("Hazard box, lidded steel", M["hazard"] + M["hazard_lid"], "#DC2626", 5, (250, -350, 450)),
@@ -75,7 +75,7 @@ person = human_figure(1750, x=700, y=1050, z=0)
 
 render_all(
     parts, project="WasteWise-ml", title="Sorting station concept", dwg_no="WML-DWG-010",
-    date="2026-09-25",
+    date="2026-10-02",
     key_figures=["Phone camera 440 mm over a 700 x 450 mm mat; frame 586 x 439 mm",
                  "MobileNetV3-Large, 4.4 MB int8; 64 to 201 ms per scan (WML-CAL-001)",
                  "8 % of battery per 500-scan shift if the screen sleeps between scans",

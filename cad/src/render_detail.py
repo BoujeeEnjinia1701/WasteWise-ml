@@ -1,4 +1,4 @@
-"""Cosmetic detail for the photoreal renders only (media/hero.png and media/detail.png).
+"""Cosmetic detail for the photoreal renders only (media/render-hero.png and media/render-station.png).
 
 Nothing here changes the design: the drawings, CAL-001 and bom/bom.csv use model.py alone.
 These parts add surface cues that make a render read as a real object: a lit phone screen,
@@ -20,6 +20,10 @@ MATERIALS = {
     "Mat grid print (cosmetic)": "paper",
     "Platform scale, 60 kg": "painted",
     "Bins by material class (7)": "plastic",
+    # one part holds the plywood board, aluminium post, arm, tray and clamps; shown in one satin
+    # teal finish (appearance deviation, logged in docs/REVIEW.md 2026-10-02); the name alone
+    # classified it as a glossy screen, which read as tinted glass
+    "Phone stand, clamped post and arm": "painted",
 }
 
 

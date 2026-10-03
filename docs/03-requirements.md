@@ -3,9 +3,9 @@ doc_id: WML-REQ-001
 title: WasteWise-ml requirements
 project: WasteWise-ml
 doc_type: Requirements
-version: "0.4"
+version: "0.5"
 status: Draft
-date: '2026-09-25'
+date: '2026-10-02'
 author: Amish Chadha
 license: MIT
 revisions:
@@ -25,13 +25,17 @@ revisions:
   date: '2026-09-25'
   author: Amish Chadha
   change: Recommendations accepted by Amish (DDR-002)
+- version: "0.5"
+  date: '2026-10-02'
+  author: Amish Chadha
+  change: Decisions of 2026-10-02 (WML-DEC-001) carried in; no lamp, site light recorded with every photo; first candidate partner named in R14; no status change
 ---
 
 # WasteWise-ml requirements
 
 These are first-pass requirements for the concept. Targets are proposals for review, not yet validated with users, and will be revised after co-design sessions (see WML-PRB-001). No model has been trained, and at TRL 3 none will be: the status column gives the position on paper from the calculation note WML-CAL-001 and says plainly where a requirement is not met. No target was relaxed or redefined by the 2026-09-25 decisions (WML-DDR-001); they fix the design choices that the status depends on.
 
-The **reference use case** is one person at a sorting bench with a low-cost Android phone on a stand over one item at a time on a light mat (decided, D1), or holding the phone by hand on the floor, on a dry mixed stream, in daylight or a lit shed, with no network. The app uses tap-to-scan (decided, D5).
+The **reference use case** is one person at a sorting bench with a low-cost Android phone on a stand over one item at a time on a light mat (decided, D1), or holding the phone by hand on the floor, on a dry mixed stream, in daylight or a lit shed with no lamp on the rig (decided 2026-10-02; the site light is recorded with every photo), with no network. The app uses tap-to-scan (decided, D5).
 
 **Table 1.** Requirements, targets and status at TRL 3.
 
@@ -50,7 +54,7 @@ The **reference use case** is one person at a sorting bench with a low-cost Andr
 | R11 | Field evaluation set | 2,000 or more verified images from at least two sites, 50 or more per grade, never used for training | Dataset manifest | **Not met**: the set does not exist. Sized at 2,000 (400 hazards, 900 non-hazard minimum, 700 natural mix), about 43 h of labeling |
 | R12 | Reference phone | Runs on an Android phone costing about $150 or less, 3 GB RAM, 2019 or later chipset | Device test | Met on paper: $130 indicative reference phone, one per pilot station (decided, D8) |
 | R13 | Open and licensed | Code and weights MIT; every dataset license in `ml/data/SOURCES.md` allows training and publishing weights; a model card with per-class results and known failure modes | License review | At risk: TrashNet (MIT) and TACO (annotations CC BY 4.0, images per image) usable with checks; ZeroWaste (CC BY-NC 4.0) is excluded from training (decided, N2); TACO images still need per-image license checks |
-| R14 | Consent and privacy | Field photos only with informed consent; no faces or identifiable people kept; upload opt-in; pickers' organization co-owns field data (decided, D6) | Data protocol review with the partner | Not verifiable at TRL 3: protocol to be written with the partner, who is not yet chosen |
+| R14 | Consent and privacy | Field photos only with informed consent; no faces or identifiable people kept; upload opt-in; pickers' organization co-owns field data (decided, D6) | Data protocol review with the partner | Not verifiable at TRL 3: protocol to be written with the partner; first candidate SWaCH, Pune (decided 2026-10-02), not yet approached; the protocol will include the site light record |
 
 ## Requirements not met or at risk
 

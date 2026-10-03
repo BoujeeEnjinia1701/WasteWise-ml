@@ -278,3 +278,39 @@ Six decisions, all moved to Decisions made in WML-DEC-001, dated 2026-10-02:
 - The `REUSE.toml` comments still say CERN-OHL-S-2.0 for hardware, documentation and CAD, although every license identifier beneath them is MIT (follow-up 4).
 - Value engineering listed "a cheaper phone that still meets R12 (about USD 150 or less)" as a saving, but the reference phone is already priced at USD 130, so it is not a saving against the current estimate.
 - The renders, card and social preview still show the concept stand (round post, clamp over the screen), and the 2026-09-26 note calls the rig a "lit mat" although it has no lamp (follow-up 1).
+
+## Session 2026-10-02: approved follow-ups carried out
+
+Amish, 2026-10-02, approved carrying out every follow-up action from the open-decision sign-off ("APPROVED CHANGES, COMPLETE THESE"), with product renders redone afterwards on his Mac. trl stays 3; no build, purchase or test work was done.
+
+### Follow-ups
+
+1. **Done (scenes prepared); renders left for the Mac.** The concept scene in `cad/src/concept_media.py` already uses the constructable rig from `cad/src/model.py` (clamped board, square post and arm, corner plates, folded tray, no lamp). The stand's part label now reads "Phone stand, clamped post and arm" (it read "clamp arm", from the concept stand), and the `cad/src/render_detail.py` docstring names the current render files. This is a software and scene repository (STANDARDS section 12), so no `product_model.py` was made; the hero stays a scene render. Scenes exported with `.kit/scene_export.py` to `/home/claude/renders/WasteWise-ml/`: `WasteWise-ml__hero.npz` and `.json` (close-up of the scanning rig), `WasteWise-ml__station.npz` and `.json` (whole station, same scene, wider camera) and `WasteWise-ml__jobs.json`. `media/render-hero.png`, `media/render-station.png`, `media/card.png` and `media/social-preview.png` are still to be rendered on Amish's Mac.
+2. **Not done: waiting on the reference phone.** The arm length and tray window are set to the phone's measured lens offset and size only after the phone is bought and measured (decided, option a). Until then `cad/src/model.py`, WML-DWG-001, the BOM and the build plan pictures keep the assumed 76 x 9 mm phone with a centred 30 x 30 mm bump; confirm item 1 in WML-DEC-001 tracks it. The model's 99 constructability checks still pass.
+3. **Done.** The site light record (a light reading from the phone's upward-facing light sensor, or a gray card in a corner of the frame, clear of the item) is now in the app's photograph step and the data needed section of WML-PRC-001, in the field photo record of the data protocol (`ml/data/README.md`), in the reference use case and R14 of WML-REQ-001, and as a final check in the build plan WML-BLD-001.
+4. **Done.** `REUSE.toml` comments now say MIT above the MIT identifiers (no CERN-OHL-S-2.0 left); `reuse lint` passes (173 of 173 files, licenses MIT and OFL-1.1).
+
+Also carried through: the register's value-engineering savings no longer count a cheaper phone as a saving (the USD 130 reference phone is already under the R12 ceiling); the user's own phone is listed instead. The build plan no longer calls WML-DDR-003 open for review, and the README no longer refers to open decisions.
+
+### Documents changed
+
+- `docs/02-concept.md` WML-PRC-001 v0.7; `docs/03-requirements.md` WML-REQ-001 v0.5; `docs/04-calcs/01-sizing.md` WML-CAL-001 v0.4 (R14 row text only, no number changed); `docs/05-build-plan.md` WML-BLD-001 v0.2; `docs/06-design-decisions.md` WML-DEC-001 v0.4.
+- `ml/data/README.md`, `README.md`, `REUSE.toml`, `cad/src/concept_media.py`, `cad/src/render_detail.py`.
+- Regenerated: `media/hero.png`, `media/exploded.png`, `media/concept-blueprint.png`, `.pdf` and `.svg` (WML-DWG-010, dated 2026-10-02), `media/model.glb`, `media/viewer.html`, `media/flow.png`. Geometry is unchanged, so STEP, STL, WML-DWG-001 and the build plan pictures were not regenerated.
+
+### Results
+
+- No requirement status changed. R14 stays "Not verifiable at TRL 3"; its text now names the first candidate partner. R2 and R11 remain not met; R1, R3, R4 and R13 remain at risk.
+- Cost and mass unchanged: USD 309 for one station, USD 1,348 for the two-station pilot; no BOM line added, removed or re-priced. A gray card is optional (a light reading needs no part), so it was not added to the BOM. `budget_usd` stays null.
+
+### Cross-repo actions
+
+None.
+
+### Recommended next step
+
+Render `media/render-hero.png` and `media/render-station.png` on the Mac from the exported scenes, then run `python .kit/cards.py .`. Set the arm and tray once the reference phone is bought and measured.
+
+## 2026-10-02: photoreal renders redone on the constructable design
+
+Rendered with Blender Cycles on Amish's Mac from the updated scene (`cad/src/render_detail.py`); captioned with `.kit/photo_caption.py`; `media/card.png` and `media/social-preview.png` regenerated with `.kit/cards.py`. Views: hero, station. image_qc passes. Appearance deviations are those logged above as proposed, awaiting Amish.

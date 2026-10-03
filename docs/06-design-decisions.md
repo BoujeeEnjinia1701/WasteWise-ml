@@ -3,7 +3,7 @@ doc_id: WML-DEC-001
 title: WasteWise-ml design decisions register
 project: WasteWise-ml
 doc_type: Design decisions register
-version: "0.3"
+version: "0.4"
 status: Draft
 date: '2026-10-02'
 author: Amish Chadha
@@ -21,6 +21,10 @@ revisions:
     date: '2026-10-02'
     author: Amish Chadha
     change: Amish approved the recommendations for open items 1 to 6 on 2026-10-02 (WML-DDR-003 accepted, lens offset, no lamp, bench-clamped rig, SWaCH in Pune as first candidate partner, MIT-only contributing guide); moved to decisions made
+  - version: "0.4"
+    date: '2026-10-02'
+    author: Amish Chadha
+    change: Approved follow-ups carried out; value engineering savings corrected (the reference phone is already under USD 150)
 ---
 
 # WasteWise-ml design decisions register
@@ -46,7 +50,7 @@ Value-engineering target: none set (a hypothetical control target is not defined
 
 - The reference phone is the largest line (USD 130), then the seven bins (USD 70), the hazard box and platform scale (USD 25 each), the power bank and cable (USD 15) and the stand clamps and fixings (USD 14).
 - The dataset and evaluation set labeling effort (USD 430 and USD 260) dominates the two-station pilot; its rate is set with the partner.
-- Savings worth trying: a cheaper phone that still meets R12 (about USD 150 or less, 3 GB RAM, 2019 or later chipset). No lamp over the mat was decided on 2026-10-02 (option a), so the estimate already carries no lamp.
+- Savings worth trying: the user's own phone, where it meets R12, in place of the USD 130 reference phone (the reference phone is already priced under the USD 150 ceiling of R12, so a cheaper phone is not counted as a saving). No lamp over the mat was decided on 2026-10-02 (option a), so the estimate already carries no lamp.
 
 ## Decisions made
 

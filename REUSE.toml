@@ -3,7 +3,7 @@ SPDX-PackageName = "Design Molecule open hardware"
 SPDX-PackageSupplier = "Amish Chadha <amish@designmolecule.com>"
 SPDX-PackageDownloadLocation = "https://github.com/BoujeeEnjinia1701"
 
-# Hardware designs, documentation, media and data: CERN-OHL-S-2.0
+# Documentation, media, data and everything else in this software repository: MIT
 [[annotations]]
 path = "**"
 precedence = "closest"
@@ -17,7 +17,7 @@ precedence = "closest"
 SPDX-FileCopyrightText = "2026 Amish Chadha <amish@designmolecule.com>"
 SPDX-License-Identifier = "MIT"
 
-# CAD and electronics sources are hardware design files, even when written as Python: CERN-OHL-S-2.0
+# CAD sources (the sorting station and scanning rig model and its exports): MIT, like the rest of this repository
 [[annotations]]
 path = ["cad/**", "electronics/**"]
 SPDX-FileCopyrightText = "2026 Amish Chadha <amish@designmolecule.com>"

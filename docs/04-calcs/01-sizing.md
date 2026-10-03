@@ -3,9 +3,9 @@ doc_id: WML-CAL-001
 title: WasteWise-ml sizing calculations
 project: WasteWise-ml
 doc_type: Calculation note
-version: "0.3"
+version: "0.4"
 status: Draft
-date: '2026-09-30'
+date: '2026-10-02'
 author: Amish Chadha
 license: MIT
 revisions:
@@ -21,6 +21,10 @@ revisions:
   date: '2026-09-30'
   author: Amish Chadha
   change: Stand clearance and cost updated for the constructable scanning rig (WML-DDR-003)
+- version: "0.4"
+  date: '2026-10-02'
+  author: Amish Chadha
+  change: R14 row updated for the 2026-10-02 partner decision (WML-DEC-001); no number changed
 ---
 
 # WasteWise-ml sizing calculations
@@ -52,7 +56,7 @@ Table 1. Requirement status at TRL 3.
 | R12 | Phone about $150 or less, 3 GB RAM, 2019 or later chipset | $130 reference phone (BOM line 1); model and activations under 10 MB of RAM | Met (price indicative) |
 | R7 | 3 s or less from placing an item to the result | 0.9 s nominal, 2.0 s worst on a time budget | Not verifiable at TRL 3 (needs timed trials) |
 | R8 | Usable without reading after a 15 min briefing | Icon, color, bin number and optional voice (WML-PRC-001) | Not verifiable at TRL 3 (needs co-design sessions) |
-| R14 | Consent and privacy protocol with the partner | Principles decided (D6); protocol not written; partner not chosen (O1) | Not verifiable at TRL 3 |
+| R14 | Consent and privacy protocol with the partner | Principles decided (D6); protocol not written; first candidate partner SWaCH, Pune (decided 2026-10-02), not yet approached | Not verifiable at TRL 3 |
 
 Corrections to TRL 2 numbers: the model file is about 4.4 MB, not 5 to 6 MB, because the 1.28 million-parameter ImageNet classifier is replaced by two small heads; latency is 64 to 201 ms, not 0.05 to 0.2 s, once preprocessing is added at the slow end; tap-to-scan uses about 8 %, not 7 %, of the battery once standby is counted; and the flow split is about 65 % answered with a grade, 32 % "Unsure" and 3 % hazard, not 75 %, 22 % and 3 %.
 
