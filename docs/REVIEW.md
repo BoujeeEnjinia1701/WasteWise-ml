@@ -314,3 +314,72 @@ Render `media/render-hero.png` and `media/render-station.png` on the Mac from th
 ## 2026-10-02: photoreal renders redone on the constructable design
 
 Rendered with Blender Cycles on Amish's Mac from the updated scene (`cad/src/render_detail.py`); captioned with `.kit/photo_caption.py`; `media/card.png` and `media/social-preview.png` regenerated with `.kit/cards.py`. Views: hero, station. image_qc passes. Appearance deviations are those logged above as proposed, awaiting Amish.
+
+## Session 2026-10-24: kit 1.9.1 upgrade
+
+Work done 2026-10-24 and 2026-10-25 under Amish's instructions of 2026-10-24 ("I want detailed TRL3 CAD - and in fact want to ensure the CAD is detailed across all TRLs", "Detail every option", "Kit 1.9.1 rollout - proceed to rollout across the other repos") and his standing instruction of 2026-10-23 on STEM check fixes. trl stays 3; stage is now P3; nothing was built, bought or tested.
+
+### What was added
+
+- **Pipeline documents (kit 1.8):** `docs/01b-stem-check.md` (WML-STM-001) with `docs/04-calcs/stem_check.py` and `stem_results.csv`; `docs/02a-concept-options.md` (WML-OPT-001); `docs/03a-user-requirements.md` (WML-URS-001, 17 URs); `docs/03-requirements.md` now WML-PRS-001 v0.6 (R1 to R14 migrated to PR-001 to PR-014, PR-015 to PR-023 added); `docs/03b-traceability.md` (WML-RTM-001, generated, 0 gaps); `docs/07-regulatory.md` (WML-REG-001), `docs/08-feasibility.md` (WML-FEA-001), `docs/09-risk.md` (WML-RSK-001, with hazard analysis and design FMEA), `docs/10-market.md` (WML-MKT-001), `docs/11-plan.md` (WML-PLN-001); `docs/decisions/0004-concept-selection.md` (WML-DDR-004) and `0005-stem-check-fixes.md` (WML-DDR-005); users and stakeholder tables in WML-PRB-001 v0.5.
+- **Detailed CAD (kit 1.9):** `cad/src/model.py` rebuilt to the kit 1.9 interface (`PARAMS`, `OPTIONS`, `PRINCIPLES`, `CHOSEN = "A"`, `OPTION_VIEWS`, `ALLOWED_CONTACTS`, `components()`), both options at D3 with `.kit/cad_parts.py` and repo helpers in `cad/src/wml_parts.py` (phone, power bank, G-clamp, moulded bin, nyloc nuts, wood and pan screws, cable ties, Raspberry Pi 5, camera module, touch display, shutter and arcade buttons). The legacy `derived()`, `build_components()`, `build_parts()`, `station()` and `check()` now return the detailed geometry, so `sizing.py`, `sheets.py`, `build_plan_media.py`, `concept_media.py` and `render_detail.py` keep working; 115 of 115 rig constructability checks pass. `cad/src/product_model.py` added. Existing design numbers kept; changes are listed below and in WML-DEC-001.
+- **Regenerated:** WML-DWG-001 Rev P3 and making sketches WML-DWG-101 to 107; every build plan picture; `media/hero.png`, `exploded.png`, `concept-blueprint.*`, `model.glb`, `viewer.html`, `flow.png`; STL at a 0.15 mm chord; STEP per part in `cad/step/A/` plus `A-assembly.step` and `B-assembly.step`. The old single STEP files `cad/step/wastewise-*.step` were removed as superseded.
+- **Documents updated:** WML-PRC-001 v0.8, WML-CAL-001 v0.5 (new sections 11 to 15), WML-BLD-001 v0.3, WML-DEC-001 v0.5, `bom/bom.csv` and `bom-notes.md`, `README.md`, `project.yaml`.
+
+### Part counts and mass per option (`cad/fidelity.json`, D3, passed)
+
+| Option | Parts | Made or bought | Fasteners | Mass (kg) |
+| --- | --- | --- | --- | --- |
+| A, phone stand over a mat | 101 | 58 | 43 | 38.5 |
+| B, tray detector | 116 | 69 | 47 | 39.2 |
+
+Masses include the shared bins, hazard box with 6 kg of sand, and scale; option A's scanning rig itself, with the mat and clamps, is about 3.1 kg (BOM lines 1, 2, 3, 6, 11, 12; from `python cad/src/model.py`).
+
+### STEM check verdicts and fixes
+
+31 claims: 23 within known science, 8 plausible and open, none failing (`stem_check: open`). Fixes made under the standing instruction of 2026-10-23 (WML-DEC-001, WML-DDR-005):
+
+- **F1** (B1, B2): Bluetooth shutter button at the bench edge (BOM line 12, USD 3.39 cited); result fills the screen in the class colour with a bin number at least 40 mm tall and is spoken by default. Battery 9 % a shift (was 8 %).
+- **F2** (C3): mat primed, painted and varnished on both faces and all edges.
+- **F3** (C1): loose cell terminals taped before they go in the hazard box; tape roll in BOM line 5 (+USD 1.00 estimate).
+- **F4** (detailed model): the USB cable ran through the tray tab bolt heads in the old model; it now runs 8 mm to one side of the arm top.
+- **F5** (S7, from the independent review): 32 mm camera window (was 34) and the phone pushed against the far lip; picture placement stack 3.3 mm against the 5.3 mm margin.
+- Model refinement M1: bins modelled as moulded, 3 mm wall, tapered, 60 L (CAL said 62 L).
+
+Open rows: S2 (lens margin, D2 to Amish), M2 (preprocessing), M4 and M5 (field learning curve and coverage), B2 (legibility trial), C3 (soak test), E4 (button current), OB5 (option B).
+
+### Option scores
+
+A 205 of 255, B 152 (26 % apart). Option A recommended.
+
+### Requirements not met or at risk
+
+Not met: PR-002 (opaque HDPE versus PP and black plastics), PR-011 (no field evaluation set). At risk: PR-001, PR-003, PR-004 (66 % coverage against 70 %), PR-005 (up to 331 ms if a full frame is decoded), PR-013, PR-019 (picture margin). To verify at TRL 4: PR-007, PR-008, PR-014, PR-016, PR-022.
+
+### BOM
+
+One station USD 313.39 (was USD 309.00); two-station pilot USD 1,356.78. `budget_usd` is null (software repository), so there is no value-engineering target; not raised.
+
+### Decisions awaiting Amish
+
+- **D1, concept selection:** proposed, option A (WML-DDR-004). `concept_chosen: A (proposed)`.
+- **D2, lens height:** proposed, 420 mm instead of 440 mm (his N3 decision), for 15.3 mm of margin and lenses of 24.2 mm and longer.
+- Fixes F1 to F5 were made under his standing instruction and are reversible; F1 adds a user-facing button and voice by default, which he may want to review.
+
+### Independent review
+
+A headless Claude reviewer (`claude -p`, no subagent tool in this session) saw only the STEM check, CAL, PRS and `sizing.py`. It refuted S7 (stand tilt arithmetic) and weakened S2, M2, M5, S4, S8 and a dozen wording points; all are recorded in WML-STM-001, section "Independent review", and were applied (fix F5, D2 proposed, PR-005, PR-016 and PR-019 statuses changed, coverage 66 %). Still to check from it: the TrashNet accuracy figure and the Hestness scaling exponent; the ImageNet pretraining weights' license under PR-013.
+
+### Kit bugs met
+
+1. `.kit/trace.py` writes `license: CERN-OHL-S-2.0` into the RTM front matter when `project.yaml` has no `licenses.hardware` (this repository is MIT only). Worked around by setting the field to MIT by hand after generation; `trace.py --check` still passes because it compares only the source hash. A regeneration will reintroduce it.
+2. `render.py --check` fails while `media/options.png` is missing; it can only be made by `.kit/options.py`, which is run on Amish's Mac. Expected until the coordinator renders it.
+3. `bom/bom.csv` line 8 had an unquoted comma (an eighth field); fixed by quoting. The kit's CSV readers ignored it silently.
+
+### Safety
+
+New: the shutter button's CR2032 coin cell is a swallowing hazard for small children at sorting sites (spare cells out of reach); the hazard box's sand bed is sized for one phone-size cell only. Unchanged: hazards are flagged, never sorted; the rig stands in shade.
+
+### Recommended next step
+
+Amish decides D1 and D2; the coordinator renders `media/options.png` and the two product views (`hero`, `rig`) on the Mac. TRL 4 stays on hold.

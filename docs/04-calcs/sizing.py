@@ -2,8 +2,8 @@
 
 Run from the repo root:  python docs/04-calcs/sizing.py
 Prints every number that docs/04-calcs/01-sizing.md quotes. Paper calculations only:
-this script trains nothing, loads no images and runs no model. Camera geometry reads
-cad/src/model.py; costs read bom/bom.csv.
+this script trains nothing, loads no images and runs no model. Camera geometry, the stand,
+the station and option B read cad/src/model.py (PARAMS and derived()); costs read bom/bom.csv.
 """
 import csv
 import math
@@ -26,7 +26,10 @@ APP_SHELL_MB = (8.0, 15.0) # app code, UI assets and TFLite runtime without the 
 # Phone (reference phone R12: 2019 or later low-cost Android, Cortex-A53 class cores)
 SLOWDOWN = (1.0, 4.0)      # low-cost phone relative to the Pixel 1 large core (assumed range)
 GMACS_A53 = (1.2, 2.5)     # effective int8 throughput of one A53-class core, GMAC/s (assumed range)
-T_PRE_MS = 20.0            # crop, resize and normalize (assumed)
+T_PRE_MS = (20.0, 150.0)  # crop, resize and normalize: 20 ms from a preview-size frame, up to 150 ms if a full 12 MP frame
+                           # is decoded first (assumed; independent review 2026-10-25)
+T_WAKE = (0.5, 1.5)        # wake the phone and open the camera after the screen has slept (assumed; review 2026-10-25)
+P_STANDBY_HI_W = 0.12      # standby with a foreground service and a Bluetooth link held open (assumed upper case)
 P_INFER_W = 2.0            # extra SoC power while the model runs (assumed)
 BATT_MAH, BATT_V = 4000.0, 3.85
 P_ACTIVE_W = 2.5           # screen, camera and SoC while a scan is active (assumed)
@@ -37,6 +40,8 @@ P_STANDBY_W = 0.03         # phone asleep between scans (assumed)
 SHIFT_H, SCANS = 8.0, 500  # R10 duty
 PB_MAH, PB_V = 10000.0, 3.7
 PB_BOOST, PHONE_CHG = 0.85, 0.85   # power bank boost and phone charging efficiencies (assumed)
+P_BT_W = 0.005             # phone side of a held-open Bluetooth LE link to the shutter button (assumed; WML-DEC-001 F1)
+P_VOICE_W, T_VOICE_S = 0.5, 1.0    # speaker saying the bin number after each scan, on by default (assumed; F1)
 
 # Time to result (R7), seconds: (nominal, worst)
 T_TAP = (0.3, 0.6)         # reach and tap, or foot switch
@@ -101,18 +106,23 @@ head("2. Latency on a low-cost phone (R5)")
 t_scaled = [T_PIXEL1_MS * s for s in SLOWDOWN]
 gmacs_p1 = MACS / (T_PIXEL1_MS / 1000) / 1e9
 t_mac = [MACS / (g * 1e9) * 1000 for g in reversed(GMACS_A53)]
-t_res = [t_scaled[0] + T_PRE_MS, max(t_scaled[1], t_mac[1]) + T_PRE_MS]
+t_res = [t_scaled[0] + T_PRE_MS[0], max(t_scaled[1], t_mac[1]) + T_PRE_MS[1]]
+t_res_preview = max(t_scaled[1], t_mac[1]) + T_PRE_MS[0]
 line("Pixel 1 effective throughput", f"{gmacs_p1:.1f} GMAC/s")
 line("Inference, scaled from Pixel 1 (1x to 4x)", f"{t_scaled[0]:.0f} to {t_scaled[1]:.0f} ms")
 line("Inference, from A53-class throughput", f"{t_mac[0]:.0f} to {t_mac[1]:.0f} ms")
-line("Photo to result incl. 20 ms preprocessing", f"{t_res[0]:.0f} to {t_res[1]:.0f} ms (limit 300 ms)")
-line("Margin at the slow end", f"{300 - t_res[1]:.0f} ms")
+line("Photo to result incl. 20 to 150 ms preprocessing", f"{t_res[0]:.0f} to {t_res[1]:.0f} ms (limit 300 ms)")
+line("Slow end from a preview-size frame (20 ms preprocessing)", f"{t_res_preview:.0f} ms, margin {300 - t_res_preview:.0f} ms")
+line("Slow end from a decoded 12 MP frame", f"{t_res[1]:.0f} ms, margin {300 - t_res[1]:.0f} ms")
+mem = size_int8 + 112 * 112 * 64 * 2 / 1e6 * 2      # weights plus the two largest 8-bit activation tensors, double-buffered
+line("Memory: weights and largest activations", f"about {mem:.0f} MB of a 3 GB phone")
 
 # ================================================================ 3. time to result (R7)
 head("3. Time from placing an item to the result (R7)")
 t_inf = (t_res[0] / 1000, t_res[1] / 1000)
 tt = [T_TAP[i] + T_FOCUS[i] + T_CAPTURE[i] + t_inf[i] + T_SHOW[i] for i in (0, 1)]
-line("Nominal / worst", f"{tt[0]:.1f} / {tt[1]:.1f} s (limit 3 s)")
+line("Nominal / worst, camera already open", f"{tt[0]:.1f} / {tt[1]:.1f} s (limit 3 s)")
+line("Nominal / worst, waking from a sleeping screen", f"{tt[0] + T_WAKE[0]:.1f} / {tt[1] + T_WAKE[1]:.1f} s (limit 3 s)")
 line("Scan interval at 500 scans in 8 h", f"{SHIFT_H * 3600 / SCANS:.0f} s")
 
 # ================================================================ 4. energy and battery (R10)
@@ -123,13 +133,18 @@ e_scan = P_ACTIVE_W * T_ACTIVE_S
 line("Battery energy", f"{batt_wh:.1f} Wh")
 line("Energy per inference", f"{e_inf[0]:.2f} to {e_inf[1]:.2f} J")
 line("Energy per scan (3 s active at 2.5 W)", f"{e_scan:.1f} J")
-case_a = (SCANS * e_scan / 3600) + P_STANDBY_W * SHIFT_H
-case_b = P_SCREEN_W * SHIFT_H + SCANS * P_CAM_EXTRA_W * T_ACTIVE_S / 3600
-case_c = P_ACTIVE_W * SHIFT_H
+e_voice = SCANS * P_VOICE_W * T_VOICE_S / 3600          # Wh per shift, voice on by default (F1)
+e_bt = P_BT_W * SHIFT_H                                  # Wh per shift, Bluetooth button link held open (F1)
+line("Voice and Bluetooth button per shift (F1)", f"{e_voice:.2f} + {e_bt:.2f} Wh")
+case_a = (SCANS * e_scan / 3600) + P_STANDBY_W * SHIFT_H + e_voice + e_bt
+case_b = P_SCREEN_W * SHIFT_H + SCANS * P_CAM_EXTRA_W * T_ACTIVE_S / 3600 + e_voice + e_bt
+case_c = P_ACTIVE_W * SHIFT_H + e_voice + e_bt
 for name, e in (("A tap-to-scan, screen sleeps between scans", case_a),
                 ("B tap-to-scan, screen on all shift", case_b),
                 ("C live camera preview all shift", case_c)):
     line(f"Case {name}", f"{e:.1f} Wh = {100 * e / batt_wh:.0f} % of battery (limit 30 %)")
+case_a_hi = case_a + (P_STANDBY_HI_W - P_STANDBY_W) * SHIFT_H
+line("Case A with a 0.12 W standby (review sensitivity)", f"{case_a_hi:.1f} Wh = {100 * case_a_hi / batt_wh:.0f} % of battery")
 pb_wh = PB_MAH / 1000 * PB_V
 pb_to_phone = pb_wh * PB_BOOST * PHONE_CHG
 line("Power bank nominal / into the phone battery", f"{pb_wh:.0f} / {pb_to_phone:.1f} Wh")
@@ -153,7 +168,26 @@ px_full = g["frame_x"] / 4000
 line("Resolution, 12 MP full frame", f"{px_full:.2f} mm per pixel")
 line("Resolution, full frame resized to 224 px", f"{g['frame_x'] / 224:.1f} mm per pixel")
 line("Resolution, 300 mm item crop at 224 px", f"{300 / 224:.1f} mm per pixel")
-line("Bin inner volume", f"{g['bin_vol_l']:.0f} L")
+line("Shortest 35 mm-equivalent focal length whose frame fits the mat depth", f"{g['f_eq_min']:.2f} mm (assumed lens 26 mm)")
+margin_y = (g["mat_d"] - g["frame_y"]) / 2
+d1 = math.radians(1.0)
+rigid = (g["base_top"] - g["mat_top"]) * math.tan(d1)          # stand tilts as a body about the board: the lens moves one way,
+axis = g["cam_h"] * math.tan(d1)                                # the axis turns the other; only the pivot height above the mat is left
+yaw = g["frame_x"] / 2 * math.sin(d1) + g["frame_y"] / 2 * (1 - math.cos(d1))
+slack = (g["win"] - 30.0) / 2                                   # camera bump free in the window
+yaw_slack = math.degrees(math.atan(2 * g["tray_gap"] / g["phone_l"]))
+stack = slack + yaw * yaw_slack
+TRAY_TILT = 0.3            # deg, flatness of the folded tray and the phone's back (assumed)
+stack_f5 = slack + axis * TRAY_TILT                             # F5: phone pushed against the far lip, so no yaw
+line("Frame margin to the mat edge, front and back", f"{margin_y:.1f} mm each side")
+line("Picture shift per degree: whole stand tilting / phone axis tilting / phone yaw", f"{rigid:.2f} / {axis:.1f} / {yaw:.1f} mm")
+line("Phone free in the tray: bump slack, yaw", f"{slack:.1f} mm, {yaw_slack:.2f} deg; worst stack {stack:.1f} mm against {margin_y:.1f} mm")
+line("F5: phone against the far lip, 0.3 deg tray tilt", f"stack {stack_f5:.1f} mm against {margin_y:.1f} mm; {margin_y - stack_f5:.1f} mm left for the lens")
+line("Shortest lens for the frame inside what is left", f"{g['cam_h'] * math.hypot(36.0, 24.0) * 0.6 / (g['mat_d'] - 2 * stack_f5):.2f} mm equivalent")
+alt_h = 420.0
+alt_fy = alt_h * math.hypot(36.0, 24.0) * 0.6 / g["focal_eq"]
+line("Proposed D2: lens at 420 mm", f"frame {alt_h * math.hypot(36.0, 24.0) * 0.8 / g['focal_eq']:.0f} x {alt_fy:.0f} mm, margin {(g['mat_d'] - alt_fy) / 2:.1f} mm, fits lenses of {alt_h * math.hypot(36.0, 24.0) * 0.6 / g['mat_d']:.1f} mm and longer")
+line("Bin inner volume (3 mm wall, 25 mm taper a side)", f"{g['bin_vol_l']:.0f} L")
 
 # ================================================================ 6. dataset size (R1, R2, R4)
 head("6. Dataset size (R1, R2, R4)")
@@ -212,12 +246,13 @@ haz = STREAM["Hazardous"]
 rest = 1 - blind - haz
 cov_grade = coverage_for(e_grade, 0.10)
 cov_class = coverage_for(e_class, 0.10)
-ans_grade = rest * cov_grade
+ans_grade = rest * cov_grade * (1 - HAZ_FPR)   # false hazard alarms leave the graded pool (independent review 2026-10-25)
 line("Camera-blind share (opaque HDPE/PP, black)", f"{100 * blind:.0f} %")
 line("Coverage on the rest for 90 % grade accuracy", f"{100 * cov_grade:.0f} %")
 line("Coverage for 90 % class accuracy (R1)", f"{100 * cov_class:.0f} %")
-line("Answered with a grade / Unsure / hazard flag", f"{100 * ans_grade:.0f} % / {100 * (1 - ans_grade - haz):.0f} % / {100 * haz:.0f} %")
-line("Answered incl. hazard flags (R4 target 70 %)", f"{100 * (ans_grade + haz):.0f} %")
+flag_all = haz * R3_TARGET + (1 - haz) * HAZ_FPR
+line("Graded / Unsure / sent to the hazard box", f"{100 * ans_grade:.1f} % / {100 * (1 - ans_grade - flag_all):.1f} % / {100 * flag_all:.1f} %")
+line("Answered: graded plus true hazard flags (PR-004 target 70 %)", f"{100 * (ans_grade + haz * R3_TARGET):.1f} %")
 flagged = haz * R3_TARGET + (1 - haz) * HAZ_FPR
 line("Items sent to the hazard box", f"{100 * flagged:.1f} % of items, {100 * (1 - haz) * HAZ_FPR / flagged:.0f} % of them false alarms")
 
@@ -287,6 +322,106 @@ num = lambda r: int(r["item"].split()[0])  # noqa: E731
 station = sum(float(r["unit_cost_usd"]) * float(r["qty"]) for r in rows if num(r) not in ONEOFF)
 oneoff = sum(float(r["unit_cost_usd"]) * float(r["qty"]) for r in rows if num(r) in ONEOFF)
 line("BOM lines, all priced", f"{len(rows)}, {all(r['unit_cost_usd'].strip() for r in rows)}")
-line("One station (lines 1 to 7 and 11)", f"${station:,.2f}")
+line("One station (lines 1 to 7, 11 and 12)", f"${station:,.2f}")
 line("Dataset, evaluation set and compute (lines 8 to 10)", f"${oneoff:,.2f}")
 line("Two-station pilot", f"${2 * station + oneoff:,.2f} (budget_usd null: no hardware budget)")
+
+# ================================================================ 10. stand stiffness under a tap (BLD first check)
+head("10. Stand stiffness under a tap on the screen")
+E_AL = 69000.0             # MPa, 6063 aluminium (typical)
+F_TAP = 5.0                # N, a firm tap on the screen (assumed)
+I_SHS = (g["tube"] ** 4 - (g["tube"] - 2 * g["tube_t"]) ** 4) / 12      # mm4, square corners (stiffer than the real rounded tube by a few %)
+a_tap = g["post_y"] - g["mat_cy"]                                        # post axis to the screen centre, along Y
+a_arm = a_tap - g["tube"] / 2
+d_arm = F_TAP * a_arm ** 3 / (3 * E_AL * I_SHS)
+th_post = F_TAP * a_tap * g["post_len"] / (E_AL * I_SHS)
+th_arm = F_TAP * a_arm ** 2 / (2 * E_AL * I_SHS)
+d_v = d_arm + th_post * a_tap
+shift = g["cam_h"] * (th_post + th_arm)
+line("Second moment of area, 25 x 25 x 2 tube", f"{I_SHS:,.0f} mm4")
+line("Vertical deflection at the screen centre, 5 N", f"{d_v:.2f} mm")
+line("Camera axis rotation; picture shift on the mat", f"{math.degrees(th_post + th_arm):.3f} deg; {shift:.2f} mm (BLD check: under 1 mm)")
+
+# ================================================================ 11. ergonomics at the station (WML-DEC-001 F1)
+head("11. Ergonomics at the station: reach, viewing angle and legibility")
+# Indian women's stature, Nag, Nag and Desai 2003, Table I (n = 95): 5th, 50th (mean) and 95th percentile, mm;
+# body proportions after Drillis and Contini (1966) as given by Winter (2009): eye 0.936 H, shoulder 0.818 H,
+# upper arm 0.186 H, forearm and hand 0.254 H
+USERS = {"woman, 5th percentile": 1356.0, "woman, mean": 1499.0, "woman, 95th percentile": 1599.0}
+EYE_BACK, SHOULDER_BACK = 100.0, 150.0     # eye and shoulder joint behind the bench's user edge, standing close (assumed)
+ISO_ARM_DEG = 60.0         # upper arm elevation screening limit, ISO 11226:2000
+MIN_ARCMIN = 16.0          # minimum character height, ISO 9241-303 (20 to 22 preferred)
+ICON_MM, DIGIT_MM = 10.0, 40.0             # a typical app icon; the F1 bin number
+y_edge = g["bench_d"]
+y_scr = g["mat_cy"]
+z_scr = g["screen_z"]
+z_btn = g["bench_h"] + 2.0 + g["btn_t"]
+line("Screen height above the floor; distance in from the user's edge", f"{z_scr:.0f} mm; {y_edge - y_scr:.0f} mm")
+for who, H in USERS.items():
+    sh = 0.818 * H; eye = 0.936 * H; U = 0.186 * H; Fh = 0.254 * H
+    dx = y_edge - y_scr + SHOULDER_BACK; dz = z_scr - sh
+    D = math.hypot(dx, dz)
+    if D < U + Fh:
+        alpha = math.degrees(math.acos((U * U + D * D - Fh * Fh) / (2 * U * D)))
+        elev = 90.0 - (alpha - math.degrees(math.atan2(dz, dx)))
+    else:
+        elev = 90.0 + math.degrees(math.atan2(dz, dx))
+    ex = y_edge - y_scr + EYE_BACK; ez = eye - z_scr
+    theta = math.degrees(math.atan2(ex, ez))
+    De = math.hypot(ex, ez)
+    arc = lambda h: math.degrees(math.atan(h * math.cos(math.radians(theta)) / De)) * 60  # noqa: E731
+    line(f"{who}: tap reach, upper arm elevation (elbow down)", f"{elev:.0f} deg (screen {dz:+.0f} mm from the shoulder; limit {ISO_ARM_DEG:.0f})")
+    line(f"{who}: viewing angle off the screen normal", f"{theta:.1f} deg; 10 mm icon {arc(ICON_MM):.0f} arcmin, 40 mm digit {arc(DIGIT_MM):.0f} arcmin (min {MIN_ARCMIN:.0f})")
+line("Shutter button height; distance in from the user's edge", f"{z_btn:.0f} mm; {y_edge - g['btn_y']:.0f} mm (hand at bench height, no reach to the phone)")
+
+# ================================================================ 12. phone temperature at the station
+head("12. Phone temperature at the station")
+T_AMB = 40.0               # C, Pune pre-monsoon afternoon (IMD Pune forecast, reported 2024-03-30)
+H_CONV = 10.0              # W/(m2 K), natural convection plus radiation from a small flat body (assumed)
+A_PHONE = 2 * g["phone_l"] * g["phone_w"] / 1e6
+P_AVG = case_a / SHIFT_H
+P_CHG = 1.5                # W of heat while charging from the power bank (assumed)
+G_SUN, ALPHA = 1000.0, 0.9
+dt_use = P_AVG / (H_CONV * A_PHONE)
+dt_chg = (P_AVG + P_CHG) / (H_CONV * A_PHONE)
+dt_sun = G_SUN * ALPHA * A_PHONE / 2 / (H_CONV * A_PHONE)
+line("Mean phone dissipation in tap-to-scan use", f"{P_AVG:.2f} W")
+line("Phone in shade at 40 C: in use / while charging", f"{T_AMB + dt_use:.1f} / {T_AMB + dt_chg:.1f} C (Li-ion charge limit 45 C)")
+dt_b = (case_b / SHIFT_H + P_CHG) / (H_CONV * A_PHONE)
+line("Case B (screen on) while charging from the power bank", f"{dt_b:.1f} K over the air: charging holds only below about {45 - dt_b:.0f} C ambient")
+line("Phone in direct sun at 40 C", f"about {T_AMB + dt_sun:.0f} C, so the rig stands in shade (BLD safety stop S4)")
+
+# ================================================================ 13. hazard box and shutter button cell
+head("13. Hazard box heat balance and shutter button cell life")
+sand_kg = (g["haz_l"] - 2 * g["haz_sheet"] - 1) * (g["haz_d"] - 2 * g["haz_sheet"] - 1) * g["haz_sand"] * 1e-9 * 1600
+C_SAND = 830.0             # J/(kg K), dry sand (typical)
+E_CELL_WH, RUNAWAY_X = 15.4, 8.0   # a phone-size cell; total heat up to 8 x its electrical energy (assumed upper bound)
+q = E_CELL_WH * 3600 * RUNAWAY_X
+line("Sand in the hazard box", f"{sand_kg:.1f} kg")
+line("Mean sand temperature rise from one phone-size cell in runaway", f"{q / (sand_kg * C_SAND):.0f} K (screen 100 K)")
+CR2032_MAH, I_BTN_MA = 225.0, 0.05  # typical CR2032 capacity; mean current of a connected BLE button (assumed)
+hrs = CR2032_MAH / I_BTN_MA
+line("Shutter button cell life", f"{hrs:,.0f} h, {hrs / SHIFT_H:,.0f} shifts (screen: 3 months of 6 shifts a week, {13 * 6:.0f} shifts)")
+
+# ================================================================ 14. option B first-order numbers (WML-OPT-001)
+head("14. Option B, tray detector: first-order numbers")
+line("Camera frame at 450 mm over the tray floor", f"{g['b_frame_x']:.0f} x {g['b_frame_y']:.0f} mm (tray {g['b_tray_l']:.0f} x {g['b_tray_d']:.0f})")
+line("Resolution at full 12 MP / at a 1,280 px detector input", f"{g['b_frame_x'] / g['b_px'][0]:.2f} / {g['b_frame_x'] / 1280:.2f} mm per pixel")
+line("A 40 mm bottle cap at the detector input", f"{40 / (g['b_frame_x'] / 1280):.0f} px")
+P_PI_IDLE, P_PI_RUN, P_DISP, T_RUN = 2.7, 6.0, 1.5, 3.0   # W, W, W, s per photo (assumed)
+ITEMS, PER_PHOTO = 3000, 15                                # items a shift and items a photo (assumed)
+photos = ITEMS / PER_PHOTO
+e_b = (P_PI_IDLE + P_DISP) * SHIFT_H + photos * (P_PI_RUN - P_PI_IDLE) * T_RUN / 3600
+pb_b = 20000 / 1000 * 3.7 * PB_BOOST
+line("Shift energy, Pi 5 and display on all shift", f"{e_b:.1f} Wh of {pb_b:.1f} Wh from a 20,000 mAh bank ({100 * e_b / pb_b:.0f} %)")
+GFLOP_640, PI_GFLOPS = 8.7, (20.0, 40.0)                   # YOLOv8n at 640 px (Ultralytics); Pi 5 effective (assumed)
+gf = GFLOP_640 * (1280 / 640) ** 2
+line("Detector time per photo at 1,280 px", f"{gf / PI_GFLOPS[1]:.1f} to {gf / PI_GFLOPS[0]:.1f} s ({gf:.0f} GFLOP), {1000 * gf / PI_GFLOPS[0] / PER_PHOTO:.0f} ms per item at worst")
+S_BOX = 7.0                # s per box by extreme clicking (Papadopoulos et al. 2017)
+h_b = N_TRAIN * (S_LABEL + S_BOX) * (1 + REVIEW) / 3600
+line("Labeling 10,000 item instances with class, grade and a box", f"{h_b:.0f} h, ${h_b * PAY:,.0f} (option A {h_train:.0f} h)")
+B_COST = {"Raspberry Pi 5, 4 GB (USD 100, Feb 2026 price)": 100.0, "Camera Module 3 Wide (USD 35.95, PiShop)": 35.95,
+          "Touch Display 2, 5 inch (USD 54.95, PiShop)": 54.95, "Active cooler, 32 GB microSD, 20,000 mAh PD power bank, arcade button (estimate)": 48.0,
+          "Mast, arm, plates, board, printed case and housing, tray, cables (estimate)": 45.0,
+          "G-clamps and fixings (as line 11)": 14.0, "Bins, hazard box and scale (lines 4, 5, 7)": 70.0 + 26.0 + 25.0}
+line("Option B station cost (no phone)", f"${sum(B_COST.values()):,.2f}")

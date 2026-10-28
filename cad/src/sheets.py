@@ -1,7 +1,7 @@
 """WasteWise-ml drawing sheets.
 
 Run from the repo root:  python cad/src/sheets.py
-Builds WML-DWG-001 (sorting station general arrangement, Rev P2) in cad/drawings/ from
+Builds WML-DWG-001 (sorting station general arrangement, Rev P3) in cad/drawings/ from
 cad/src/model.py. WML-DWG-010 is the concept sheet made by cad/src/concept_media.py.
 This repository is MIT licensed (software only), so the sheet license label is MIT.
 """
@@ -22,11 +22,12 @@ bb = asm.bounding_box().size
 views = project_views(asm, work)
 bench_views = project_views(model.bench_group(), work / "bench")
 
-s = Sheet(project="WasteWise-ml", title="Sorting station general arrangement", dwg_no="WML-DWG-001", rev="P2",
-          author="Amish Chadha", date="2026-09-30", scale=None, concept=True, license="MIT",
+s = Sheet(project="WasteWise-ml", title="Sorting station general arrangement", dwg_no="WML-DWG-001", rev="P3",
+          author="Amish Chadha", date="2026-10-25", scale=None, concept=True, license="MIT",
           material="Stand made per WML-BLD-001; other items bought per bom/bom.csv; bench is the site's own",
           revisions=[("P1", "General arrangement for TRL 3 (WML-CAL-001)", "2026-09-25", "AC"),
-                     ("P2", "Made phone stand, clamped to the bench (WML-DDR-003)", "2026-09-30", "AC")])
+                     ("P2", "Made phone stand, clamped to the bench (WML-DDR-003)", "2026-09-30", "AC"),
+                     ("P3", "Kit 1.9 detailed model; shutter button, sealed mat (WML-DEC-001 F1, F2)", "2026-10-25", "AC")])
 s.add_ortho(views, ["front", "top", "right"])
 s.add_svg(bench_views["iso"], 276, 32, 140, 70, label="Bench detail, isometric",
           sublabel="Not to scale; phone, stand, mat, power bank, hazard box")
@@ -53,6 +54,7 @@ s.add_notes("Parts list, continued", [
     "6 Power bank and cable",
     "7 Platform scale",
     "11 Stand clamps and fixings",
+    "12 Bluetooth shutter button (bench edge)",
     "Bins left to right: PET; HDPE and PP; film;",
     "metal; paper and carton; glass; Unsure",
     "Hazards never auto-sorted (see WML-PRC-001)",

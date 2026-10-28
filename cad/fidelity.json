@@ -1,0 +1,35 @@
+{
+ "level": "D3",
+ "stage": "P3",
+ "hash": "665f37b378488cac",
+ "options": {
+  "A": {
+   "title": "Phone stand over a mat",
+   "parts": 101,
+   "made_or_bought": 58,
+   "fasteners": 43,
+   "welds": 0,
+   "bare": [],
+   "bare_share": 0.0,
+   "interference": [],
+   "mass_kg": 38.5,
+   "step_files": 58
+  },
+  "B": {
+   "title": "Tray detector",
+   "parts": 116,
+   "made_or_bought": 69,
+   "fasteners": 47,
+   "welds": 0,
+   "bare": [],
+   "bare_share": 0.0,
+   "interference": [],
+   "mass_kg": 39.2,
+   "step_files": 0
+  }
+ },
+ "failures": [],
+ "warnings": [],
+ "passed": true,
+ "seconds": 88.2
+}

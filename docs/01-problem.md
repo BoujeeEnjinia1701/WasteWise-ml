@@ -3,9 +3,9 @@ doc_id: WML-PRB-001
 title: WasteWise-ml problem statement
 project: WasteWise-ml
 doc_type: Problem statement
-version: "0.4"
+version: "0.5"
 status: Draft
-date: '2026-10-02'
+date: '2026-10-25'
 author: Amish Chadha
 license: MIT
 revisions:
@@ -25,6 +25,10 @@ revisions:
   date: '2026-10-02'
   author: Amish Chadha
   change: First candidate partner, city and buyers (SWaCH in Pune), as decided by Amish on 2026-10-02
+- version: "0.5"
+  date: '2026-10-25'
+  author: Amish Chadha
+  change: "Kit 1.8 upgrade: users-and-needs and stakeholder tables (Tables 1 and 2), the source of the user requirements WML-URS-001"
 ---
 
 # WasteWise-ml problem statement
@@ -47,13 +51,26 @@ WasteWise-ml is an open image-classification model that runs offline on a low-co
 
 ## Users and context
 
-| User | Need | Context |
+Table 1. Users and needs (the source of the user requirements in WML-URS-001).
+
+| User type | Goals and needs | Typical use scenario | Pain points and challenges |
+| --- | --- | --- | --- |
+| Informal waste picker | Sort faster and to a higher grade, sell at a better price, learn new packaging types | Street, dump site or depot; takes items from a sack and decides where each goes, many times an hour; a shared or low-cost Android phone | Hands full and gloved; bright sun or a dim shed; paid by weight, so every second counts; resin codes missing or illegible; a range of literacy; sharps, glass and cells among the items |
+| Waste picker cooperative or depot operator | Consistent grades across members, fewer disputes with buyers, training for new members | Sorting benches or floor sorting in a shed; weighing and sale records | Members with limited literacy; new members learn grades slowly; benches of whatever height and depth the site has; little money for equipment |
+| Scrap buyer or aggregator | Fewer rejected lots, clear grade names, quicker weighing and pricing | Buys by grade and weight; sets the price list the grades must match | Mixed or contaminated lots; grade names differ between buyers and cities |
+| ReflowEconomy micro-factory | Clean feedstock of one resin for washing, shredding and remanufacture | Downstream customer; defines what "clean PET, HDPE, PP" means locally | Opaque HDPE and PP and black plastics look alike to a camera (WasteWise Scan) |
+| Researchers and NGOs | An open model, dataset licenses and an evaluation they can inspect and extend | Universities, city programs, open-source contributors | Public waste datasets are small, clean and not organized by buyer grade |
+
+Table 2. Stakeholders.
+
+| Stakeholder group | Role or interest | Engagement needed |
 | --- | --- | --- |
-| Informal waste picker | Sort faster and to a higher grade, sell at a better price, learn new packaging types | Street, dump site or depot; hands full; gloves; bright sun or dim shed; shared or low-cost Android phone |
-| Waste picker cooperative or depot operator | Consistent grades across members, fewer disputes with buyers, training for new members | Sorting benches or floor sorting; weighing and sale records; some members with limited literacy |
-| Scrap buyer or aggregator | Fewer rejected lots, clear grade names, quicker weighing and pricing | Buys by grade and weight; sets the price list that the grades must match |
-| ReflowEconomy micro-factory | Clean feedstock of one resin, for washing, shredding and remanufacture | Downstream customer; defines what "clean PET, HDPE, PP" means locally |
-| Researchers and NGOs | An open model, dataset licenses and evaluation that they can inspect and extend | Universities, city programs, open-source contributors |
+| Pickers' organization (first candidate SWaCH, Pune, decided 2026-10-02) | Co-designer, co-owner of field data, host of the pilot | Co-design sessions, data protocol and consent, labeling at a fair rate (D6, D7) |
+| Scrap dealers who buy from the organization | Set the grade list and price; verify ground truth | Price list and grade names; checking the evaluation set's labels |
+| Municipality (Pune Municipal Corporation) | Solid waste rules, recognition of waste pickers, disposal routes for hazards | Agree disposal of batteries, sharps and chemical containers; alignment with the Solid Waste Management Rules, 2026 (WML-REG-001) |
+| Legal metrology office | Trade weighing | The platform scale used to sell by weight must be verified and stamped (WML-REG-001) |
+| WasteWise Scan and ReflowEconomy projects | Linked products: NIR resin check and buyer of sorted plastics | Shared taxonomy and grade names |
+| Open-source contributors | Code, data and model improvements | MIT license, contributing guide, model card |
 
 ### Operating environment
 

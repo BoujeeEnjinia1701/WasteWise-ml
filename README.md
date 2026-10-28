@@ -8,13 +8,13 @@ Open image-classification model that identifies waste items by material class an
 
 ![WasteWise-ml: phone scan rig for sorting waste by material, photoreal render](media/render-hero.png)
 
-[Station render](media/render-station.png) · [Interactive 3D model](media/viewer.html) · [Concept blueprint (PDF)](media/concept-blueprint.pdf) · [Prototype build plan](docs/05-build-plan.md) · [Design decisions](docs/06-design-decisions.md) · [Review note](docs/REVIEW.md)
+[Station render](media/render-station.png) · [Interactive 3D model](media/viewer.html) · [Concept blueprint (PDF)](media/concept-blueprint.pdf) · [Exploded view](media/exploded.png) · [General arrangement WML-DWG-001 (PDF)](cad/drawings/WML-DWG-001.pdf) · [STEM check](docs/01b-stem-check.md) · [Concept options](docs/02a-concept-options.md) · [Requirements](docs/03-requirements.md) · [Traceability](docs/03b-traceability.md) · [Sizing note WML-CAL-001](docs/04-calcs/01-sizing.md) · [Prototype build plan](docs/05-build-plan.md) · [Design decisions](docs/06-design-decisions.md) · [Review note](docs/REVIEW.md)
 
 ## Concept rationale
 
 The person who can tell PET from PP, a coated carton from plain board, or a clean can from a contaminated one captures the price difference between a buyer's grade and mixed material. Industrial plants make that call with near-infrared sorters that cost far more than a street depot can pay, but almost every waste picker already carries a phone. WasteWise-ml puts a small image classifier (MobileNetV3-Large, about 4.4 MB) on that phone, answers offline in a fraction of a second, and says "Unsure" or "Hazard" rather than guess. Items a camera cannot grade go to WasteWise Scan for a resin reading.
 
-It is open because the value it creates belongs to the people who sort. Code and weights are MIT, every dataset license is recorded, grade names are set per site in a plain file that a cooperative can edit, and field photos are co-owned by the pickers' organization. The reference station is garage-buildable: a low-cost Android phone on a simple aluminium stand over a light mat, with bins, a hazard box and a scale, about $309 in indicative prices.
+It is open because the value it creates belongs to the people who sort. Code and weights are MIT, every dataset license is recorded, grade names are set per site in a plain file that a cooperative can edit, and field photos are co-owned by the pickers' organization. The reference station is garage-buildable: a low-cost Android phone on a simple aluminium stand over a light mat, a shutter button at the bench edge, bins, a hazard box and a scale, about $313 in indicative prices.
 
 ## Burning platform
 
@@ -56,13 +56,23 @@ Recycling streams are contaminated because people and small sorting operations c
 
 ## Concept
 
-The user photographs one item on a light mat with a low-cost Android phone. An on-device model (MobileNetV3-Large, about 4.4 MB in 8-bit form) answers offline in 64 to 201 ms on a low-cost phone (calculated, WML-CAL-001) with the material class, the local buyer grade and a confidence value, or says "Unsure" or "Hazard". Sorted lots go to bins that match the buyer's price list; unsure plastics go to WasteWise Scan for a near-infrared resin check; clean PET, HDPE and PP can be sold to a ReflowEconomy micro-factory. Consented field photos feed a retraining loop with a fixed field evaluation set.
+The user photographs one item on a light mat with a low-cost Android phone. An on-device model (MobileNetV3-Large, about 4.4 MB in 8-bit form) answers offline in 64 to 201 ms on a low-cost phone from a preview-size frame (calculated, WML-CAL-001) with the material class, the local buyer grade and a confidence value, or says "Unsure" or "Hazard". Sorted lots go to bins that match the buyer's price list; unsure plastics go to WasteWise Scan for a near-infrared resin check; clean PET, HDPE and PP can be sold to a ReflowEconomy micro-factory. Consented field photos feed a retraining loop with a fixed field evaluation set.
 
 ![Data and material flow](media/flow.png)
 
 Full design precis: [docs/02-concept.md](docs/02-concept.md). Sizing of the dataset, model, energy and evaluation: [docs/04-calcs/01-sizing.md](docs/04-calcs/01-sizing.md). General arrangement: [cad/drawings/WML-DWG-001.pdf](cad/drawings/WML-DWG-001.pdf).
 
-**Status at TRL 3 (on paper):** model size, speed, local grades and the reference phone are met; battery life is met if the screen sleeps between scans; class accuracy, hazard recall, coverage (about 68 % against 70 %) and dataset licenses are at risk; grading opaque HDPE versus PP from a photo and the field evaluation set are not met. Nothing has been trained; TRL 4 is on hold.
+**Status at TRL 3 (on paper):** model size, local grades, the reference phone, battery life (9 % a shift if the screen sleeps between scans), the bench-level trigger and the sealed mat are met on paper or by design; class accuracy, hazard recall, coverage (about 66 % against 70 %), speed if a full 12 MP frame is decoded, the picture's margin on the mat and dataset licenses are at risk; grading opaque HDPE versus PP from a photo and the field evaluation set are not met (10 of 23 product requirements met, 2 not met, 6 at risk, 5 to verify at TRL 4). Nothing has been trained; TRL 4 is on hold.
+
+## STEM check
+
+Every physical, chemical and biological claim of both concept options was checked against known science ([WML-STM-001](docs/01b-stem-check.md)): 23 of 31 claims are within known science and none fails. Eight rows stay open: four rest on field data only TRL 4 work can supply, three need a measurement on bought or made parts, and one, the lens height that keeps the picture on the mat, is proposed to Amish. The first pass and an independent review found four details that failed, now fixed in the design under Amish's standing instruction of 2026-10-23: the shortest users could neither comfortably reach nor read the flat phone screen, so a Bluetooth shutter button at the bench edge takes the photo and the result fills the screen and is spoken; the mat is sealed on both faces and all edges; loose cells go into the hazard box with their terminals taped; and the phone sits in a tighter window, pushed against the tray's far lip.
+
+## Concept options
+
+Two working principles were modelled in detail and scored against the user requirements ([WML-OPT-001](docs/02a-concept-options.md)): **A, phone stand over a mat** (the current design: one item at a time under the user's own phone) and **B, tray detector** (a Raspberry Pi wide camera over a tray of ten to twenty items, with an object detector and an eye-level display). A scores 205 of 255 against 152 for B: it runs on the user's own phone, sees each item and hazard alone, stays MIT-compatible and costs less; B sorts more items a photo. **Option A is recommended; the choice is proposed, awaiting Amish** ([WML-DDR-004](docs/decisions/0004-concept-selection.md)).
+
+![Concept options at one scale](media/options.png)
 
 ## Key components
 
@@ -71,13 +81,13 @@ Full design precis: [docs/02-concept.md](docs/02-concept.md). Sizing of the data
 - Label taxonomy aligned to resin codes and local buyer grades, mapped per site by a configuration file
 - Field evaluation set from real sorting sites, never used for training
 - Export to TensorFlow Lite or ONNX, with a model card
-- Reference sorting station for a pilot: phone on a made stand, light mat, bins by material class, hazard box, power bank and scale
+- Reference sorting station for a pilot: phone on a made stand, light mat, Bluetooth shutter button, bins by material class, hazard box, power bank and stamped scale
 
 The pilot list with indicative costs is in [bom/bom.csv](bom/bom.csv). This repository has no hardware budget.
 
 ## Building the prototype
 
-WasteWise-ml runs on a phone; its prototype hardware is the scanning rig that holds the phone over the sorting mat. The [prototype build plan](docs/05-build-plan.md) shows how to make it in a home workshop: a plywood base board clamped to the back edge of a bench, a square aluminium post and arm joined by two corner plates, a folded aluminium tray the phone lies in with its camera looking down through a window 440 mm above the mat, and a painted 700 x 450 mm mat that the board places so the camera's picture falls on it. Every component and assembly step has a picture generated from the model. It is a plan, not yet built; every design decision, and what to confirm when parts are bought, is in the [design decisions register](docs/06-design-decisions.md).
+WasteWise-ml runs on a phone; its prototype hardware is the scanning rig that holds the phone over the sorting mat. The [prototype build plan](docs/05-build-plan.md) shows how to make it in a home workshop: a plywood base board clamped to the back edge of a bench, a square aluminium post and arm joined by two corner plates, a folded aluminium tray the phone lies in with its camera looking down through a window 440 mm above the mat, a 700 x 450 mm mat painted and sealed all over that the board places so the camera's picture falls on it, and a shutter button at the bench edge. The model is detailed to kit 1.9 level D3 (every bolt, washer, nut, screw and cable tie; `cad/fidelity.json`). Every component and assembly step has a picture generated from the model. It is a plan, not yet built; every design decision, and what to confirm when parts are bought, is in the [design decisions register](docs/06-design-decisions.md).
 
 ![The scanning rig, every component pulled apart and numbered in build order](docs/05-build-plan/overview.png)
 
@@ -89,19 +99,42 @@ WasteWise-ml runs on a phone; its prototype hardware is the scanning rig that ho
 
 | Folder | Contents |
 | --- | --- |
-| `docs/` | Problem, concept, requirements, evaluation notes and design decisions |
+| `docs/` | Problem, STEM check, concept and concept options, user and product requirements, traceability, sizing, build plan, design decisions, regulatory, feasibility, risk, market and plan |
 | `ml/data/` | Dataset manifests and label taxonomy (images are referenced, not committed) |
 | `ml/notebooks/` | Training and evaluation notebooks (none yet) |
 | `ml/models/` | Exported TensorFlow Lite or ONNX models (via GitHub Releases) |
 | `bom/` | Reference pilot station, dataset effort and compute, with indicative costs |
-| `cad/src/` | Parametric station model (`model.py`, with constructability checks), drawing sheet (`sheets.py`), concept media and build plan pictures (`build_plan_media.py`) |
-| `cad/step/`, `cad/stl/`, `cad/drawings/` | STEP and STL exports, the general arrangement drawing WML-DWG-001 and the making sketches WML-DWG-101 to 107 |
+| `cad/src/` | Parametric station model of both options (`model.py`, kit 1.9 interface, with constructability checks), repo parts helpers (`wml_parts.py`), product appearance model (`product_model.py`), drawing sheet (`sheets.py`), concept media and build plan pictures (`build_plan_media.py`) |
+| `cad/step/`, `cad/stl/`, `cad/drawings/` | STEP per part of option A (`cad/step/A/`) and an assembly per option, STL exports, the general arrangement drawing WML-DWG-001 Rev P3 and the making sketches WML-DWG-101 to 107 |
 | `media/` | Concept media (hero, blueprint, 3D viewer, exploded view, flow diagram); later screenshots and sample predictions |
 | `build-log/` | Dated experiment log |
 
 ## Documentation
 
-Controlled documents follow the portfolio [documentation standard](.kit/STANDARDS.md). Each carries a document ID (WML-PRC-001 for the precis), a version and a revision history. Branded PDFs are built with `python .kit/render.py`.
+| Document | ID |
+| --- | --- |
+| [Problem statement](docs/01-problem.md) | WML-PRB-001 |
+| [STEM check](docs/01b-stem-check.md) | WML-STM-001 |
+| [Design precis](docs/02-concept.md) | WML-PRC-001 |
+| [Concept options](docs/02a-concept-options.md) | WML-OPT-001 |
+| [User requirements](docs/03a-user-requirements.md) | WML-URS-001 |
+| [Product requirements and specifications](docs/03-requirements.md) | WML-PRS-001 |
+| [Traceability matrix](docs/03b-traceability.md) | WML-RTM-001 |
+| [Calculation note](docs/04-calcs/01-sizing.md) | WML-CAL-001 |
+| [Prototype build plan](docs/05-build-plan.md) | WML-BLD-001 |
+| [Design decisions register](docs/06-design-decisions.md) | WML-DEC-001 |
+| [TRL 2 review decisions](docs/decisions/0001-trl2-review-decisions.md) | WML-DDR-001 |
+| [Recommendations accepted](docs/decisions/0002-recommendations-accepted.md) | WML-DDR-002 |
+| [Design for construction](docs/decisions/0003-design-for-construction.md) | WML-DDR-003 |
+| [Concept selection](docs/decisions/0004-concept-selection.md) | WML-DDR-004 |
+| [STEM check fixes](docs/decisions/0005-stem-check-fixes.md) | WML-DDR-005 |
+| [Regulatory and standards register](docs/07-regulatory.md) | WML-REG-001 |
+| [Feasibility](docs/08-feasibility.md) | WML-FEA-001 |
+| [Risk register, hazard analysis and design FMEA](docs/09-risk.md) | WML-RSK-001 |
+| [Market and viability](docs/10-market.md) | WML-MKT-001 |
+| [Project plan](docs/11-plan.md) | WML-PLN-001 |
+
+Pipeline stage: P3 of P0 to P6 (the portfolio cap). Controlled documents follow the portfolio [documentation standard](.kit/STANDARDS.md). Each carries a document ID, a version and a revision history. Branded PDFs are built with `python .kit/render.py`; run `python .kit/render.py --check` to validate them.
 
 ## Credits
 

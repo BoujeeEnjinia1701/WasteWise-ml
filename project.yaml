@@ -5,22 +5,44 @@ repo: BoujeeEnjinia1701/WasteWise-ml         # GitHub repository, shown on every
 area: Circular Materials
 trl: 3                   # Technology Readiness Level, see .kit/STANDARDS.md section 9
 trl_target: 3
+stage: P3                # pipeline stage, STANDARDS section 19; P3 since the kit 1.8 and 1.9.1 upgrade (2026-10-25)
+stem_check: open         # WML-STM-001 v0.1: S2 (lens, D2 to Amish), M2, M4, M5, B2, C3, E4 and OB5 to confirm; fixes F1 to F3 and F5 implemented (WML-DDR-005)
+concept_options: [A, B]  # WML-OPT-001: A phone stand over a mat (current design), B tray detector
+concept_chosen: A (proposed)   # recommended, awaiting Amish (WML-DEC-001 D1, WML-DDR-004)
 design_state: constructable   # STANDARDS section 18; scanning rig made buildable (WML-DDR-003)
 trl_evidence:
   - docs/01-problem.md
+  - docs/01b-stem-check.md
   - docs/02-concept.md
+  - docs/02a-concept-options.md
+  - docs/03a-user-requirements.md
   - docs/03-requirements.md
+  - docs/03b-traceability.md
   - docs/decisions/0001-trl2-review-decisions.md
   - docs/decisions/0002-recommendations-accepted.md
   - docs/04-calcs/01-sizing.md
   - docs/04-calcs/sizing.py
+  - docs/04-calcs/stem_check.py
+  - docs/04-calcs/stem_results.csv
   - cad/src/model.py
-  - cad/step/wastewise-station-assembly.step
+  - cad/src/wml_parts.py
+  - cad/src/product_model.py
+  - cad/fidelity.json
+  - cad/step/A-assembly.step
+  - cad/step/B-assembly.step
   - cad/drawings/WML-DWG-001.pdf
   - bom/bom.csv
   - docs/decisions/0003-design-for-construction.md
+  - docs/decisions/0004-concept-selection.md
+  - docs/decisions/0005-stem-check-fixes.md
   - docs/05-build-plan.md
+  - docs/05-build-plan/overview.png
   - docs/06-design-decisions.md
+  - docs/07-regulatory.md
+  - docs/08-feasibility.md
+  - docs/09-risk.md
+  - docs/10-market.md
+  - docs/11-plan.md
 shortlisted: false
 pitch: >-
   Open image-classification model that identifies waste items by material class and grade from a phone or low-cost camera. It is the software brain of the WasteWise family: WasteWise Scan adds near-infrared sensing for plastic resin type, and ReflowEconomy uses the sorted output.

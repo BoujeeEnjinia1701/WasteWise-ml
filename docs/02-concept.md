@@ -3,9 +3,9 @@ doc_id: WML-PRC-001
 title: WasteWise-ml design precis
 project: WasteWise-ml
 doc_type: Design precis
-version: "0.7"
+version: "0.8"
 status: Draft
-date: '2026-10-02'
+date: '2026-10-25'
 author: Amish Chadha
 license: MIT
 revisions:
@@ -37,11 +37,15 @@ revisions:
   date: '2026-10-02'
   author: Amish Chadha
   change: Site light record added to the app's photograph step and to the field data record (follow-up to the 2026-10-02 lighting decision)
+- version: "0.8"
+  date: '2026-10-25'
+  author: Amish Chadha
+  change: "Kit 1.8 and 1.9.1 upgrade: STEM check fixes F1 (shutter button, full-screen spoken result) and F3 (taped cell terminals) carried in; battery 9 %; station USD 313.39; concept options and STEM check referenced; coin cell and stamped scale notes"
 ---
 
 # WasteWise-ml design precis
 
-WasteWise-ml is an open image classifier that runs offline on a low-cost Android phone. The user photographs one item on a light mat, and within a fraction of a second the phone shows the item's material class, its local buyer grade and a confidence value, or says "Unsure" or "Hazard". Sorted material goes to bins that match the buyer's price list; unsure plastics go to WasteWise Scan for a near-infrared (NIR) resin check; clean PET, HDPE and PP can be sold to a ReflowEconomy micro-factory. The calculation note WML-CAL-001 finds that a MobileNetV3-Large model of about 4.4 MB answers in 64 to 201 ms on a low-cost phone and uses about 8 % of the battery in an 8 h shift of 500 scans, provided the screen sleeps between scans. The binding constraints are data and evaluation: about 10,000 field photos organized by buyer grade are needed, coverage is estimated at 68 % against a 70 % target, and a camera alone cannot separate some resins.
+WasteWise-ml is an open image classifier that runs offline on a low-cost Android phone. The user photographs one item on a light mat, and within a fraction of a second the phone shows the item's material class, its local buyer grade and a confidence value, or says "Unsure" or "Hazard". Sorted material goes to bins that match the buyer's price list; unsure plastics go to WasteWise Scan for a near-infrared (NIR) resin check; clean PET, HDPE and PP can be sold to a ReflowEconomy micro-factory. The calculation note WML-CAL-001 finds that a MobileNetV3-Large model of about 4.4 MB answers in 64 to 201 ms on a low-cost phone (from a preview-size frame; up to 331 ms if a full 12 MP frame is decoded first) and uses about 9 % of the battery in an 8 h shift of 500 scans, provided the screen sleeps between scans. Since the 2026-10-25 STEM check (WML-STM-001) a Bluetooth shutter button at the bench edge takes the photo and the result fills the screen and is spoken, so the shortest users neither reach up to the phone nor read it edge-on (fix F1, WML-DDR-005). Two concept options were scored (WML-OPT-001); this design is option A, recommended and awaiting Amish's choice. The binding constraints are data and evaluation: about 10,000 field photos organized by buyer grade are needed, coverage is estimated at 66 % against a 70 % target, and a camera alone cannot separate some resins.
 
 ![Data and material flow](../media/flow.png)
 
@@ -54,10 +58,10 @@ WasteWise-ml is an open image classifier that runs offline on a low-cost Android
 ## How it works
 
 1. **Present.** The picker takes one item from the input sack and holds or places it on a light mat under the phone. On the floor or in the street, or at a site without a square-edged bench about 600 mm deep, the phone is handheld instead. The prototype has no lamp: the site light is recorded with every photo, by a light reading or a gray card in a corner of the frame (decided by Amish, 2026-10-02).
-2. **Photograph.** A tap, or a foot switch in a later version, takes one photo. The app saves the site light record with the photo: a light reading from the phone's light sensor, which faces up toward the site light when the phone lies screen up in its tray (or is held over the item), or a gray card the picker lays in a corner of the frame, away from the item. The app then crops and resizes the photo to 224 x 224 pixels; the light record is kept with the photo for training and evaluation, and does not change the result. The camera does not run between scans and the screen sleeps until the next tap, which is what keeps the battery within R10 (see "Battery").
+2. **Photograph.** A press of the Bluetooth shutter button at the bench edge (or a tap on the screen) takes one photo (fix F1). The app saves the site light record with the photo: a light reading from the phone's light sensor, which faces up toward the site light when the phone lies screen up in its tray (or is held over the item), or a gray card the picker lays in a corner of the frame, away from the item. The app then crops and resizes the photo to 224 x 224 pixels; the light record is kept with the photo for training and evaluation, and does not change the result. The camera does not run between scans and the screen sleeps until the next tap, which is what keeps the battery within R10 (see "Battery").
 3. **Classify.** A mobile convolutional network with one shared backbone and two small output heads runs on the phone with no network. The first head predicts one of seven material classes; the second predicts the grade within that class (about 22 grades, listed in `ml/data/taxonomy.yaml`).
 4. **Decide.** The app compares the confidence with per-class thresholds.
-   - Confident: it shows an icon, a color and a bin number, and optionally speaks the grade in the local language.
+   - Confident: the whole screen turns the class color, with the bin number at least 40 mm tall and an icon, and the phone says the bin number in the local language by default (it can be switched off). The flat screen is seen nearly edge-on by short users, so small symbols would not read (fix F1, PR-008, PR-016).
    - Below threshold: it shows "Unsure: check". The item goes to the Unsure bin, and later to WasteWise Scan (for plastics) or the picker's own judgment.
    - Any hazard class above a low threshold: it shows "Hazard: do not sort" in red. The item goes to the hazard box. Hazards are never offered as a sortable grade.
 5. **Map to local grades.** A per-site configuration file maps the model's grades to the buyer's grade names, bin numbers and colors, so a new city needs a new file, not a new model, unless it pays for a grade the model cannot see.
@@ -66,7 +70,7 @@ WasteWise-ml is an open image classifier that runs offline on a low-cost Android
 
 ## Main components
 
-Numbers 1 to 7 match the exploded view (Figure 3) and `bom/bom.csv`. Items 8 to 10 are effort and compute, with no geometry; item 11 (BOM only) is the stand's G-clamps and fixings.
+Numbers 1 to 7 and 12 match the exploded view (Figure 3) and `bom/bom.csv`. Items 8 to 10 are effort and compute, with no geometry; item 11 is the stand's G-clamps and fixings.
 
 | No. | Component | Role |
 | --- | --- | --- |
@@ -76,7 +80,8 @@ Numbers 1 to 7 match the exploded view (Figure 3) and `bom/bom.csv`. Items 8 to 
 | 4 | Bins by material class (7) | About 60 L each: PET; HDPE and PP; film; metal; paper and carton; glass; Unsure |
 | 5 | Hazard box | Lidded steel box with a sand layer and a sharps container inside |
 | 6 | Power bank and cable | Keeps the phone running through a shift |
-| 7 | Platform scale | Weighs sorted lots before sale |
+| 7 | Platform scale | Weighs sorted lots before sale; verified and stamped for trade (WML-REG-001 G3) |
+| 12 | Bluetooth shutter button | Takes the photo from the bench edge, beside the user's hand (fix F1) |
 | 8 | Labeled field dataset | About 10,000 consented photos labeled by class and grade |
 | 9 | Field evaluation set | About 2,000 photos with verified ground truth, never used for training |
 | 10 | Training compute | About 40 GPU hours of fine-tuning and evaluation |
@@ -105,8 +110,8 @@ All values below are from WML-CAL-001 and its script `docs/04-calcs/sizing.py`. 
 ### Battery
 
 - A 4,000 mAh battery at 3.85 V holds 15.4 Wh. One scan (3 s of screen, camera and processor at about 2.5 W) is 7.5 J; the model itself is 0.09 to 0.35 J of that.
-- **Tap-to-scan with the screen asleep between scans:** about 1.3 Wh per 8 h shift of 500 scans, **8 %** of the battery. R10 is met.
-- **Screen on all shift:** about 7.9 Wh, 51 %. R10 is met only with the power bank (item 6), which puts about 26.7 Wh into the phone, 3.4 such shifts.
+- **Tap-to-scan with the screen asleep between scans:** about 1.4 Wh per 8 h shift of 500 scans with voice on and the button linked, **9 %** of the battery. PR-010 (was R10) is met.
+- **Screen on all shift:** about 8.0 Wh, 52 %. PR-010 is met only with the power bank (item 6), which puts about 26.7 Wh into the phone, 3.4 such shifts.
 - **Live preview all shift:** about 20 Wh, 130 %. Not used (decided, D5).
 
 ### Camera at the station
@@ -122,7 +127,7 @@ With a 26 mm-equivalent main camera 440 mm above the mat, the phone sees 586 x 4
 
 ### Share of items answered
 
-On an assumed dry mixed stream, about 9 % of items are opaque HDPE or PP or black plastics that a camera cannot grade. With the remaining items thresholded for 90 % grade accuracy, the app answers about **65 % with a grade, 32 % "Unsure" and 3 % hazard**. That is 68 % answered, 2 points under R4. The hazard box receives about 4.9 % of items, 40 % of them false alarms, which is the intended trade for high hazard recall.
+On an assumed dry mixed stream, about 9 % of items are opaque HDPE or PP or black plastics that a camera cannot grade. With the remaining items thresholded for 90 % grade accuracy, the app answers about **63 % with a grade, 32 % "Unsure" and 5 % to the hazard box** (3 % true hazards; WML-CAL-001 v0.5 counts false alarms out of the graded pool). That is about 66 % answered, 4 points under PR-004 (was R4). The hazard box receives about 4.9 % of items, 40 % of them false alarms, which is the intended trade for high hazard recall.
 
 ### Evaluation
 
@@ -134,11 +139,11 @@ The benefit is the price difference between a sorted grade and mixed material, t
 
 ### Pilot cost (reference only)
 
-One station (items 1 to 7 and 11, the stand's clamps and fixings) is $309 in indicative prices; a two-station pilot with dataset, evaluation set and compute is $1,348. This repository has no hardware budget; these figures are for planning only.
+One station (items 1 to 7, 11 and 12) is $313.39 in indicative and cited prices; a two-station pilot with dataset, evaluation set and compute is $1,356.78. This repository has no hardware budget; these figures are for planning only.
 
 ![General arrangement](../cad/drawings/WML-DWG-001.png)
 
-*Figure 4. General arrangement of the sorting station, drawing WML-DWG-001 Rev P2, generated from `cad/src/model.py`. Preliminary, not for fabrication.*
+*Figure 4. General arrangement of the sorting station, drawing WML-DWG-001 Rev P3, generated from `cad/src/model.py`. Preliminary, not for fabrication.*
 
 ## Key design choices
 
@@ -158,9 +163,10 @@ Choices 1 to 4 and 6 to 8 were decided by Amish on 2026-09-25, going with the re
 > **Safety:** WasteWise-ml guides sorting; it does not make any item safe to handle and does not certify material. The sorting station has sharp, chemical, biological and fire hazards, and a wrong answer can put a hazardous item in the wrong place.
 
 - **Sharps and broken glass.** Cut-resistant gloves are the norm at the station. The app must never ask the user to hold an item closer or turn it by hand for a better photo; the mat and stand let the item lie still.
-- **Lithium cells.** Loose cells and devices with batteries can ignite when crushed, punctured or baled. Any battery or electronic item goes to the lidded steel hazard box with a sand layer, away from paper and film. The hazard class is tuned for high recall (R3), and a hazard result can never be overridden into a sortable grade in the app.
+- **Lithium cells.** Loose cells and devices with batteries can ignite when crushed, punctured or baled. Any battery or electronic item goes to the lidded steel hazard box with a 50 mm sand layer, away from paper and film. Cover the terminals of every loose cell with the PVC tape kept in the box before it goes in, and lay it in the sand clear of the steel walls, so it cannot short (fix F3, PR-018). The sand bed is sized for a phone-size cell; larger packs follow the partner's fire guidance. The hazard class is tuned for high recall (R3), and a hazard result can never be overridden into a sortable grade in the app.
 - **Chemical and medical waste.** Containers with residues, aerosol cans, syringes and medical waste are flagged as hazards. Disposal routes are agreed with the partner and the municipality; the app does not advise on disposal.
 - **Misclassification.** The model will be wrong on some items. Grades are advice, the "Unsure" route is normal, and the buyer's check remains the final grade. The model card will publish per-class error rates.
+- **Shutter button cell.** The button runs on a CR2032 coin cell, which can cause internal burns if a child swallows it; keep spare cells out of reach.
 - **Power bank and phone.** Both contain lithium cells: keep them shaded, off hot metal and away from the hazard box; do not charge a swollen or damaged pack.
 - **Collecting hazard photos.** Hazard photos for training and evaluation are taken where the item lies, or with sharps inside a rigid container or held with tongs, by people trained for it. Pickers are never asked to collect or handle hazards for the dataset.
 - **Privacy.** Photos must not include faces or identify people; upload is opt-in; the data protocol is agreed with the partner before any collection, and includes the site light record with every photo.
@@ -173,7 +179,7 @@ Paper answers from WML-CAL-001 are given where it has one; the rest need field d
 - Which partner organization, city and buyers first? Decided by Amish on 2026-10-02: a member-owned waste picker cooperative that already sorts dry waste for scrap buyers; SWaCH in Pune, India, is the first candidate to approach, with its scrap dealers as the buyers (WML-DEC-001).
 - How much does the light mat help versus a handheld photo on a mixed background? Needs field data.
 - Which grades matter most to the first buyer, and which are visible in a photo at all? Needs the first co-design sessions.
-- What confidence thresholds give 70 % or more coverage while meeting R1 and R3? On paper about 68 %; set from the field evaluation set.
+- What confidence thresholds give 70 % or more coverage while meeting R1 and R3? On paper about 66 %; set from the field evaluation set.
 - How should the app handle crushed, wet or dirty items, and labels that lie about the contents?
 - Dataset licenses: TrashNet and TACO are usable with checks; ZeroWaste (CC BY-NC 4.0) is excluded from training (decided, N2). Per-image checks on TACO remain.
 - The hazard evaluation size of 400 items (N1) and the 440 mm camera height (N3) were decided by Amish on 2026-09-25 (WML-DDR-002).

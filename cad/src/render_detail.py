@@ -90,7 +90,7 @@ def detail_parts(M):
     sx0, sy0 = p["scale_x0"], p["scale_y0"]
     hx, hy, hz = p["scale_head"]
     colx = sx0 + p["scale_l"] / 2
-    fy = sy0 + p["scale_d"] - 30
+    fy = sy0 + p["scale_d"] - 25 - hy / 2      # front face of the scale head (cad/src/model.py)
     out.append(Part("Scale display (cosmetic)", _box(colx - 55, colx + 55, fy - 0.6, fy,
                                                      p["scale_col_h"] + 45, p["scale_col_h"] + 85), "#86EFAC"))
     out.append(Part("Scale pad, rubber (cosmetic)", _box(sx0 + 15, sx0 + p["scale_l"] - 15, sy0 + 15,

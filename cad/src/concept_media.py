@@ -51,9 +51,7 @@ film = Pos(860, 440, Z0 + 12) * Box(170, 120, 24)                               
 
 labels = [Part(f"Bin label: {name}", lab, col, None, (0, -700, 0))
           for (name, col), lab in zip(model.BIN_CLASSES, M["bin_labels"])]
-bins = M["bins"][0]
-for b in M["bins"][1:]:
-    bins = bins + b
+bins = model._group(M["bins"])
 
 parts = [
     Part("Sorting bench (site's own)", M["bench"], "#8B7355", None),
@@ -64,6 +62,7 @@ parts = [
     Part("Bins by material class (7)", bins, "#64748B", 4, (0, -700, 0)),
     Part("Hazard box, lidded steel", M["hazard"] + M["hazard_lid"], "#DC2626", 5, (250, -350, 450)),
     Part("Power bank and cable", M["powerbank"], "#0EA5E9", 6, (350, 350, 150)),
+    Part("Bluetooth shutter button", M["remote"], "#0F766E", 12, (-250, 350, 120)),
     Part("Platform scale, 60 kg", M["scale"], "#475569", 7, (-300, -400, 0)),
     Part("PET bottle", bottle, "#7DD3FC", None),
     Part("Aluminum can", can, "#CBD5E1", None),
@@ -75,12 +74,12 @@ person = human_figure(1750, x=700, y=1050, z=0)
 
 render_all(
     parts, project="WasteWise-ml", title="Sorting station concept", dwg_no="WML-DWG-010",
-    date="2026-10-02",
+    date="2026-10-25",
     key_figures=["Phone camera 440 mm over a 700 x 450 mm mat; frame 586 x 439 mm",
                  "MobileNetV3-Large, 4.4 MB int8; 64 to 201 ms per scan (WML-CAL-001)",
-                 "8 % of battery per 500-scan shift if the screen sleeps between scans",
+                 "9 % of battery per 500-scan shift if the screen sleeps between scans",
                  "About 65 % graded, 32 % 'Unsure', 3 % hazard (estimate); hazards never sorted",
-                 "Pilot station $309, indicative; no hardware budget"],
+                 "Pilot station $313, indicative; no hardware budget"],
     cut=False, scale_figure=False, context=[person],
 )
 

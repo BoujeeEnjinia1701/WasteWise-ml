@@ -26,7 +26,7 @@ import model  # noqa: E402
 
 OUT = ROOT / "docs" / "05-build-plan"
 DWG = ROOT / "cad" / "drawings"
-DATE = "2026-09-30"
+DATE = "2026-10-25"
 C = model.build_components()
 p = C["_p"]
 TOP, BT, T = p["bench_h"], p["base_top"], p["arm_z"]
@@ -34,7 +34,7 @@ PX, PY = p["post_x"], p["post_y"]
 
 COL = {"base": "#B08D57", "foot": "#1D4ED8", "post": "#0E7490", "arm": "#0F766E", "plate": "#6D28D9",
        "tray": "#D97706", "mat": "#CBD5E1", "clamps": "#DC2626", "phone": "#111827", "pb": "#0EA5E9",
-       "bolt": "#374151", "bench": "#A8A29E"}
+       "bolt": "#374151", "bench": "#A8A29E", "remote": "#0F766E"}
 
 
 def _fuse(shapes):
@@ -69,7 +69,8 @@ def _fix_groups():
     return {k: _fuse(v) for k, v in g.items()}
 
 
-FX = _fix_groups()
+FX = C.get("fixing_groups") or _fix_groups()    # kit 1.9 model: fixings already grouped by joint
+G = model._group
 
 
 def bench_top(x0=380, x1=1060):
@@ -80,19 +81,20 @@ def bench_top(x0=380, x1=1060):
 def made():
     return {
         "base": part("Base board", C["base"], COL["base"]),
-        "feet": part("Foot angles (2)", C["foot_r"] + C["foot_l"], COL["foot"]),
+        "feet": part("Foot angles (2)", G([C["foot_r"], C["foot_l"]]), COL["foot"]),
         "post": part("Post", C["post"], COL["post"]),
         "arm": part("Arm", C["arm"], COL["arm"]),
-        "plates": part("Corner plates (2)", C["plate_r"] + C["plate_l"], COL["plate"]),
+        "plates": part("Corner plates (2)", G([C["plate_r"], C["plate_l"]]), COL["plate"]),
         "tray": part("Phone tray", C["tray"], COL["tray"]),
         "mat": part("Sorting mat", C["mat"], COL["mat"]),
         "clamps": part("G-clamps (2)", C["clamps"], COL["clamps"]),
         "phone": part("Phone", C["phone"], COL["phone"]),
-        "pb": part("Power bank and cable", C["powerbank"] + C["cable"], COL["pb"]),
+        "pb": part("Power bank and cable", G([C["powerbank"], C["cable"], C["ties"]]), COL["pb"]),
+        "remote": part("Bluetooth shutter button", C["remote"], COL["remote"]),
     }
 
 
-ORDER = ["base", "feet", "post", "arm", "plates", "tray", "mat", "clamps", "phone", "pb"]
+ORDER = ["base", "feet", "post", "arm", "plates", "tray", "mat", "clamps", "phone", "pb", "remote"]
 
 
 # ----------------------------------------------------------------- overview
@@ -100,14 +102,14 @@ def overview():
     M = made()
     off = {"base": (0, 120, -90), "feet": (0, 120, 20), "post": (0, 120, 150), "arm": (0, -30, 300),
            "plates": (0, 120, 420), "tray": (0, -110, 260), "mat": (0, -230, -120), "clamps": (0, 320, -110),
-           "phone": (0, -110, 420), "pb": (330, 200, -60)}
+           "phone": (0, -110, 420), "pb": (330, 200, -60), "remote": (-120, 260, -60)}
     parts = []
     for k in ORDER:
         q = M[k]
         q.explode = off[k]
         parts.append(q)
     return bv.overview(parts, OUT / "overview.png", "WasteWise-ml scanning rig: every component, pulled apart",
-                       subtitle="Numbered in build order: 1 to 7 are made, 8 to 10 are bought. Seen from the front right and above",
+                       subtitle="Numbered in build order: 1 to 7 are made, 8 to 11 are bought. Seen from the front right and above",
                        elev=20, azim=-55, size=(11, 8.5), dpi=150)
 
 
@@ -223,7 +225,7 @@ def sheets():
                "  40 x 55 mm tab on one long edge, 5 mm from the charging end.",
                "Fold lines 10 mm in from each long edge. On the tab side, cut the",
                "  10 mm strip away from the charging end to 48 mm (beside the tab).",
-               "Window for the camera bump: 34 x 34 mm, centred 25 mm from the",
+               "Window for the camera bump: 32 x 32 mm, centred 25 mm from the",
                "  charging end on the centre line. Measure your phone first: the",
                "  window is the bump plus 2 mm all round, wherever the bump is.",
                "Two 5.5 mm holes in the tab, on its centre line, 19 and 49 mm",
@@ -241,13 +243,15 @@ def sheets():
         material="Hardboard 4 mm (or 4 mm plywood), painted matte light grey", view_shape=at0(mt), inset_view=(35, -60),
         notes=["Cut one piece 700 x 450 mm from 4 mm hardboard; sand the edges and",
                "  round the corners about 3 mm.",
-               "Prime, then paint the smooth face matte light grey (two coats).",
+               "Prime both faces and all four edges; paint the smooth face matte",
+               "  light grey (two coats) and the back face and edges any colour.",
                "Rule a 50 mm grid in mid grey from the two centre lines: 13 lines",
                "  across (the last 50 mm from each end), 9 lines deep (25 from the edges).",
                "  Lines about 1 mm wide (a fine paint marker along a steel rule).",
                "Mark the centre of the long back edge with a short line on the edge:",
                "  it lines up with the base board's centre mark.",
-               "Seal with clear matte varnish so it wipes clean; no gloss (glare).",
+               "Seal both faces and all four edges with clear matte varnish so",
+               "  wet items cannot swell it and it wipes clean; no gloss (glare).",
                "Fit: lies flat on the bench, back edge against the base board's",
                "  front edge, centre marks lined up. Nothing fixes it.",
                "Check: flat on the bench; no shine under a lamp from the phone's view."],
@@ -277,7 +281,7 @@ def layouts():
     ax.text(L - 3, s + 1.5, "fold line: fold up 90", ha="right", va="bottom", fontsize=7.5, color=WARN)
     ax.text(L - 3, Wd - s - 1.5, "fold line: fold up 90", ha="right", va="top", fontsize=7.5, color=WARN)
     ax.add_patch(Rectangle((25 - 17, Wd / 2 - 17), 34, 34, fc="white", ec=INK, lw=1.1))
-    ax.text(25, Wd / 2, "window\n34 x 34", ha="center", va="center", fontsize=7.5, color=INK)
+    ax.text(25, Wd / 2, "window\n32 x 32", ha="center", va="center", fontsize=7.5, color=INK)
     for d in (19.0, 49.0):
         ax.add_patch(plt.Circle((tab_x + tab_w / 2, Wd - s + d), 2.75, fc="white", ec=INK, lw=1.0))
     ax.text(tab_x + tab_w + 12, Wd + 42, "tab: two 5.5 holes on its centre line,\n19 and 49 from the fold line", fontsize=7.5,
@@ -463,12 +467,12 @@ def steps():
        "foot angles onto the post",
        "Backs of the upright legs flat on the post's side faces, flat legs flush with the post's bottom end; snug the nuts",
        elev=20, azim=-40)
-    stand_lo = part("Post with its foot angles", C["post"] + C["foot_r"] + C["foot_l"] + FX["foot"], COL["post"])
+    stand_lo = part("Post with its foot angles", G([C["post"], C["foot_r"], C["foot_l"], FX["foot"]]), COL["post"])
     st(2, [M["base"]], [mv(stand_lo, (0, 0, 140)), mv(part("Four wood screws", FX["screw"], "#78716C"), (0, 0, 240))],
        "post onto the base board",
        "Post on the centre line, 45 mm back from the front edge, upright both ways; drill pilots through the angles, then screw",
        elev=24, azim=-50, label_done=True)
-    lower = [M["base"], part("Post and foot angles", C["post"] + C["foot_r"] + C["foot_l"], COL["post"])]
+    lower = [M["base"], part("Post and foot angles", G([C["post"], C["foot_r"], C["foot_l"]]), COL["post"])]
     st(3, lower, [mv(M["arm"], (0, -90, 0)),
                   mv(part("Right corner plate", C["plate_r"], COL["plate"]), (70, 0, 0)),
                   mv(part("Left corner plate", C["plate_l"], COL["plate"]), (-70, 0, 0))],
@@ -491,9 +495,10 @@ def steps():
        "Screen up, charging end at the open end of the tray; lower it so the camera bump drops into the window",
        context=bench, elev=26, azim=-60, label_done=False)
     st(8, stand + [M["clamps"], M["mat"], M["phone"]],
-       [mv(part("Power bank", C["powerbank"], COL["pb"]), (160, 0, 0)), part("Cable, in place", C["cable"], "#0369A1")],
-       "power bank and cable",
-       "Seen from behind, the user's side. Power bank beside the board; cable up the post's back face and along the arm top, two ties on each",
+       [mv(part("Power bank", C["powerbank"], COL["pb"]), (160, 0, 0)), part("Cable and ties, in place", G([C["cable"], C["ties"]]), "#0369A1"),
+        mv(part("Shutter button on its pad", C["remote"], COL["remote"]), (-120, 0, 0))],
+       "power bank, cable and shutter button",
+       "Seen from behind, the user's side. Power bank beside the board; cable up the post's back face and along one edge of the arm top, two ties on each; button on the bench edge",
        context=bench, elev=24, azim=40, label_done=False)
     return out
 

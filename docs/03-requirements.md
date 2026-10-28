@@ -1,18 +1,18 @@
 ---
-doc_id: WML-REQ-001
-title: WasteWise-ml requirements
+doc_id: WML-PRS-001
+title: WasteWise-ml product requirements and specifications
 project: WasteWise-ml
-doc_type: Requirements
-version: "0.5"
+doc_type: Product requirements and specifications
+version: "0.6"
 status: Draft
-date: '2026-10-02'
+date: '2026-10-25'
 author: Amish Chadha
 license: MIT
 revisions:
 - version: "0.1"
   date: '2026-09-24'
   author: Amish Chadha
-  change: Initial scaffold
+  change: Initial scaffold (as WML-REQ-001)
 - version: "0.2"
   date: '2026-09-25'
   author: Amish Chadha
@@ -29,43 +29,60 @@ revisions:
   date: '2026-10-02'
   author: Amish Chadha
   change: Decisions of 2026-10-02 (WML-DEC-001) carried in; no lamp, site light recorded with every photo; first candidate partner named in R14; no status change
+- version: "0.6"
+  date: '2026-10-25'
+  author: Amish Chadha
+  change: "Kit 1.8 upgrade: WML-REQ-001 becomes WML-PRS-001; R1 to R14 migrated to PR-001 to PR-014 with tolerance, units and the user requirement each traces to; PR-015 to PR-023 added from the STEM check fixes (WML-DEC-001 F1 to F3, F5) and the calculation note; PR-008 and PR-010 restated for fix F1; PR-005, PR-016 and PR-019 statuses set after the independent review"
 ---
 
-# WasteWise-ml requirements
+# WasteWise-ml product requirements and specifications
 
-These are first-pass requirements for the concept. Targets are proposals for review, not yet validated with users, and will be revised after co-design sessions (see WML-PRB-001). No model has been trained, and at TRL 3 none will be: the status column gives the position on paper from the calculation note WML-CAL-001 and says plainly where a requirement is not met. No target was relaxed or redefined by the 2026-09-25 decisions (WML-DDR-001); they fix the design choices that the status depends on.
+What the design must do, each traced to a user need in WML-URS-001. Targets are proposals for review with a co-design partner (first candidate SWaCH, Pune, decided 2026-10-02), not yet validated with users. No model has been trained, and at TRL 3 none will be: the status column gives the position on paper from the calculation note WML-CAL-001 and says plainly where a requirement is not met. The "Was" column gives the requirement number in WML-REQ-001, which this document replaces. Method: STANDARDS section 22.
 
-The **reference use case** is one person at a sorting bench with a low-cost Android phone on a stand over one item at a time on a light mat (decided, D1), or holding the phone by hand on the floor, on a dry mixed stream, in daylight or a lit shed with no lamp on the rig (decided 2026-10-02; the site light is recorded with every photo), with no network. The app uses tap-to-scan (decided, D5).
+The **reference use case** is one person at a sorting bench with a low-cost Android phone lying screen up in the tray of a clamped stand over one item at a time on a light mat (decided, D1), or holding the phone by hand on the floor, on a dry mixed stream, in daylight or a lit shed with no lamp on the rig (decided 2026-10-02; the site light is recorded with every photo), with no network. The app uses tap-to-scan (decided, D5); since 2026-10-25 the tap is a press of a Bluetooth shutter button at the bench edge, and the result fills the screen and is spoken by default (fix F1, decided under Amish's standing instruction of 2026-10-23).
 
-**Table 1.** Requirements, targets and status at TRL 3.
+Table 1. Product requirements and specifications.
 
-| ID | Requirement | Target | Verification (TRL 4 or later, on hold) | Status at TRL 3 (WML-CAL-001) |
-| --- | --- | --- | --- | --- |
-| R1 | Material class accuracy | Top-1 accuracy of 90 % or more on the seven classes in `ml/data/taxonomy.yaml`, on items the model does not abstain on, on the field evaluation set (R11) | Evaluation on the held-out field set | At risk: expected full-coverage class error 9.1 % with about 1,290 photos per class, on an assumed learning curve |
-| R2 | Plastic grade accuracy from a photo | 90 % or more for PET bottles and trays, 80 % or more for other rigid HDPE and PP, on non-abstained items | Field set, ground truth from NIR (WasteWise Scan) or legible resin codes | **Not met by design** for opaque HDPE versus PP and for black plastics (about 9 % of items); these go to "Unsure" and to WasteWise Scan. At risk for PET |
-| R3 | Hazard flag | Recall of 98 % or more for batteries, sharps and chemical containers; a hazard result is never offered as a sortable grade | Field set with at least 400 hazard items (decided, N1; 400 items prove 98 % with up to 3 misses, where 200 would allow none, WML-CAL-001) | At risk: hazards are rare (about 300 in 10,000 natural photos against 2,400 needed) |
-| R4 | Abstain when unsure | Model says "Unsure" below a set confidence; coverage (share of items answered) 70 % or more while meeting R1 | Coverage and accuracy curve on the field set | At risk: about 68 % answered (65 % with a grade, 3 % hazard flags), 32 % "Unsure" |
-| R5 | Offline, on-device speed | Result within 0.3 s of the photo on the reference phone (R12), with no network | Timing on the reference phone | Met on paper: 64 to 201 ms for MobileNetV3-Large in 8-bit form (decided, D2) |
-| R6 | Small download | Model file 10 MB or less; app with model 30 MB or less | File sizes of the exported models | Met on paper: 4.4 MB in 8-bit form; app 12 to 19 MB. Float32 (17.5 MB) would not meet it |
-| R7 | Quick to use | 3 s or less from placing an item to seeing the result, including tap and camera focus | Timed trials with users | Not verifiable at TRL 3: time budget 0.9 s nominal, 2.0 s worst |
-| R8 | Usable without reading | Result shown as icon, color and bin number, with optional voice in the local language; users new to the app sort correctly after a 15 min briefing | Co-design sessions and usability trials | Not verifiable at TRL 3; depends on co-design |
-| R9 | Local grades | Buyer grade names and bin numbers set per site in a configuration file, without retraining, for grades the model already separates | Configuration review | Met by design review (per-site file decided, D4); new visual grades still need retraining |
-| R10 | Battery life | A full 8 h shift with up to 500 scans uses 30 % or less of a 4,000 mAh phone battery | Energy estimate; later measurement | Met on condition: 8 % with tap-to-scan and the screen sleeping between scans; 51 % with the screen on all shift (met only with the power bank); 130 % with a live preview |
-| R11 | Field evaluation set | 2,000 or more verified images from at least two sites, 50 or more per grade, never used for training | Dataset manifest | **Not met**: the set does not exist. Sized at 2,000 (400 hazards, 900 non-hazard minimum, 700 natural mix), about 43 h of labeling |
-| R12 | Reference phone | Runs on an Android phone costing about $150 or less, 3 GB RAM, 2019 or later chipset | Device test | Met on paper: $130 indicative reference phone, one per pilot station (decided, D8) |
-| R13 | Open and licensed | Code and weights MIT; every dataset license in `ml/data/SOURCES.md` allows training and publishing weights; a model card with per-class results and known failure modes | License review | At risk: TrashNet (MIT) and TACO (annotations CC BY 4.0, images per image) usable with checks; ZeroWaste (CC BY-NC 4.0) is excluded from training (decided, N2); TACO images still need per-image license checks |
-| R14 | Consent and privacy | Field photos only with informed consent; no faces or identifiable people kept; upload opt-in; pickers' organization co-owns field data (decided, D6) | Data protocol review with the partner | Not verifiable at TRL 3: protocol to be written with the partner; first candidate SWaCH, Pune (decided 2026-10-02), not yet approached; the protocol will include the site light record |
+| ID | Traces to | Category | Title | Requirement | Target | Tolerance | Units | Verification | Status | Was |
+| --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
+| PR-001 | UR-001, UR-013 | Performance | Material class accuracy | The model shall name the right one of the seven classes in `ml/data/taxonomy.yaml` on items it does not abstain on, on the field evaluation set (PR-011) | 90 | min | % top-1 | Test on the field evaluation set, TRL 4 (on hold) | At risk | R1 |
+| PR-002 | UR-002 | Performance | Plastic grade accuracy from a photo | The model shall name the grade of answered plastic items, with ground truth from NIR (WasteWise Scan) or legible resin codes | 90 for PET bottles and trays; 80 for other rigid HDPE and PP | min | % | Test on the field evaluation set, TRL 4 | Not met | R2 |
+| PR-003 | UR-003 | Safety | Hazard flag | The app shall flag batteries, sharps and chemical containers as hazards and shall never offer a hazard as a sortable grade | 98 recall, shown with at least 400 hazard items (up to 3 misses) | min | % | Test on the field evaluation set, TRL 4; design review of the app | At risk | R3 |
+| PR-004 | UR-004 | Performance | Abstain when unsure | The model shall say "Unsure" below a set confidence and answer at least the target share of items while meeting PR-001 | 70 | min | % of items answered | Coverage and accuracy curve on the field set, TRL 4 (66 % on paper, WML-CAL-001 section 8) | At risk | R4 |
+| PR-005 | UR-005, UR-008 | Performance | Offline, on-device speed | The result shall appear within the target of the photo on the reference phone (PR-012), with no network | 0.3 | max | s | Analysis (WML-CAL-001 section 3: 201 ms from a preview-size frame, up to 331 ms if a full 12 MP frame is decoded), TRL 3; timing on the reference phone, TRL 4 | At risk | R5 |
+| PR-006 | UR-008 | Software | Small download | The model file and the app with the model shall stay within the targets | 10 (model); 30 (app) | max | MB | Analysis (WML-CAL-001 section 2), TRL 3; file sizes of the exports, TRL 4 | Met on paper | R6 |
+| PR-007 | UR-005 | Usability | Quick to use | Placing an item to seeing the result, including the trigger and camera focus, shall take no longer than the target | 3 | max | s | Time budget (WML-CAL-001 section 4), TRL 3; timed trials with users, TRL 4 | To verify at TRL 4 | R7 |
+| PR-008 | UR-006 | Usability | Usable without reading | The result shall fill the screen in the class colour with the bin number at least 40 mm tall and an icon, and the phone shall say the bin number in the local language by default (it can be switched off); users new to the app shall sort correctly after a briefing | 15 | max | min of briefing | Co-design sessions and usability trials, TRL 4 | To verify at TRL 4 | R8 |
+| PR-009 | UR-010 | Software | Local grades | Buyer grade names and bin numbers shall be set per site in a configuration file, without retraining, for grades the model already separates | 1 | exact | file per site | Design review, TRL 3 | Met by design | R9 |
+| PR-010 | UR-009 | Electrical | Battery life | A full 8 h shift of up to 500 scans, with voice on and the shutter button linked, shall use no more than the target share of a 4,000 mAh battery | 30 | max | % of battery | Energy estimate (WML-CAL-001 section 5), TRL 3; measurement, TRL 4 | Met on paper | R10 |
+| PR-011 | UR-013 | Performance | Field evaluation set | A verified field evaluation set shall exist, from at least two sites, at least 50 images a grade, never used for training | 2,000 | min | images | Dataset manifest, TRL 4 | Not met | R11 |
+| PR-012 | UR-008, UR-016 | Physical architecture | Reference phone | The app shall run on an Android phone with 3 GB RAM and a 2019 or later chipset costing no more than the target | 150 | max | USD | Analysis (BOM line 1), TRL 3; device test, TRL 4 | Met on paper | R12 |
+| PR-013 | UR-012 | Software | Open and licensed | Code and weights shall be MIT; every dataset license in `ml/data/SOURCES.md` shall allow training and publishing weights; a model card shall give per-class results and known failure modes | 100 | min | % of sources cleared | License review, TRL 3 and 4 | At risk | R13 |
+| PR-014 | UR-011 | Safety | Consent and privacy | Field photos shall be taken only with informed consent, keep no faces or identifiable people, be uploaded only on opt-in and be co-owned by the pickers' organization (decided, D6) | 1 | exact | protocol agreed with the partner | Data protocol review with the partner, TRL 4 | To verify at TRL 4 | R14 |
+| PR-015 | UR-007 | Usability | Scan trigger at hand | The scan shall be triggered by a button at bench height within the target distance of the user's edge of the bench, so no one reaches up to the phone (fix F1) | 100 | max | mm from the bench edge | Inspection of the model (WML-CAL-001 section 12: 45 mm), TRL 3; first checks, TRL 4 | Met by design | |
+| PR-016 | UR-006, UR-007 | Usability | Result legible from where users stand | The bin number shall subtend at least the target visual angle at the eye of every user from the 5th percentile Indian woman up, standing at the bench (fix F1) | 16 (20 preferred) | min | arcmin | Analysis (WML-CAL-001 section 12: 43 arcmin at the 5th percentile, but at 83 degrees off the screen normal), TRL 3; trial with a short user, TRL 4 | To verify at TRL 4 | |
+| PR-017 | UR-015 | Materials | Mat sealed all over | The sorting mat shall be primed, painted and varnished on both faces and all four edges, so wet items cannot swell or cup it (fix F2) | 0 | max | unsealed faces or edges | Inspection (WML-BLD-001 section 3.7), TRL 3 and 4 | Met by design | |
+| PR-018 | UR-003 | Safety | Loose cells cannot short | Loose cells shall go into the hazard box with their terminals taped, laid in the sand bed clear of the steel walls; the box shall carry a tape roll (fix F3) | 0 | max | bare terminals in the box | Inspection; site briefing, TRL 4 | Met by design | |
+| PR-019 | UR-001 | Performance | Picture on the mat | The camera's picture, with the phone's placement in the tray allowed for, shall fall inside the 700 x 450 mm mat with the stand outside it | 450 | max | mm picture depth plus placement stack | Analysis (WML-CAL-001 section 6: 439 mm at 26 mm plus 3.3 mm a side of stack; fits lenses of 25.76 mm and longer), TRL 3; first check "Picture on the mat", TRL 4 | At risk | |
+| PR-020 | UR-015 | Environment and durability | Phone temperature | In shade at a 40 C ambient the phone, used tap-to-scan, shall stay below the Li-ion charge limit; the rig shall stand in shade | 45 | max | C | Analysis (WML-CAL-001 section 13: 40.7 C), TRL 3; site temperature log, TRL 4 | Met on paper | |
+| PR-021 | UR-014, UR-016 | Physical architecture | Built locally with hand tools | Every made part of the scanning rig shall be makeable from local stock with hand tools and a drill stand, and fit a bench with a square back edge | 0 | max | parts needing a machine shop | Inspection of the build plan (WML-BLD-001), TRL 3 | Met by design | |
+| PR-022 | UR-017 | Usability | Phone lifts out | The phone shall lift out of the tray and go back in within the target, with nothing to undo | 5 | max | s | First check "Phone in and out" (WML-BLD-001), TRL 4 | To verify at TRL 4 | |
+| PR-023 | UR-001 | Physical architecture | Stand rigid | A firm 5 N tap on the screen shall move the picture on the mat by less than the target | 1 | max | mm | Analysis (WML-CAL-001 section 11: 0.30 mm), TRL 3; first check "Stand rigid", TRL 4 | Met on paper | |
 
 ## Requirements not met or at risk
 
-- **R2 is not met by a camera alone** for opaque HDPE versus PP and for black plastics. The design routes these to "Unsure" and to WasteWise Scan.
-- **R11 is not met**: there is no field evaluation set, so R1 to R4 cannot be verified. Building it is TRL 4 work, on hold.
-- **R10 is met only if the screen sleeps between scans** (or with the power bank); tap-to-scan alone is not enough.
-- **R1, R3, R4 and R13 are at risk**: public data is small, clean and not organized by grade; hazards are rare; coverage is estimated at 68 %; one candidate dataset has a non-commercial license.
+- **PR-002 is not met by a camera alone** for opaque HDPE versus PP and for black plastics (about 9 % of items on the assumed stream). The design routes these to "Unsure" and to WasteWise Scan. PET is at risk.
+- **PR-011 is not met**: there is no field evaluation set, so PR-001 to PR-004 cannot be verified. Building it is TRL 4 work, on hold.
+- **PR-001, PR-003, PR-004 and PR-013 are at risk**: public data is small, clean and not organized by grade; hazards are rare; coverage is estimated at 66 %, 4 points under PR-004; one candidate dataset has a non-commercial license, and the license of the ImageNet pretraining weights is still to review.
+- **PR-005 is at risk**: 201 ms at the slow end if the app classifies a preview-size frame, up to 331 ms if it decodes a full 12 MP frame first.
+- **PR-010 is met on paper only if the screen sleeps between scans** (9 % of the battery; 14 % with a 0.12 W standby). With the screen on all shift (52 %) it needs the power bank, and in shade above about 35 C the phone then pauses charging (PR-020).
+- **PR-019 is at risk**: 5.3 mm of margin front and back, of which the phone's placement in the tray takes 3.3 mm after fix F5, so only lenses of 25.76 mm equivalent or longer fit. Lowering the lens to 420 mm is proposed to Amish (WML-DEC-001 D2); the bought phone's picture is measured before the arm is cut (confirm item 2).
+- **PR-016 is to verify**: the 40 mm bin number subtends 43 arcmin for a 5th percentile user, but seen 83 degrees off the screen normal; a trial with a short user confirms it.
 
 ## Assumptions
 
 - Seven material classes from the taxonomy (plastic, paper, metal, glass, organic, composite and hazardous), with 22 grades below them.
-- A phone battery of 4,000 mAh at 3.85 V holds 15.4 Wh; screen, camera and processor draw about 2.5 W while scanning and the screen alone about 0.9 W (estimates, WML-CAL-001 section 5).
+- A phone battery of 4,000 mAh at 3.85 V holds 15.4 Wh; screen, camera and processor draw about 2.5 W while scanning and the screen alone about 0.9 W; the voice prompt about 0.5 W for 1 s; the Bluetooth link about 5 mW (estimates, WML-CAL-001 section 5).
 - Published MobileNetV3 speeds on a Pixel 1 large core are a fair lower bound; a low-cost 2019 or later phone is taken as 1 to 4 times slower (estimate).
 - The stream composition, learning curve and error ranking in WML-CAL-001 sections 7 and 8 are assumptions to be replaced by field data.
+- Body sizes for the ergonomic checks are Indian women's stature from Nag, Nag and Desai (2003) with standard body proportions; they are to be replaced by measurements with the partner.

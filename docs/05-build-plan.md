@@ -3,9 +3,9 @@ doc_id: WML-BLD-001
 title: WasteWise-ml scanning rig build plan
 project: WasteWise-ml
 doc_type: Build plan
-version: "0.2"
+version: "0.3"
 status: Draft
-date: '2026-10-02'
+date: '2026-10-25'
 author: Amish Chadha
 license: MIT
 revisions:
@@ -17,6 +17,10 @@ revisions:
     date: '2026-10-02'
     author: Amish Chadha
     change: Design for construction accepted on 2026-10-02; no lamp on the rig, so the site light is recorded with each photo and checked at the end; pictures unchanged
+  - version: "0.3"
+    date: '2026-10-25'
+    author: Amish Chadha
+    change: "Kit 1.9.1 upgrade: pictures regenerated from the detailed model; STEM check fixes carried in (F1 shutter button, F2 mat sealed all over, F4 cable along one edge of the arm top, WML-DDR-005); first checks renumbered to WML-PRS-001"
 ---
 
 # WasteWise-ml scanning rig build plan
@@ -29,9 +33,9 @@ WasteWise-ml is software: an image classifier that runs on a phone. Its prototyp
 
 ![Figure 1. Every component of the scanning rig, pulled apart and numbered in build order](05-build-plan/overview.png)
 
-*Figure 1. Every component of the scanning rig pulled apart and numbered in build order: 1 to 7 are made, 8 to 10 are bought.*
+*Figure 1. Every component of the scanning rig pulled apart and numbered in build order: 1 to 7 are made, 8 to 11 are bought.*
 
-The rig is a small stand clamped to the back edge of a sorting bench. A plywood base board carries a square aluminium post; an arm of the same tube reaches forward from the top of the post and holds a folded aluminium tray, and the phone lies in the tray screen up with its camera looking straight down through a window, 440 mm above a painted sorting mat. The mat lies on the bench against the front edge of the base board, which places it so that the camera's picture falls on the mat and the stand stays out of the picture. A power bank on the bench feeds the phone through a cable that runs up the post and along the arm. Figure 1 shows the 10 components in the order you make or fit them. Seven are made in a home workshop: the base board, two foot angles, the post, the arm, two corner plates, the phone tray and the mat. Three are bought: two G-clamps, the phone, and the power bank with its cable. The work is sawing and drilling aluminium tube, angle and plate, cutting and folding a small piece of aluminium sheet, cutting plywood and hardboard, and painting. The rig's stock, paint and fixings cost about $44, and the whole station about $309 with the phone, from the bill of materials.
+The rig is a small stand clamped to the back edge of a sorting bench. A plywood base board carries a square aluminium post; an arm of the same tube reaches forward from the top of the post and holds a folded aluminium tray, and the phone lies in the tray screen up with its camera looking straight down through a window, 440 mm above a painted sorting mat. The mat lies on the bench against the front edge of the base board, which places it so that the camera's picture falls on the mat and the stand stays out of the picture. A power bank on the bench feeds the phone through a cable that runs up the post and along the arm. Figure 1 shows the 11 components in the order you make or fit them. Seven are made in a home workshop: the base board, two foot angles, the post, the arm, two corner plates, the phone tray and the mat. Four are bought: two G-clamps, the phone, the power bank with its cable, and a Bluetooth shutter button that lies on the bench edge and takes each photo, so nobody reaches up to the phone. The work is sawing and drilling aluminium tube, angle and plate, cutting and folding a small piece of aluminium sheet, cutting plywood and hardboard, and painting. The rig's stock, paint and fixings cost about $44, and the whole station about $313 with the phone and the shutter button, from the bill of materials.
 
 > **Safety:** Cut aluminium edges and the corners of the folded tray are sharp: deburr everything and wear gloves when handling stock. The phone and power bank contain lithium cells: keep them shaded, off hot metal and away from the hazard box, and never charge a swollen or damaged pack. At the sorting station the rig is used beside sharps, broken glass and chemical containers: the app never asks anyone to hold an item closer to the camera, and hazards go to the hazard box, never under the phone by hand.
 
@@ -179,7 +183,7 @@ Four M5 x 40 bolts pass through both plates and the tube between them, with a wa
 1. Measure the phone the rig is for: its width (the model assumes 76), the camera bump's size (the model assumes 30 x 30) and where the bump is. Move the window to sit round the bump with 2 to spare on every side, and set the tray's inside width to the phone's width plus 2.
 2. Mark the blank from Figure 10 on the sheet's film: 165 long and 98 wide, with a tab 40 wide sticking out 55 beyond one long edge, 5 from the end that will be the phone's charging end. Fold lines run 10 in from each long edge; on the tab side, the 10 strip is cut away from the charging end to 48, so there is no strip beside the tab.
 3. Cut the outline with aviation snips or a jigsaw with a metal blade. File every edge smooth and round the corners.
-4. Window: 34 x 34, centred 25 from the charging end on the centre line (or wherever step 1 put it). Drill a 6 hole in each corner, cut between the holes and file the sides square.
+4. Window: 32 x 32, centred 25 from the charging end on the centre line (or wherever step 1 put it). Drill a 6 hole in each corner, cut between the holes and file the sides square.
 5. Tab: two 5.5 holes on its centre line, 19 and 49 out from the fold line.
 6. Fold each strip up 90° in a vice between hardwood blocks, one at a time. The tab stays flat. Inside width between the lips: 78.
 
@@ -208,10 +212,10 @@ The phone lies screen up between the lips, its charging end level with the tray'
 **How to make it.**
 
 1. Cut one piece 700 x 450. Sand the edges and round the corners about 3.
-2. Prime, then paint the smooth face matte light grey, two coats.
+2. Prime both faces and all four edges. Paint the smooth face matte light grey, two coats, and the back face and edges in any paint, so both faces carry a coat and the board cannot cup.
 3. Rule a 50 grid in mid grey from the two centre lines: 13 lines across the width (the outer ones 50 from the ends) and 9 lines from front to back (the outer ones 25 from the edges). Lines about 1 wide, with a fine paint marker along a steel rule.
 4. Mark the middle of one long edge with a short line across the edge: this is the back edge's centre mark.
-5. Seal with clear matte varnish so it wipes clean. Never gloss: a shine shows in the photos as a bright patch.
+5. Seal both faces and all four edges with clear matte varnish, so wet items cannot swell the board and it wipes clean. Never gloss: a shine shows in the photos as a bright patch.
 
 **How it fits the parts next to it.**
 
@@ -232,6 +236,7 @@ Buy to specification, not brand. Line numbers are those of the bill of materials
 - **Phone (line 1).** Android phone, about 6 in screen, 3 GB RAM or more, 2019 or later chipset, 12 MP or better main camera, 4,000 mAh battery. The rig assumes a phone 160 x 76 x 9 with its camera bump on the back near one end; the tray window and the arm length are set to the phone actually bought (sections 3.4 and 3.6).
 - **G-clamps (line 11).** Two 100 G-clamps with a throat of at least 50, to grip the board and the bench top together (Figure 16).
 - **Power bank and cable (line 6).** 10,000 mAh USB power bank with over-current and over-temperature protection, and a 1.5 m USB cable to suit the phone. The run up the stand is about 0.93 m.
+- **Shutter button (line 12).** A key-fob Bluetooth camera shutter button that works with Android, with its CR2032 cell and a hook-and-loop pad. Stick the pad on the bench top 45 from the user's edge of the bench, to the left of the board, and the button on it. Keep spare cells out of children's reach.
 - **Fixings and finishes (line 11).** Stainless: 6 x M5 x 40 bolts and 2 x M5 x 35 bolts, each with two washers and a nyloc nut; 4 x No. 8 x 16 wood screws; 4 cable ties; primer, matte light grey and mid grey paint, clear matte varnish.
 
 ![Figure 16. Joint 5: G-clamp on the bench's back edge](05-build-plan/joint-05.png)
@@ -282,31 +287,33 @@ Lay the mat on the bench and slide it back until its back edge touches the board
 
 ![Step 7](05-build-plan/step-07.png)
 
-Screen up, charging end at the tray's open end, lower the phone so its camera bump drops into the window.
+Screen up, charging end at the tray's open end, lower the phone so its camera bump drops into the window, then push it against the far lip so it cannot turn.
 
-### Step 8: power bank and cable
+### Step 8: power bank, cable and shutter button
 
 ![Step 8](05-build-plan/step-08.png)
 
-Seen from behind, from the user's side. Stand the power bank on the bench beside the board, clear of the clamp. Run the cable over the board, up the post's back face and along the top of the arm to the phone's charging end, with two cable ties on the post and two on the arm. Leave a loop at the phone so it can lift out of the tray without unplugging. **Hold point:** safety stop S3 in section 6.
+Seen from behind, from the user's side. Stand the power bank on the bench beside the board, clear of the clamp. Run the cable over the board, up the post's back face and along the top of the arm, 8 to one side of the arm's centre line so it clears the two tray bolt heads, to the phone's charging end, with two cable ties on the post and two on the arm. Set the shutter button on its pad at the bench edge and pair it with the phone. Leave a loop at the phone so it can lift out of the tray without unplugging. **Hold point:** safety stop S3 in section 6.
 
 ## 5. First checks
 
-These are the checks a TRL 4 test report would record; this plan only lists them. Requirement numbers are those of WML-REQ-001; the camera geometry is from WML-CAL-001 section 6.
+These are the checks a TRL 4 test report would record; this plan only lists them. Requirement numbers are those of WML-PRS-001; the camera geometry is from WML-CAL-001 section 6.
 
 *Table 2. First checks.*
 
 | Check | Requirement | How | Pass when |
 | --- | --- | --- | --- |
-| Camera height | R1 (camera geometry of WML-CAL-001) | Tape measure from the mat to the tray's underside beside the window | 440, give or take 5 |
-| Picture on the mat | R1 | Phone in the tray, camera app open, mat in place | Every edge of the picture shows grey mat: no bench, no board, no stand |
-| Picture square to the mat | R1 | Look at the grid in the camera picture | Grid lines run parallel to the picture's edges and the squares look square |
-| Stand rigid | R7 | Tap the screen firmly at its far corner, as a user would | The picture moves less than one grid line's width and settles at once |
-| Phone in and out | R7 | Lift the phone out and put it back, ten times | Each takes under 5 s and the bump always finds the window |
-| Screen clear | R8 | Stand at the user's side of the bench | The whole screen can be seen and tapped; nothing of the rig covers it |
-| Power through a shift | R10 | Phone on the power bank's cable, screen sleeping between taps | The phone charges; the cable does not pull when the phone is lifted |
-| No glare | R1 | Site light on; look at the camera picture | No bright patch on the mat |
-| Site light recorded | R1 | The rig has no lamp. Take one photo with the app, with a gray card in a corner of the mat if one is used | The light reading, or the gray card in the corner of the picture, is saved with the photo and the card stays clear of the item |
+| Camera height | PR-019 (camera geometry of WML-CAL-001) | Tape measure from the mat to the tray's underside beside the window | 440, give or take 5 |
+| Picture on the mat | PR-019 | Phone in the tray, camera app open, mat in place | Every edge of the picture shows grey mat: no bench, no board, no stand |
+| Picture square to the mat | PR-019 | Look at the grid in the camera picture | Grid lines run parallel to the picture's edges and the squares look square |
+| Stand rigid | PR-023 | Tap the screen firmly at its far corner, as a user would | The picture moves less than one grid line's width and settles at once |
+| Phone in and out | PR-022 | Lift the phone out and put it back, ten times | Each takes under 5 s and the bump always finds the window |
+| Screen clear | PR-008, PR-016 | Stand at the user's side of the bench | The whole screen can be seen and tapped; nothing of the rig covers it |
+| Power through a shift | PR-010 | Phone on the power bank's cable, screen sleeping between taps | The phone charges; the cable does not pull when the phone is lifted |
+| No glare | PR-001 | Site light on; look at the camera picture | No bright patch on the mat |
+| Site light recorded | PR-001, PR-014 | The rig has no lamp. Take one photo with the app, with a gray card in a corner of the mat if one is used | The light reading, or the gray card in the corner of the picture, is saved with the photo and the card stays clear of the item |
+| Shutter button | PR-015 | Stand at the user's side; press the button on the bench edge without leaning in | The app takes one photo per press; the hand stays at bench height |
+| Mat sealed | PR-017 | Look at the mat's back face and edges | Every face and edge is painted and varnished; no bare board shows |
 
 ## 6. Safety stops
 
@@ -330,10 +337,11 @@ Stop at each point. Carry on only when everything listed is true.
 
 ## 8. Where the numbers come from
 
-- Model and constructability checks: `cad/src/model.py` (`python cad/src/model.py --check`, 99 checks); STEP and STL exports in `cad/step/` and `cad/stl/`.
+- Model and constructability checks: `cad/src/model.py` (`python cad/src/model.py --check`, 115 checks); STEP files in `cad/step/A/` and `cad/step/A-assembly.step` from `python .kit/cad_check.py --export`; STL in `cad/stl/`.
 - Pictures: `cad/src/build_plan_media.py`, using `.kit/build_views.py`; written to `docs/05-build-plan/` and `cad/drawings/WML-DWG-101` to `WML-DWG-107`.
-- General arrangement: `cad/drawings/WML-DWG-001.pdf`, Rev P2.
-- Calculations: `docs/04-calcs/01-sizing.md` (WML-CAL-001 v0.3) and `docs/04-calcs/sizing.py`; camera geometry and stand clearance in section 6, cost in section 10.
-- Bill of materials: `bom/bom.csv`, lines 1, 2, 3, 6 and 11.
+- General arrangement: `cad/drawings/WML-DWG-001.pdf`, Rev P3.
+- Calculations: `docs/04-calcs/01-sizing.md` (WML-CAL-001 v0.5) and `docs/04-calcs/sizing.py`; camera geometry and stand clearance in section 6, cost in section 10.
+- Bill of materials: `bom/bom.csv`, lines 1, 2, 3, 6, 11 and 12.
 - Decisions: `docs/decisions/0003-design-for-construction.md` (WML-DDR-003), with WML-DDR-001 and WML-DDR-002.
-- Requirements: `docs/03-requirements.md` (WML-REQ-001 v0.4).
+- Requirements: `docs/03-requirements.md` (WML-PRS-001 v0.6).
+- STEM check fixes: `docs/decisions/0005-stem-check-fixes.md` (WML-DDR-005).
